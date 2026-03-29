@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1L1 — The 3 Traffic Buckets</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .lesson-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  h1 span {
+    background: linear-gradient(90deg, var(--gold), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 52px;
+  }
+
+  /* MAIN DIAGRAM */
+  .diagram {
+    width: 100%;
+    max-width: 900px;
+    position: relative;
+  }
+
+  /* TOP ROW — 3 buckets */
+  .buckets-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 0;
+    position: relative;
+  }
+
+  .bucket {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px 24px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+
+  .bucket:hover { transform: translateY(-4px); }
+
+  .bucket.organic { border-top: 3px solid var(--teal); }
+  .bucket.paid { border-top: 3px solid var(--purple); }
+  .bucket.borrowed { border-top: 3px solid var(--gold); }
+
+  .bucket-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .bucket-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .bucket.organic .bucket-name { color: var(--teal); }
+  .bucket.paid .bucket-name { color: var(--purple); }
+  .bucket.borrowed .bucket-name { color: var(--gold); }
+
+  .bucket-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .bucket-cost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .bucket.organic .bucket-cost { background: rgba(26,188,156,0.12); color: var(--teal); }
+  .bucket.paid .bucket-cost { background: rgba(168,85,247,0.12); color: var(--purple); }
+  .bucket.borrowed .bucket-cost { background: rgba(241,196,15,0.12); color: var(--gold); }
+
+  /* CONNECTOR ARROWS */
+  .connectors {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 80px;
+    margin: 0;
+    height: 60px;
+    align-items: center;
+    position: relative;
+  }
+
+  .connector-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .arrow-line {
+    width: 2px;
+    height: 32px;
+    position: relative;
+  }
+
+  .arrow-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+  }
+
+  .arrow-line.teal { background: linear-gradient(to bottom, var(--teal), rgba(26,188,156,0.3)); }
+  .arrow-line.teal::after { border-top: 8px solid var(--teal); }
+  .arrow-line.purple { background: linear-gradient(to bottom, var(--purple), rgba(168,85,247,0.3)); }
+  .arrow-line.purple::after { border-top: 8px solid var(--purple); }
+  .arrow-line.gold { background: linear-gradient(to bottom, var(--gold), rgba(241,196,15,0.3)); }
+  .arrow-line.gold::after { border-top: 8px solid var(--gold); }
+
+  /* FUNNEL NODE */
+  .funnel-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+
+  .funnel-node {
+    background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(26,188,156,0.1));
+    border: 1px solid rgba(168,85,247,0.4);
+    border-radius: 14px;
+    padding: 20px 40px;
+    text-align: center;
+    width: 380px;
+    position: relative;
+  }
+
+  .funnel-node::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(168,85,247,0.3), rgba(26,188,156,0.2));
+    z-index: -1;
+    filter: blur(8px);
+  }
+
+  .funnel-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--purple);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .funnel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .funnel-sub {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* SECOND ARROW */
+  .center-arrow {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    align-items: center;
+  }
+
+  .center-arrow-line {
+    width: 2px;
+    height: 36px;
+    background: linear-gradient(to bottom, var(--purple), var(--gold));
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .center-arrow-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid var(--gold);
+  }
+
+  /* OUTCOME ROW */
+  .outcomes-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .outcome-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+
+  .outcome-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .outcome-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .outcome-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* KEY RULE BOX */
+  .rule-box {
+    margin-top: 32px;
+    background: rgba(241,196,15,0.06);
+    border: 1px solid rgba(241,196,15,0.2);
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .rule-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .rule-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .rule-text strong {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--gold), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.15em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .bucket { animation: fadeUp 0.5s ease both; }
+  .bucket:nth-child(1) { animation-delay: 0.1s; }
+  .bucket:nth-child(2) { animation-delay: 0.2s; }
+  .bucket:nth-child(3) { animation-delay: 0.3s; }
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+
+  <div class="lesson-tag">Module 1 · Lesson 1 · VIERAOS Free Course</div>
+  <h1>The 3 Traffic <span>Buckets</span></h1>
+  <p class="subtitle">Every lead you ever get comes from one of these three places. Pick your path.</p>
+
+  <div class="diagram">
+
+    <!-- BUCKET ROW -->
+    <div class="buckets-row">
+      <div class="bucket organic">
+        <span class="bucket-icon">🎬</span>
+        <div class="bucket-name">Organic</div>
+        <div class="bucket-desc">You create content. You build the audience over time. Free to run — costs your time and consistency.</div>
+        <span class="bucket-cost">⏱ Costs time</span>
+      </div>
+      <div class="bucket paid">
+        <span class="bucket-icon">💸</span>
+        <div class="bucket-name">Paid Ads</div>
+        <div class="bucket-desc">You run ads. You buy the audience immediately. Fast to scale — costs money to run.</div>
+        <span class="bucket-cost">💰 Costs money</span>
+      </div>
+      <div class="bucket borrowed">
+        <span class="bucket-icon">🤝</span>
+        <div class="bucket-name">Borrowed</div>
+        <div class="bucket-desc">Collabs, affiliates, features. You borrow someone else's audience to grow your own.</div>
+        <span class="bucket-cost">🔗 Costs relationships</span>
+      </div>
+    </div>
+
+    <!-- ARROWS DOWN -->
+    <div class="connectors">
+      <div class="connector-arrow">
+        <div class="arrow-line teal"></div>
+      </div>
+      <div class="connector-arrow">
+        <div class="arrow-line purple"></div>
+      </div>
+      <div class="connector-arrow">
+        <div class="arrow-line gold"></div>
+      </div>
+    </div>
+
+    <!-- FUNNEL NODE -->
+    <div class="funnel-wrap">
+      <div class="funnel-node">
+        <div class="funnel-label">All roads lead to</div>
+        <div class="funnel-title">Your DMs & Funnel</div>
+        <div class="funnel-sub">Lead captured → AI setter takes over</div>
+      </div>
+    </div>
+
+    <!-- ARROW DOWN -->
+    <div class="center-arrow">
+      <div class="center-arrow-line"></div>
+    </div>
+
+    <!-- OUTCOMES -->
+    <div class="outcomes-row">
+      <div class="outcome-card">
+        <div class="outcome-num">📞</div>
+        <div class="outcome-label">Call Booked</div>
+        <div class="outcome-desc">AI qualifies → human closer takes over → high ticket sale</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">🛒</div>
+        <div class="outcome-label">Direct Sale</div>
+        <div class="outcome-desc">AI sends payment link → low to mid ticket product sold in DMs</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">📧</div>
+        <div class="outcome-label">List Built</div>
+        <div class="outcome-desc">Lead magnet delivered → tagged in CRM → nurtured to sale</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- KEY RULE -->
+  <div class="rule-box">
+    <div class="rule-icon">⚡</div>
+    <div class="rule-text">
+      <strong>The one rule:</strong> Pick one primary traffic source and stick to it until it's working. Organic validates your message for free. Paid scales what's already working. Borrowed amplifies both. <strong>Don't try to run all three at once</strong> — you'll do none of them well.
+    </div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+</body>
+</html>

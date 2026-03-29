@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Sales Toolkit — Content</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background: var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh}
+
+.top-bar{background:rgba(8,13,26,0.95);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.brand{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:800;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.12em;text-transform:uppercase}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{padding:7px 16px;border-radius:8px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all .18s;text-transform:uppercase;letter-spacing:.08em;background:transparent;color:var(--muted)}
+.nav-tab:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.nav-tab.active{background:rgba(26,188,156,.15);color:var(--teal);border:1px solid rgba(26,188,156,.3)}
+.nav-series{font-family: 'Bebas Neue', sans-serif;font-size:10px;color:var(--muted);letter-spacing:.1em}
+.nav-series span{color:var(--gold);font-weight:600}
+
+.hero{padding:40px 32px 28px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(26,188,156,.04) 0%,transparent 100%)}
+.hero-eyebrow{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.hero-title{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:6px}
+.hero-title span{background:linear-gradient(90deg,var(--teal),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:14px;color:var(--muted);max-width:560px}
+
+.panel{display:none;padding:32px}
+.panel.active{display:block}
+
+.tool-title{font-family: 'Bebas Neue', sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
+.tool-desc{font-size:13px;color:var(--muted);margin-bottom:28px}
+
+.form-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.section-label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px;display:block}
+.input-group{margin-bottom:12px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:5px}
+input[type=text],textarea,select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;padding:11px 13px;color:#fff;font-family: 'Inter', sans-serif;font-size:14px;outline:none;transition:border-color .18s}
+input:focus,textarea:focus,select:focus{border-color:var(--teal)}
+textarea{resize:vertical;min-height:72px}
+select{cursor:pointer}
+option{background:var(--card)}
+
+.primary-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--purple));border:none;border-radius:10px;padding:14px;font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:.05em;transition:opacity .18s;margin-bottom:20px}
+.primary-btn:hover{opacity:.88}
+.ghost-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:9px 18px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .18s}
+.ghost-btn:hover{border-color:var(--teal);color:var(--text)}
+
+/* POST BUILDER */
+.pb-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.preview-box{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.preview-head{padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:space-between}
+.preview-head-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:var(--teal)}
+.copy-btn{background:rgba(26,188,156,.1);border:1px solid rgba(26,188,156,.3);border-radius:6px;padding:5px 12px;color:var(--teal);font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:all .18s}
+.copy-btn:hover{background:rgba(26,188,156,.2)}
+.copy-btn.ok{background:rgba(241,196,15,.1);border-color:rgba(241,196,15,.3);color:var(--gold)}
+.post-preview{padding:18px;font-size:14px;line-height:1.75;color:var(--text);white-space:pre-wrap;min-height:220px;font-family: 'Inter', sans-serif}
+.post-preview.empty{color:var(--muted);font-size:12px;font-style:italic}
+
+.checklist-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:14px}
+.cb-title{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px}
+.ci{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:12px;color:var(--text);line-height:1.4}
+
+/* PROFILE AUDIT */
+.score-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;margin-bottom:20px}
+.sc-label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:8px}
+.sc-val{font-family: 'Bebas Neue', sans-serif;font-size:52px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:4px}
+.sc-out{font-size:13px;color:var(--muted);margin-bottom:12px}
+.sc-track{width:100%;height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.sc-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--purple),var(--teal));transition:width .5s ease}
+.sc-verdict{font-size:13px;font-weight:600}
+
+.audit-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+.as-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.as-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700}
+.as-score{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:var(--muted)}
+.audit-section:nth-child(1) .as-title{color:var(--purple)}
+.audit-section:nth-child(2) .as-title{color:var(--teal)}
+.audit-section:nth-child(3) .as-title{color:var(--gold)}
+.audit-section:nth-child(4) .as-title{color:var(--purple)}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:8px;margin-bottom:6px;cursor:pointer;transition:background .15s;user-select:none}
+.check-item:hover{background:rgba(255,255,255,.03)}
+.check-item.checked{background:rgba(26,188,156,.05)}
+.checkbox{width:20px;height:20px;border:2px solid var(--border);border-radius:5px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.check-item.checked .checkbox{background:var(--teal);border-color:var(--teal)}
+.check-item.checked .checkbox::after{content:'✓';color:#fff;font-size:12px;font-weight:700}
+.check-text{font-size:13px;color:var(--text);line-height:1.4;flex:1}
+.check-item.checked .check-text{color:var(--muted);text-decoration:line-through}
+
+.page-footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="brand">The AI Sales Toolkit</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPanel('post')">Post Builder</button>
+    <button class="nav-tab" onclick="showPanel('audit')">Profile Audit</button>
+  </div>
+  <div class="nav-series">Part <span>2 of 3</span> — Content</div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Module 3 · Content Tools</div>
+  <div class="hero-title">Posts that generate leads. <span>Profiles that convert.</span></div>
+  <div class="hero-sub">Build lead gen posts with keyword CTAs and audit your profile against 24 conversion points.</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PANEL 1: POST BUILDER                     -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel active" id="panel-post">
+  <div class="tool-title">Lead Gen Post Builder</div>
+  <div class="tool-desc">Fill in your details, choose a hook style, and get a ManyChat-ready post with a keyword CTA.</div>
+
+  <div class="pb-layout">
+    <!-- LEFT: INPUTS -->
+    <div>
+      <div class="form-box" style="margin-bottom:16px">
+        <span class="section-label">Your lead magnet</span>
+        <div class="input-group"><label>Lead magnet name</label><input type="text" id="pb-name" placeholder="The AI Setter Blueprint"></div>
+        <div class="input-group"><label>What does it help them do?</label><input type="text" id="pb-outcome" placeholder="Build an AI setter that qualifies leads in DMs automatically"></div>
+        <div class="input-group"><label>ManyChat keyword</label><input type="text" id="pb-keyword" placeholder="SETTER"></div>
+        <div class="input-group">
+          <label>Hook type</label>
+          <select id="pb-hook">
+            <option value="pain">Pain Hook</option>
+            <option value="outcome">Outcome Hook</option>
+            <option value="story">Story Hook</option>
+            <option value="number">Number/List Hook</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-box">
+        <span class="section-label">Your audience</span>
+        <div class="input-group"><label>Who is this for?</label><input type="text" id="pb-audience" placeholder="Coaches and digital product sellers"></div>
+        <div class="input-group"><label>Their biggest frustration</label><textarea id="pb-frustration" placeholder="Spending on ads and posting content but getting zero qualified DMs"></textarea></div>
+      </div>
+      <button class="primary-btn" onclick="buildPost()">Build My Post</button>
+    </div>
+
+    <!-- RIGHT: PREVIEW + CHECKLIST -->
+    <div>
+      <div class="preview-box">
+        <div class="preview-head">
+          <div class="preview-head-title">Post preview</div>
+          <button class="copy-btn" id="copy-post-btn" onclick="copyPost()">Copy post</button>
+        </div>
+        <div class="post-preview empty" id="post-preview">Your post will appear here →</div>
+      </div>
+      <div class="checklist-box">
+        <div class="cb-title">Before you post</div>
+        <div class="ci"><span>🤖</span> ManyChat keyword trigger is set up and live</div>
+        <div class="ci"><span>🔗</span> Lead magnet delivery message is ready in ManyChat</div>
+        <div class="ci"><span>❓</span> First qualifying question is in the DM flow</div>
+        <div class="ci"><span>📌</span> Pin this post if it gets strong early engagement</div>
+        <div class="ci"><span>🔁</span> If it performs in 7 days — repurpose as a paid ad</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PANEL 2: PROFILE AUDIT                    -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel" id="panel-audit">
+  <div class="tool-title">Profile Conversion Audit</div>
+  <div class="tool-desc">Tick everything your profile already has. Get your score and a prioritised fix list.</div>
+
+  <div class="score-card">
+    <div class="sc-label">Your profile conversion score</div>
+    <div class="sc-val" id="sc-val">0</div>
+    <div class="sc-out">out of 24 points</div>
+    <div class="sc-track"><div class="sc-fill" id="sc-fill" style="width:0%"></div></div>
+    <div class="sc-verdict" id="sc-verdict" style="color:var(--muted)">Start ticking items to see your score →</div>
+  </div>
+
+  <div class="audit-section">
+    <div class="as-header"><div class="as-title">Bio & Profile Setup</div><div class="as-score" id="s1s">0 / 6</div></div>
+    <div class="check-item" data-s="1" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Bio line 1 states who you help and what outcome they get</div></div>
+    <div class="check-item" data-s="1" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Bio line 2 has a credibility signal (results, numbers, authority)</div></div>
+    <div class="check-item" data-s="1" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Bio line 3 speaks directly to your audience's desire</div></div>
+    <div class="check-item" data-s="1" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Bio line 4 has a keyword CTA ("Comment X for free resource")</div></div>
+    <div class="check-item" data-s="1" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Profile photo is high-quality, warm, and clearly shows your face</div></div>
+    <div class="check-item" data-s="1" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Username is clean, memorable, and matches your brand</div></div>
+  </div>
+
+  <div class="audit-section">
+    <div class="as-header"><div class="as-title">Pinned Posts</div><div class="as-score" id="s2s">0 / 6</div></div>
+    <div class="check-item" data-s="2" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Pin 1 is your best lead gen post with keyword CTA</div></div>
+    <div class="check-item" data-s="2" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Pin 2 is your strongest proof/results post</div></div>
+    <div class="check-item" data-s="2" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Pin 3 is a personal story/connection post</div></div>
+    <div class="check-item" data-s="2" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">All 3 pins have a clear CTA or conversion hook</div></div>
+    <div class="check-item" data-s="2" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Pinned posts are recent (within last 60 days)</div></div>
+    <div class="check-item" data-s="2" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">At least one pin has social proof in the comments</div></div>
+  </div>
+
+  <div class="audit-section">
+    <div class="as-header"><div class="as-title">Feed Health & Content Mix</div><div class="as-score" id="s3s">0 / 6</div></div>
+    <div class="check-item" data-s="3" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Posting at least 3× per week (no big gaps)</div></div>
+    <div class="check-item" data-s="3" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Feed has a mix of trust, proof, and lead gen posts</div></div>
+    <div class="check-item" data-s="3" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Client results or testimonials visible in the feed</div></div>
+    <div class="check-item" data-s="3" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">At least 1 lead gen post per week with keyword CTA</div></div>
+    <div class="check-item" data-s="3" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">You actively reply to comments (profile looks alive)</div></div>
+    <div class="check-item" data-s="3" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Stories active at least 3× per week</div></div>
+  </div>
+
+  <div class="audit-section">
+    <div class="as-header"><div class="as-title">Conversion Infrastructure</div><div class="as-score" id="s4s">0 / 6</div></div>
+    <div class="check-item" data-s="4" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">ManyChat is connected and keyword trigger is live</div></div>
+    <div class="check-item" data-s="4" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Lead magnet auto-delivers in DMs</div></div>
+    <div class="check-item" data-s="4" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">AI setter (or manual follow-up) handles DMs within 24hrs</div></div>
+    <div class="check-item" data-s="4" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Highlights ordered: Results → About → Free → Testimonials → Offers</div></div>
+    <div class="check-item" data-s="4" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">Link in bio goes to lead magnet or opt-in page</div></div>
+    <div class="check-item" data-s="4" onclick="tick(this)"><div class="checkbox"></div><div class="check-text">You track which posts are generating DMs</div></div>
+  </div>
+
+  <div style="text-align:center;margin-top:8px">
+    <button class="ghost-btn" onclick="auditReset()">Reset checklist</button>
+  </div>
+</div>
+
+<div class="page-footer">VIERAOS · The AI Sales Toolkit — Part 2: Content</div>
+
+<script>
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── POST BUILDER ──
+function buildPost() {
+  const name      = document.getElementById('pb-name').value.trim()        || 'my free guide';
+  const outcome   = document.getElementById('pb-outcome').value.trim()     || 'automate your lead generation';
+  const keyword   = (document.getElementById('pb-keyword').value.trim() || 'FREE').toUpperCase();
+  const hookType  = document.getElementById('pb-hook').value;
+  const audience  = document.getElementById('pb-audience').value.trim()    || 'business owners';
+  const frust     = document.getElementById('pb-frustration').value.trim() || 'not seeing results';
+
+  let hook = '';
+  if (hookType === 'pain')    hook = `If you're ${audience.toLowerCase()} and you're ${frust.toLowerCase()}...\n\nYou need to see this.`;
+  else if (hookType === 'outcome') hook = `How ${audience.toLowerCase()} are now able to ${outcome.toLowerCase()} — without being online 24/7.`;
+  else if (hookType === 'story')   hook = `6 months ago I was ${frust.toLowerCase().split(' ').slice(0,8).join(' ')}.\n\nNow my system handles it automatically while I sleep.\n\nHere's what changed:`;
+  else                             hook = `3 reasons why ${audience.toLowerCase()} keep ${frust.toLowerCase().split(' ').slice(0,5).join(' ')}:\n\n(and what to do instead)`;
+
+  const body = `The problem isn't your offer. It isn't your content. It's what happens — or doesn't happen — after someone shows interest.\n\nMost ${audience.toLowerCase()} have no system for that gap. And that's where all the leads fall through.\n\nI put together ${name} to show you exactly how to ${outcome.toLowerCase()}.\n\nIt's free. It takes under 10 minutes. And if you implement it, you'll never manually chase a lead again.`;
+  const cta  = `Comment "${keyword}" below and I'll send it straight to your DMs. 👇`;
+
+  const el = document.getElementById('post-preview');
+  el.textContent = `${hook}\n\n${body}\n\n${cta}`;
+  el.classList.remove('empty');
+}
+
+function copyPost() {
+  const text = document.getElementById('post-preview').textContent;
+  if (document.getElementById('post-preview').classList.contains('empty')) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-post-btn');
+    btn.textContent = 'Copied!'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy post'; btn.classList.remove('ok'); }, 2500);
+  });
+}
+
+// ── PROFILE AUDIT ──
+let scores = {1:0,2:0,3:0,4:0};
+function tick(el) {
+  const s = parseInt(el.dataset.s);
+  el.classList.toggle('checked');
+  scores[s] = document.querySelectorAll(`[data-s="${s}"].checked`).length;
+  document.getElementById(`s${s}s`).textContent = `${scores[s]} / 6`;
+  updateAuditScore();
+}
+function updateAuditScore() {
+  const total = Object.values(scores).reduce((a,b)=>a+b,0);
+  const pct = (total/24)*100;
+  document.getElementById('sc-val').textContent  = total;
+  document.getElementById('sc-fill').style.width = pct + '%';
+  const v = document.getElementById('sc-verdict');
+  if (total === 0)       { v.style.color='var(--muted)';  v.textContent = 'Start ticking items to see your score →'; }
+  else if (total < 8)    { v.style.color='#FF6B6B';       v.textContent = '🔴 Profile needs significant work before running ads'; }
+  else if (total < 14)   { v.style.color='var(--gold)';   v.textContent = '🟡 Good foundation — fix the gaps before scaling traffic'; }
+  else if (total < 20)   { v.style.color='var(--teal)';   v.textContent = '🟢 Strong profile — ready to run traffic with confidence'; }
+  else                   { v.style.color='var(--gold)';   v.textContent = '🏆 Optimised for conversion — your profile is a sales machine'; }
+}
+function auditReset() {
+  document.querySelectorAll('.check-item').forEach(el => el.classList.remove('checked'));
+  scores = {1:0,2:0,3:0,4:0};
+  [1,2,3,4].forEach(s => document.getElementById(`s${s}s`).textContent = '0 / 6');
+  updateAuditScore();
+}
+</script>
+</body>
+</html>

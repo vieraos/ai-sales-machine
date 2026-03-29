@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Performance Tracker — VIERAOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 24px}
+  .tool-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;max-width:580px}
+  .tool{width:100%;max-width:960px}
+
+  /* INPUT ROW */
+  .input-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:20px}
+  .ip-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--purple);margin-bottom:16px}
+  .ip-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;align-items:end;margin-bottom:14px}
+  .ip-grid-small{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end;margin-bottom:16px}
+  label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:4px}
+  input[type=number],input[type=text]{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:#fff;font-family: 'Inter', sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+  input:focus{border-color:var(--purple)}
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+  .record-btn{background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:8px;padding:10px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;color:#fff;cursor:pointer;height:38px;transition:opacity .2s;white-space:nowrap}
+  .record-btn:hover{opacity:.9}
+
+  /* KPI CARDS */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+  .kpi-label{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
+  .kpi-val{font-family: 'Bebas Neue', sans-serif;font-size:22px;font-weight:800;margin-bottom:3px}
+  .kpi:nth-child(1) .kpi-val{color:var(--gold)}
+  .kpi:nth-child(2) .kpi-val{color:var(--teal)}
+  .kpi:nth-child(3) .kpi-val{color:var(--purple)}
+  .kpi:nth-child(4) .kpi-val{color:#4ade80}
+  .kpi:nth-child(5) .kpi-val{color:var(--gold)}
+  .kpi-note{font-size:10px;color:var(--muted)}
+
+  /* WEEKS TABLE */
+  .weeks-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
+  .weeks-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.02)}
+  .weeks-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:#fff}
+  .clear-btn{background:transparent;border:1px solid var(--border);border-radius:6px;padding:5px 12px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s}
+  .clear-btn:hover{border-color:#FF6B6B;color:#FF6B6B}
+  table{width:100%;border-collapse:collapse}
+  th{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:10px 14px;text-align:left;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);color:var(--muted);white-space:nowrap}
+  td{padding:11px 14px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04)}
+  tr:last-child td{border-bottom:none}
+  .roas-good{color:#4ade80;font-weight:700;font-family: 'Bebas Neue', sans-serif}
+  .roas-warn{color:var(--gold);font-weight:700;font-family: 'Bebas Neue', sans-serif}
+  .roas-bad{color:#FF6B6B;font-weight:700;font-family: 'Bebas Neue', sans-serif}
+  .empty-row td{text-align:center;color:var(--muted);font-size:12px;padding:28px}
+
+  /* INSIGHTS */
+  .insights{background:rgba(241,196,15,.06);border:1px solid rgba(241,196,15,.2);border-radius:12px;padding:16px 20px;font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:16px}
+  .insights strong{color:var(--gold)}
+
+  .footer{margin-top:24px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 44px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; opacity: 0.6; }
+  .form-box, .add-section, .input-panel { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn, .gen-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .rule-note, .tip-box, .rule-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.18) !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  .kpi-card, .total-card, .tracker-wrap, .table-wrap, .script-box, .preview-box, .checklist-box, .preview-section, .score-card, .audit-section { background: #111111 !important; border-color: #2a2a2a !important; }
+  .tw-head, .tw-header, .weeks-header, .sb-header, .preview-head { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .hook-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  .result-hero { background: rgba(241,196,15,0.08) !important; border-color: rgba(241,196,15,0.3) !important; }
+  .res-card { background: #111111 !important; border-color: #2a2a2a !important; }
+
+</style>
+</head>
+<body>
+  <div class="tool-tag">Module 5 Tool · VIERAOS Free Course</div>
+  <h1>Weekly Performance <span>Tracker</span></h1>
+  <p class="subtitle">Record your numbers each week and track your system performance over time. Know your trends, spot your leaks.</p>
+
+  <div class="tool">
+    <!-- INPUT -->
+    <div class="input-panel">
+      <div class="ip-title">Record this week's numbers</div>
+      <div class="ip-grid">
+        <div><label>Week of</label><input type="text" id="weekOf" placeholder="Mar 24"></div>
+        <div><label>Ad spend ($)</label><input type="number" id="wSpend" placeholder="800"></div>
+        <div><label>Revenue ($)</label><input type="number" id="wRevenue" placeholder="2100"></div>
+        <div><label>New leads</label><input type="number" id="wLeads" placeholder="60"></div>
+        <div><label>Sales made</label><input type="number" id="wSales" placeholder="14"></div>
+        <div><label>Calls booked</label><input type="number" id="wCalls" placeholder="7"></div>
+      </div>
+      <div class="ip-grid-small">
+        <div><label>DMs → qualified (%)</label><input type="number" id="wQRate" placeholder="12"></div>
+        <div><label>CPP ($)</label><input type="number" id="wCpp" placeholder="57"></div>
+        <div><label>AOV ($)</label><input type="number" id="wAov" placeholder="150"></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><label>&nbsp;</label><button class="record-btn" onclick="recordWeek()">+ Record Week</button></div>
+      </div>
+    </div>
+
+    <!-- KPIS (running totals) -->
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-label">Total revenue tracked</div><div class="kpi-val" id="totRevenue">$0</div><div class="kpi-note">All weeks combined</div></div>
+      <div class="kpi"><div class="kpi-label">Total spend</div><div class="kpi-val" id="totSpend">$0</div><div class="kpi-note">All weeks combined</div></div>
+      <div class="kpi"><div class="kpi-label">Avg ROAS</div><div class="kpi-val" id="avgRoas">0×</div><div class="kpi-note">Across all weeks</div></div>
+      <div class="kpi"><div class="kpi-label">Total leads</div><div class="kpi-val" id="totLeads">0</div><div class="kpi-note">All weeks combined</div></div>
+      <div class="kpi"><div class="kpi-label">Avg CPP</div><div class="kpi-val" id="avgCpp">$0</div><div class="kpi-note">Across all weeks</div></div>
+    </div>
+
+    <!-- WEEKS TABLE -->
+    <div class="weeks-wrap">
+      <div class="weeks-header">
+        <div class="weeks-title">Week by week breakdown</div>
+        <button class="clear-btn" onclick="clearAll()">Clear all</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Week</th><th>Spend</th><th>Revenue</th><th>ROAS</th><th>Leads</th><th>Sales</th><th>Calls</th><th>Conv %</th><th>CPP</th><th>AOV</th></tr>
+        </thead>
+        <tbody id="weeksBody">
+          <tr class="empty-row"><td colspan="10">No weeks recorded yet — enter your numbers above</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insights" id="insights">📊 Record at least 2 weeks of data to see performance trends and insights.</div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+<script>
+let weeks = [];
+
+function recordWeek() {
+  const weekOf = document.getElementById('weekOf').value.trim() || 'Unknown';
+  const spend = parseFloat(document.getElementById('wSpend').value) || 0;
+  const revenue = parseFloat(document.getElementById('wRevenue').value) || 0;
+  const leads = parseInt(document.getElementById('wLeads').value) || 0;
+  const sales = parseInt(document.getElementById('wSales').value) || 0;
+  const calls = parseInt(document.getElementById('wCalls').value) || 0;
+  const qRate = parseFloat(document.getElementById('wQRate').value) || 0;
+  const cpp = parseFloat(document.getElementById('wCpp').value) || (sales > 0 ? spend/sales : 0);
+  const aov = parseFloat(document.getElementById('wAov').value) || (sales > 0 ? revenue/sales : 0);
+
+  if (!spend && !revenue) { alert('Enter at least spend and revenue.'); return; }
+
+  weeks.unshift({ weekOf, spend, revenue, leads, sales, calls, qRate, cpp, aov });
+  clearInputs();
+  renderTable();
+  updateKpis();
+  renderInsights();
+}
+
+function clearInputs() {
+  ['weekOf','wSpend','wRevenue','wLeads','wSales','wCalls','wQRate','wCpp','wAov'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+function getRoasCls(r) { return r >= 2 ? 'roas-good' : r >= 1 ? 'roas-warn' : 'roas-bad'; }
+
+function renderTable() {
+  const tbody = document.getElementById('weeksBody');
+  if (!weeks.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="10">No weeks recorded yet — enter your numbers above</td></tr>'; return; }
+  tbody.innerHTML = weeks.map(w => {
+    const roas = w.spend > 0 ? (w.revenue / w.spend) : 0;
+    const cls = getRoasCls(roas);
+    return `<tr>
+      <td style="font-weight:600">${w.weekOf}</td>
+      <td>$${w.spend.toFixed(0)}</td>
+      <td>$${w.revenue.toFixed(0)}</td>
+      <td class="${cls}">${roas > 0 ? roas.toFixed(1)+'×' : '—'}</td>
+      <td>${w.leads}</td>
+      <td>${w.sales}</td>
+      <td>${w.calls}</td>
+      <td>${w.qRate > 0 ? w.qRate.toFixed(1)+'%' : '—'}</td>
+      <td>${w.cpp > 0 ? '$'+w.cpp.toFixed(0) : '—'}</td>
+      <td>${w.aov > 0 ? '$'+w.aov.toFixed(0) : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function updateKpis() {
+  const totR = weeks.reduce((s,w) => s+w.revenue,0);
+  const totS = weeks.reduce((s,w) => s+w.spend,0);
+  const totL = weeks.reduce((s,w) => s+w.leads,0);
+  const avgRoas = totS > 0 ? totR/totS : 0;
+  const validCpp = weeks.filter(w=>w.cpp>0);
+  const avgCpp = validCpp.length ? validCpp.reduce((s,w)=>s+w.cpp,0)/validCpp.length : 0;
+  document.getElementById('totRevenue').textContent = '$'+totR.toFixed(0);
+  document.getElementById('totSpend').textContent = '$'+totS.toFixed(0);
+  document.getElementById('avgRoas').textContent = avgRoas > 0 ? avgRoas.toFixed(1)+'×' : '0×';
+  document.getElementById('totLeads').textContent = totL;
+  document.getElementById('avgCpp').textContent = avgCpp > 0 ? '$'+avgCpp.toFixed(0) : '$0';
+}
+
+function renderInsights() {
+  if (weeks.length < 2) return;
+  const latest = weeks[0], prev = weeks[1];
+  const latestRoas = latest.spend > 0 ? latest.revenue/latest.spend : 0;
+  const prevRoas = prev.spend > 0 ? prev.revenue/prev.spend : 0;
+  const roasTrend = latestRoas > prevRoas ? '📈 up' : latestRoas < prevRoas ? '📉 down' : '→ flat';
+  const insights = document.getElementById('insights');
+  insights.innerHTML = `<strong>System insights:</strong> Your ROAS is ${roasTrend} vs last week (${prevRoas.toFixed(1)}× → ${latestRoas.toFixed(1)}×). 
+  ${latestRoas >= 2 ? '✅ Above 2× — consider scaling your winning ad by 20%.' : latestRoas >= 1 ? '⚠️ Between 1–2× — iterate on your best creative, check setter conversion rate.' : '🚨 Below 1× — audit your ads immediately. Something needs killing or fixing.'}
+  ${latest.cpp > 0 && latest.cpp < 50 ? ' CPP looks healthy.' : latest.cpp > 0 ? ' CPP is climbing — watch AOV and upsell performance.' : ''}`;
+}
+
+function clearAll() {
+  if (!confirm('Clear all recorded weeks?')) return;
+  weeks = [];
+  renderTable();
+  updateKpis();
+  document.getElementById('insights').innerHTML = '📊 Record at least 2 weeks of data to see performance trends and insights.';
+}
+</script>
+</body>
+</html>

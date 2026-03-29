@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile Audit Checklist — VIERAOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 24px}
+  .tool-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;max-width:560px}
+  .tool{width:100%;max-width:760px}
+
+  /* SCORE BAR */
+  .score-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:20px;text-align:center}
+  .score-label{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:8px}
+  .score-val{font-family: 'Bebas Neue', sans-serif;font-size:48px;font-weight:800;color:var(--gold);margin-bottom:6px}
+  .score-out{font-size:14px;color:var(--muted)}
+  .score-track{width:100%;height:8px;background:var(--border);border-radius:4px;margin:12px 0 8px;overflow:hidden}
+  .score-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--purple),var(--teal));transition:width .5s ease}
+  .score-verdict{font-size:13px;font-weight:600;margin-top:4px}
+
+  /* CHECKLIST SECTIONS */
+  .audit-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .section-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700}
+  .audit-section:nth-child(1) .section-title{color:var(--purple)}
+  .audit-section:nth-child(2) .section-title{color:var(--teal)}
+  .audit-section:nth-child(3) .section-title{color:var(--gold)}
+  .audit-section:nth-child(4) .section-title{color:var(--purple)}
+  .section-score{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:var(--muted)}
+
+  .check-item{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:8px;margin-bottom:6px;cursor:pointer;transition:background .15s;user-select:none}
+  .check-item:hover{background:rgba(255,255,255,.03)}
+  .check-item.checked{background:rgba(26,188,156,.05)}
+  .checkbox{width:20px;height:20px;border:2px solid var(--border);border-radius:5px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .check-item.checked .checkbox{background:var(--teal);border-color:var(--teal)}
+  .check-item.checked .checkbox::after{content:'✓';color:#fff;font-size:12px;font-weight:700}
+  .check-text{font-size:13px;color:var(--text);line-height:1.4;flex:1}
+  .check-item.checked .check-text{color:var(--muted);text-decoration:line-through}
+
+  .reset-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:10px 20px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .2s;display:block;margin:0 auto}
+  .reset-btn:hover{border-color:var(--purple);color:var(--text)}
+
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 44px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; opacity: 0.6; }
+  .form-box, .add-section, .input-panel { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn, .gen-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .rule-note, .tip-box, .rule-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.18) !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  .kpi-card, .total-card, .tracker-wrap, .table-wrap, .script-box, .preview-box, .checklist-box, .preview-section, .score-card, .audit-section { background: #111111 !important; border-color: #2a2a2a !important; }
+  .tw-head, .tw-header, .weeks-header, .sb-header, .preview-head { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .hook-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  .result-hero { background: rgba(241,196,15,0.08) !important; border-color: rgba(241,196,15,0.3) !important; }
+  .res-card { background: #111111 !important; border-color: #2a2a2a !important; }
+
+</style>
+</head>
+<body>
+  <div class="tool-tag">Module 3 Tool · VIERAOS Free Course</div>
+  <h1>Profile Audit <span>Checklist</span></h1>
+  <p class="subtitle">Tick off every item your profile already has. Get your score and see exactly what to fix first.</p>
+
+  <div class="tool">
+    <!-- SCORE -->
+    <div class="score-bar">
+      <div class="score-label">Your profile conversion score</div>
+      <div class="score-val" id="scoreVal">0</div>
+      <div class="score-out">out of 24 points</div>
+      <div class="score-track"><div class="score-fill" id="scoreFill" style="width:0%"></div></div>
+      <div class="score-verdict" id="scoreVerdict">Start ticking off items to see your score →</div>
+    </div>
+
+    <!-- SECTION 1: BIO -->
+    <div class="audit-section">
+      <div class="section-header">
+        <div class="section-title">Bio & Profile Setup</div>
+        <div class="section-score" id="s1score">0/6</div>
+      </div>
+      <div class="check-item" data-section="1" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Bio line 1 clearly states who you help and what outcome they get</div></div>
+      <div class="check-item" data-section="1" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Bio line 2 has a credibility signal (results, numbers, authority)</div></div>
+      <div class="check-item" data-section="1" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Bio line 3 speaks to your audience's desire</div></div>
+      <div class="check-item" data-section="1" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Bio line 4 has a keyword CTA (eg. "Comment X for free resource")</div></div>
+      <div class="check-item" data-section="1" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Profile photo is high-quality, warm, and clearly shows your face</div></div>
+      <div class="check-item" data-section="1" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Username is clean, memorable, and matches your brand</div></div>
+    </div>
+
+    <!-- SECTION 2: PINNED POSTS -->
+    <div class="audit-section">
+      <div class="section-header">
+        <div class="section-title">Pinned Posts</div>
+        <div class="section-score" id="s2score">0/6</div>
+      </div>
+      <div class="check-item" data-section="2" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Pin 1 is your best-performing lead gen post with keyword CTA</div></div>
+      <div class="check-item" data-section="2" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Pin 2 is your strongest proof/results post</div></div>
+      <div class="check-item" data-section="2" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Pin 3 is a personal story/connection post ("why I do this")</div></div>
+      <div class="check-item" data-section="2" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">All 3 pins have a clear CTA or conversion hook at the end</div></div>
+      <div class="check-item" data-section="2" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Pinned posts are recent (within the last 60 days)</div></div>
+      <div class="check-item" data-section="2" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">At least one pinned post has social proof in the comments</div></div>
+    </div>
+
+    <!-- SECTION 3: FEED HEALTH -->
+    <div class="audit-section">
+      <div class="section-header">
+        <div class="section-title">Feed Health & Content Mix</div>
+        <div class="section-score" id="s3score">0/6</div>
+      </div>
+      <div class="check-item" data-section="3" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Posting at least 3× per week consistently (no big gaps)</div></div>
+      <div class="check-item" data-section="3" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Feed has a mix of trust, proof, and lead gen posts (not all one type)</div></div>
+      <div class="check-item" data-section="3" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Client results or testimonials are visible in the feed</div></div>
+      <div class="check-item" data-section="3" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">At least 1 lead gen post per week with a keyword CTA</div></div>
+      <div class="check-item" data-section="3" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">You actively reply to comments (shows the profile is alive)</div></div>
+      <div class="check-item" data-section="3" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Stories are active at least 3× per week</div></div>
+    </div>
+
+    <!-- SECTION 4: CONVERSION SETUP -->
+    <div class="audit-section">
+      <div class="section-header">
+        <div class="section-title">Conversion Infrastructure</div>
+        <div class="section-score" id="s4score">0/6</div>
+      </div>
+      <div class="check-item" data-section="4" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">ManyChat is connected and keyword trigger is live</div></div>
+      <div class="check-item" data-section="4" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Lead magnet is set up and auto-delivers in DMs</div></div>
+      <div class="check-item" data-section="4" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">AI setter (or manual follow-up) is handling DMs within 24hrs</div></div>
+      <div class="check-item" data-section="4" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Highlights are ordered: Results → About → Free Stuff → Testimonials → Offers</div></div>
+      <div class="check-item" data-section="4" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">Link in bio (or later, linktree) goes to your lead magnet or opt-in page</div></div>
+      <div class="check-item" data-section="4" onclick="toggle(this)"><div class="checkbox"></div><div class="check-text">You track leads from profile (know which posts are generating DMs)</div></div>
+    </div>
+
+    <button class="reset-btn" onclick="resetAll()">Reset checklist</button>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+<script>
+let scores = {1:0, 2:0, 3:0, 4:0};
+let maxPer = 6;
+
+function toggle(el) {
+  const sec = parseInt(el.dataset.section);
+  el.classList.toggle('checked');
+  const sectionItems = document.querySelectorAll(`[data-section="${sec}"]`);
+  scores[sec] = Array.from(sectionItems).filter(i => i.classList.contains('checked')).length;
+  document.getElementById(`s${sec}score`).textContent = `${scores[sec]}/${maxPer}`;
+  updateScore();
+}
+
+function updateScore() {
+  const total = Object.values(scores).reduce((a,b) => a+b, 0);
+  const max = 24;
+  const pct = (total / max) * 100;
+  document.getElementById('scoreVal').textContent = total;
+  document.getElementById('scoreFill').style.width = pct + '%';
+  const v = document.getElementById('scoreVerdict');
+  if (total === 0) { v.textContent = 'Start ticking off items to see your score →'; v.style.color = 'var(--muted)'; }
+  else if (total < 8) { v.textContent = '🔴 Profile needs significant work before running ads'; v.style.color = '#FF6B6B'; }
+  else if (total < 14) { v.textContent = '🟡 Good foundation — fix the gaps before scaling traffic'; v.style.color = 'var(--gold)'; }
+  else if (total < 20) { v.textContent = '🟢 Strong profile — ready to run traffic with confidence'; v.style.color = 'var(--teal)'; }
+  else { v.textContent = '🏆 Optimised for conversion — your profile is a sales machine'; v.style.color = 'var(--gold)'; }
+}
+
+function resetAll() {
+  document.querySelectorAll('.check-item').forEach(el => el.classList.remove('checked'));
+  scores = {1:0,2:0,3:0,4:0};
+  [1,2,3,4].forEach(s => document.getElementById(`s${s}score`).textContent = `0/${maxPer}`);
+  updateScore();
+}
+</script>
+</body>
+</html>

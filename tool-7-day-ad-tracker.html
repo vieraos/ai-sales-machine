@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7-Day Ad Tracker — VIERAOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 24px}
+  .tool-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--teal),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;max-width:580px}
+  .tool{width:100%;max-width:900px}
+
+  /* ADD AD */
+  .add-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:20px}
+  .add-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--purple);margin-bottom:14px}
+  .add-grid{display:grid;grid-template-columns:1fr 1fr 100px 100px 100px 100px;gap:10px;align-items:end}
+  label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:4px}
+  input[type=text],input[type=number]{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:#fff;font-family: 'Inter', sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+  input:focus{border-color:var(--purple)}
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+  .add-btn{background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:8px;padding:10px 16px;font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;transition:opacity .2s;height:40px}
+  .add-btn:hover{opacity:.9}
+
+  /* TRACKER TABLE */
+  .tracker-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
+  .tracker-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.02)}
+  .tracker-title-text{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:#fff}
+  .tracker-subtitle{font-size:11px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse}
+  th{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:10px 14px;text-align:left;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);color:var(--muted);white-space:nowrap}
+  td{padding:12px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .ad-name-cell{font-weight:600;color:#fff;max-width:180px}
+  .ad-type-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase}
+  .roas-cell{font-family: 'Bebas Neue', sans-serif;font-weight:700;font-size:14px}
+  .roas-cell.good{color:#4ade80}
+  .roas-cell.warn{color:var(--gold)}
+  .roas-cell.bad{color:#FF6B6B}
+  .verdict-badge{padding:4px 10px;border-radius:10px;font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;white-space:nowrap}
+  .verdict-badge.scale{background:rgba(74,222,128,.12);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
+  .verdict-badge.iterate{background:rgba(241,196,15,.12);color:var(--gold);border:1px solid rgba(241,196,15,.3)}
+  .verdict-badge.kill{background:rgba(255,107,107,.12);color:#FF6B6B;border:1px solid rgba(255,107,107,.3)}
+  .verdict-badge.wait{background:rgba(168,85,247,.12);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
+  .del-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:4px;transition:color .2s}
+  .del-btn:hover{color:#FF6B6B}
+  .empty-row td{text-align:center;color:var(--muted);font-size:12px;padding:30px}
+
+  /* TOTALS */
+  .totals{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+  .total-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+  .total-label{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:5px}
+  .total-val{font-family: 'Bebas Neue', sans-serif;font-size:20px;font-weight:800}
+  .total-card:nth-child(1) .total-val{color:var(--gold)}
+  .total-card:nth-child(2) .total-val{color:var(--teal)}
+  .total-card:nth-child(3) .total-val{color:var(--purple)}
+  .total-card:nth-child(4) .total-val{color:#4ade80}
+
+  .rule-box{background:rgba(241,196,15,.06);border:1px solid rgba(241,196,15,.2);border-radius:10px;padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+  .rule-box strong{color:var(--gold)}
+  .footer{margin-top:24px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 44px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; opacity: 0.6; }
+  .form-box, .add-section, .input-panel { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn, .gen-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .rule-note, .tip-box, .rule-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.18) !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  .kpi-card, .total-card, .tracker-wrap, .table-wrap, .script-box, .preview-box, .checklist-box, .preview-section, .score-card, .audit-section { background: #111111 !important; border-color: #2a2a2a !important; }
+  .tw-head, .tw-header, .weeks-header, .sb-header, .preview-head { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .hook-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  .result-hero { background: rgba(241,196,15,0.08) !important; border-color: rgba(241,196,15,0.3) !important; }
+  .res-card { background: #111111 !important; border-color: #2a2a2a !important; }
+
+</style>
+</head>
+<body>
+  <div class="tool-tag">Module 2 Tool · VIERAOS Free Course</div>
+  <h1>7-Day Ad <span>Tracker</span></h1>
+  <p class="subtitle">Add your running ads, enter the numbers at day 7, and get instant kill/iterate/scale verdicts.</p>
+
+  <div class="tool">
+    <!-- ADD AD -->
+    <div class="add-section">
+      <div class="add-title">Add an ad to track</div>
+      <div class="add-grid">
+        <div>
+          <label>Ad name / creative</label>
+          <input type="text" id="adName" placeholder="100 Ideas Static v1">
+        </div>
+        <div>
+          <label>Ad type</label>
+          <input type="text" id="adType" placeholder="Static / Video / UGC">
+        </div>
+        <div>
+          <label>Spend ($)</label>
+          <input type="number" id="adSpend" placeholder="300">
+        </div>
+        <div>
+          <label>Revenue ($)</label>
+          <input type="number" id="adRevenue" placeholder="780">
+        </div>
+        <div>
+          <label>Sales (#)</label>
+          <input type="number" id="adSales" placeholder="8">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <label>&nbsp;</label>
+          <button class="add-btn" onclick="addAd()">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTALS -->
+    <div class="totals">
+      <div class="total-card"><div class="total-label">Total spend</div><div class="total-val" id="totalSpend">$0</div></div>
+      <div class="total-card"><div class="total-label">Total revenue</div><div class="total-val" id="totalRevenue">$0</div></div>
+      <div class="total-card"><div class="total-label">Blended ROAS</div><div class="total-val" id="blendedRoas">0×</div></div>
+      <div class="total-card"><div class="total-label">Total sales</div><div class="total-val" id="totalSales">0</div></div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="tracker-wrap">
+      <div class="tracker-header">
+        <div>
+          <div class="tracker-title-text">Ad Performance Tracker</div>
+          <div class="tracker-subtitle">Review at day 7. Kill, iterate or scale based on ROAS.</div>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Ad name</th>
+            <th>Type</th>
+            <th>Spend</th>
+            <th>Revenue</th>
+            <th>ROAS</th>
+            <th>CPP</th>
+            <th>Sales</th>
+            <th>Verdict</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="adTableBody">
+          <tr class="empty-row"><td colspan="9">No ads added yet — add your first ad above</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rule-box">
+      <strong>The 7-day rule:</strong> Don't touch any ad before day 7. Meta needs time to learn. ROAS ≥ 2× = scale (+20% budget every 3 days). ROAS 1–2× = iterate (change ONE variable). ROAS below 1× = kill immediately — no exceptions.
+    </div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+<script>
+let ads = [];
+
+function addAd() {
+  const name = document.getElementById('adName').value.trim();
+  const type = document.getElementById('adType').value.trim() || 'Unknown';
+  const spend = parseFloat(document.getElementById('adSpend').value) || 0;
+  const revenue = parseFloat(document.getElementById('adRevenue').value) || 0;
+  const sales = parseInt(document.getElementById('adSales').value) || 0;
+
+  if (!name || !spend) { alert('Please enter ad name and spend at minimum.'); return; }
+
+  ads.push({ id: Date.now(), name, type, spend, revenue, sales });
+  clearAddForm();
+  renderTable();
+  updateTotals();
+}
+
+function clearAddForm() {
+  ['adName','adType','adSpend','adRevenue','adSales'].forEach(id => document.getElementById(id).value = '');
+}
+
+function deleteAd(id) {
+  ads = ads.filter(a => a.id !== id);
+  renderTable();
+  updateTotals();
+}
+
+function getVerdict(roas) {
+  if (roas === 0) return { label: 'No data', cls: 'wait' };
+  if (roas >= 2) return { label: '↑ Scale', cls: 'scale' };
+  if (roas >= 1) return { label: '→ Iterate', cls: 'iterate' };
+  return { label: '✗ Kill', cls: 'kill' };
+}
+
+function getRoasClass(roas) {
+  if (roas === 0) return '';
+  if (roas >= 2) return 'good';
+  if (roas >= 1) return 'warn';
+  return 'bad';
+}
+
+function renderTable() {
+  const tbody = document.getElementById('adTableBody');
+  if (ads.length === 0) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No ads added yet — add your first ad above</td></tr>';
+    return;
+  }
+  tbody.innerHTML = ads.map(ad => {
+    const roas = ad.spend > 0 ? (ad.revenue / ad.spend) : 0;
+    const cpp = ad.sales > 0 ? (ad.spend / ad.sales) : 0;
+    const verdict = getVerdict(roas);
+    const roasCls = getRoasClass(roas);
+    return `<tr>
+      <td class="ad-name-cell">${ad.name}</td>
+      <td><span class="ad-type-badge" style="background:rgba(168,85,247,.1);color:var(--purple)">${ad.type}</span></td>
+      <td>$${ad.spend.toFixed(0)}</td>
+      <td>$${ad.revenue.toFixed(0)}</td>
+      <td class="roas-cell ${roasCls}">${roas > 0 ? roas.toFixed(1) + '×' : '—'}</td>
+      <td>${cpp > 0 ? '$' + cpp.toFixed(0) : '—'}</td>
+      <td>${ad.sales}</td>
+      <td><span class="verdict-badge ${verdict.cls}">${verdict.label}</span></td>
+      <td><button class="del-btn" onclick="deleteAd(${ad.id})" title="Remove">×</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function updateTotals() {
+  const totSpend = ads.reduce((s,a) => s + a.spend, 0);
+  const totRevenue = ads.reduce((s,a) => s + a.revenue, 0);
+  const totSales = ads.reduce((s,a) => s + a.sales, 0);
+  const blendedRoas = totSpend > 0 ? (totRevenue / totSpend) : 0;
+  document.getElementById('totalSpend').textContent = '$' + totSpend.toFixed(0);
+  document.getElementById('totalRevenue').textContent = '$' + totRevenue.toFixed(0);
+  document.getElementById('blendedRoas').textContent = blendedRoas > 0 ? blendedRoas.toFixed(1) + '×' : '0×';
+  document.getElementById('totalSales').textContent = totSales;
+}
+</script>
+</body>
+</html>

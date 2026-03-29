@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M5L3 — The Intelligence Feedback Loop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background: var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+  .lesson-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:32px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:48px}
+  .diagram{width:100%;max-width:960px}
+
+  /* THE LOOP */
+  .loop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:10px}
+  .loop-node{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 18px;text-align:center;position:relative}
+  .loop-node::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
+  .loop-node:nth-child(1)::before{background:var(--teal)}
+  .loop-node:nth-child(2)::before{background:var(--purple)}
+  .loop-node:nth-child(3)::before{background:var(--gold)}
+  .loop-node:nth-child(4)::before{background:var(--teal)}
+  .loop-node:nth-child(5)::before{background:var(--purple)}
+  .loop-node:nth-child(6)::before{background:var(--gold)}
+  .loop-icon{font-size:28px;margin-bottom:10px}
+  .loop-num{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}
+  .loop-node:nth-child(1) .loop-num,.loop-node:nth-child(4) .loop-num{color:var(--teal)}
+  .loop-node:nth-child(2) .loop-num,.loop-node:nth-child(5) .loop-num{color:var(--purple)}
+  .loop-node:nth-child(3) .loop-num,.loop-node:nth-child(6) .loop-num{color:var(--gold)}
+  .loop-name{font-family: 'Bebas Neue', sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:5px}
+  .loop-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+  .loop-label{text-align:center;font-size:12px;color:var(--muted);margin-bottom:28px;font-style:italic}
+  .loop-label span{color:var(--gold)}
+
+  /* MANUAL vs PLATFORM */
+  .mvp-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:14px}
+  .mvp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+  .mvp-card{border-radius:12px;padding:20px}
+  .mvp-card.manual{background:rgba(255,255,255,.03);border:1px solid var(--border)}
+  .mvp-card.platform{background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(241,196,15,.06));border:1px solid rgba(168,85,247,.4)}
+  .mvp-label{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+  .mvp-card.manual .mvp-label{color:var(--muted)}
+  .mvp-card.platform .mvp-label{color:var(--purple)}
+  .mvp-title-text{font-family: 'Bebas Neue', sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
+  .mvp-items{display:flex;flex-direction:column;gap:6px}
+  .mvp-item{font-size:12px;color:var(--text);display:flex;gap:8px;align-items:flex-start;line-height:1.4}
+  .mvp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+  .mvp-card.manual .mvp-dot{background:var(--muted)}
+  .mvp-card.platform .mvp-dot{background:var(--purple)}
+
+  /* VIERA OS BOX */
+  .vieros-box{background:linear-gradient(135deg,rgba(241,196,15,.08),rgba(168,85,247,.08));border:1px solid rgba(241,196,15,.3);border-radius:16px;padding:28px 28px;text-align:center;margin-bottom:24px;position:relative;overflow:hidden}
+  .vieros-box::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(241,196,15,.12),transparent 70%);pointer-events:none}
+  .vieros-eyebrow{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:10px}
+  .vieros-title{font-family: 'Bebas Neue', sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:10px}
+  .vieros-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:600px;margin:0 auto 18px}
+  .vieros-desc strong{color:var(--text)}
+  .vieros-features{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .vieros-feature{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;padding:5px 14px;border-radius:20px;background:rgba(241,196,15,.1);color:var(--gold);border:1px solid rgba(241,196,15,.25)}
+
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .loop-node{animation:fadeUp .4s ease both}
+  .loop-node:nth-child(1){animation-delay:.05s}
+  .loop-node:nth-child(2){animation-delay:.1s}
+  .loop-node:nth-child(3){animation-delay:.15s}
+  .loop-node:nth-child(4){animation-delay:.2s}
+  .loop-node:nth-child(5){animation-delay:.25s}
+  .loop-node:nth-child(6){animation-delay:.3s}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+  <div class="lesson-tag">Module 5 · Lesson 3 · VIERAOS Free Course</div>
+  <h1>The Intelligence <span>Feedback Loop</span></h1>
+  <p class="subtitle">The system doesn't just run — it learns. Here's how data flows back through your business to make every future decision smarter.</p>
+  <div class="diagram">
+
+    <div class="loop-grid">
+      <div class="loop-node">
+        <div class="loop-icon">📣</div>
+        <div class="loop-num">Step 1</div>
+        <div class="loop-name">Traffic runs</div>
+        <div class="loop-desc">Paid ads and organic content generate leads. Each source tagged from the first touchpoint.</div>
+      </div>
+      <div class="loop-node">
+        <div class="loop-icon">💬</div>
+        <div class="loop-num">Step 2</div>
+        <div class="loop-name">Setter qualifies</div>
+        <div class="loop-desc">AI handles the DMs. Every answer, every objection, every drop-off point logged in CRM.</div>
+      </div>
+      <div class="loop-node">
+        <div class="loop-icon">💰</div>
+        <div class="loop-num">Step 3</div>
+        <div class="loop-name">Outcome recorded</div>
+        <div class="loop-desc">Sale made, call booked, or lead lost. Tagged with the traffic source that produced them.</div>
+      </div>
+      <div class="loop-node">
+        <div class="loop-icon">📊</div>
+        <div class="loop-num">Step 4</div>
+        <div class="loop-name">Patterns emerge</div>
+        <div class="loop-desc">Which source → highest LTV? Which message → best converter? Data answers what guessing can't.</div>
+      </div>
+      <div class="loop-node">
+        <div class="loop-icon">🧠</div>
+        <div class="loop-num">Step 5</div>
+        <div class="loop-name">Decisions made</div>
+        <div class="loop-desc">Kill underperformers. Scale winners. Update setter prompt. Create content that mirrors best ads.</div>
+      </div>
+      <div class="loop-node">
+        <div class="loop-icon">🔁</div>
+        <div class="loop-num">Step 6</div>
+        <div class="loop-name">System improves</div>
+        <div class="loop-desc">Each cycle the system gets smarter. Better targeting, better conversations, lower CPP, higher LTV.</div>
+      </div>
+    </div>
+    <div class="loop-label">↺ <span>This loop runs every week. After 3 months, your system knows your best buyer better than you do.</span></div>
+
+    <!-- MANUAL VS PLATFORM -->
+    <div class="mvp-title">How to run this loop — manual vs platform</div>
+    <div class="mvp-grid">
+      <div class="mvp-card manual">
+        <div class="mvp-label">DIY — Free to start</div>
+        <div class="mvp-title-text">Manual tracking in Google Sheets</div>
+        <div class="mvp-items">
+          <div class="mvp-item"><div class="mvp-dot"></div>Manually tag leads in GHL by source weekly</div>
+          <div class="mvp-item"><div class="mvp-dot"></div>Track CPP, ROAS, conv. rate in a spreadsheet</div>
+          <div class="mvp-item"><div class="mvp-dot"></div>Read DM conversations and note drop-off points</div>
+          <div class="mvp-item"><div class="mvp-dot"></div>Update Claude system prompt based on what you see</div>
+          <div class="mvp-item"><div class="mvp-dot"></div>Takes ~2–3 hours per week to maintain properly</div>
+        </div>
+      </div>
+      <div class="mvp-card platform">
+        <div class="mvp-label">✦ Viera OS — Automated</div>
+        <div class="mvp-title-text">Intelligence layer built in</div>
+        <div class="mvp-items">
+          <div class="mvp-item"><div class="mvp-dot"></div>Auto-tags every lead by source, stage, and outcome</div>
+          <div class="mvp-item"><div class="mvp-dot"></div>Surfaces your best buyer profile from CRM data</div>
+          <div class="mvp-item"><div class="mvp-dot"></div>Flags underperforming ads and setter drop-off points</div>
+          <div class="mvp-item"><div class="mvp-dot"></div>Weekly intelligence report generated automatically</div>
+          <div class="mvp-item"><div class="mvp-dot"></div>Works in 30 minutes a week instead of 3 hours</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIERA OS INTRO -->
+    <div class="vieros-box">
+      <div class="vieros-eyebrow">The next step</div>
+      <div class="vieros-title">This is what Viera OS does for you</div>
+      <div class="vieros-desc">
+        Everything you've built in this course — the traffic system, the AI setter, the weekly review loop — <strong>Viera OS automates the intelligence layer</strong> so you're not manually pulling data. It connects your ads, your ManyChat, your CRM, and your Claude API and surfaces the insights that make your system compound faster.
+      </div>
+      <div class="vieros-features">
+        <div class="vieros-feature">Auto lead attribution</div>
+        <div class="vieros-feature">Setter performance tracking</div>
+        <div class="vieros-feature">Source → LTV reports</div>
+        <div class="vieros-feature">Weekly intelligence digest</div>
+        <div class="vieros-feature">Ad kill/scale recommendations</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+</body>
+</html>

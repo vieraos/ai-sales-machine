@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4L6 — The Weekly Review Loop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background: var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+  .lesson-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:32px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--gold),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:48px}
+  .diagram{width:100%;max-width:960px}
+
+  /* CYCLE */
+  .cycle-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;margin-bottom:8px;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+  .cycle-step{padding:24px 18px;text-align:center;border-right:1px solid var(--border);position:relative}
+  .cycle-step:last-child{border-right:none}
+  .cycle-num{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+  .cycle-step:nth-child(1) .cycle-num{color:var(--purple)}
+  .cycle-step:nth-child(2) .cycle-num{color:var(--teal)}
+  .cycle-step:nth-child(3) .cycle-num{color:var(--gold)}
+  .cycle-step:nth-child(4) .cycle-num{color:var(--purple)}
+  .cycle-icon{font-size:28px;margin-bottom:10px}
+  .cycle-name{font-family: 'Bebas Neue', sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px}
+  .cycle-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+  .cycle-arrow-row{display:flex;justify-content:flex-end;padding-right:24px;margin-bottom:24px}
+  .cycle-loop-label{font-size:11px;color:var(--muted);font-style:italic}
+  .cycle-loop-label span{color:var(--gold)}
+
+  /* REVIEW CHECKLIST */
+  .review-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:14px}
+  .review-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+  .review-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px}
+  .rev-sec-title{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .review-section:nth-child(1) .rev-sec-title{color:var(--purple)}
+  .review-section:nth-child(2) .rev-sec-title{color:var(--teal)}
+  .review-section:nth-child(3) .rev-sec-title{color:var(--gold)}
+  .rev-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:12px;color:var(--text);line-height:1.4}
+  .rev-check{width:14px;height:14px;border:1.5px solid var(--border);border-radius:3px;flex-shrink:0;margin-top:2px;background:rgba(255,255,255,.02)}
+
+  /* IMPROVE LOOP */
+  .improve-box{background:linear-gradient(135deg,rgba(241,196,15,.07),rgba(168,85,247,.05));border:1px solid rgba(241,196,15,.25);border-radius:14px;padding:22px 24px;margin-bottom:24px}
+  .improve-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+  .improve-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .improve-item{padding:8px 14px;background:rgba(241,196,15,.08);border:1px solid rgba(241,196,15,.2);border-radius:8px;font-size:12px;font-family: 'Bebas Neue', sans-serif;font-weight:600;color:var(--gold)}
+  .improve-arrow{color:var(--muted);font-size:16px}
+
+  .rule-box{background:rgba(26,188,156,.06);border:1px solid rgba(26,188,156,.2);border-radius:12px;padding:16px 20px;display:flex;gap:14px}
+  .rule-icon{font-size:22px;flex-shrink:0}
+  .rule-text{font-size:13px;color:var(--muted);line-height:1.6}
+  .rule-text strong{color:var(--teal);font-weight:600}
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+  <div class="lesson-tag">Module 4 · Lesson 6 · VIERAOS Free Course</div>
+  <h1>The Weekly <span>Review Loop</span></h1>
+  <p class="subtitle">A system without a review loop is just guessing on repeat. This is the 30-minute weekly habit that compounds your results.</p>
+  <div class="diagram">
+
+    <div class="cycle-row">
+      <div class="cycle-step">
+        <div class="cycle-num">Monday</div>
+        <div class="cycle-icon">📊</div>
+        <div class="cycle-name">Check the numbers</div>
+        <div class="cycle-desc">Leads in, conversion rate, where leads dropped off. Tag pipeline updated?</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-num">Tuesday</div>
+        <div class="cycle-icon">💬</div>
+        <div class="cycle-name">Read the conversations</div>
+        <div class="cycle-desc">Spot where Claude is losing people. What question killed the thread? What got the best response?</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-num">Wednesday</div>
+        <div class="cycle-icon">✏️</div>
+        <div class="cycle-name">Update the prompt</div>
+        <div class="cycle-desc">One tweak to the system prompt based on what you saw. One thing at a time — never wholesale rewrite.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-num">Friday</div>
+        <div class="cycle-icon">🔁</div>
+        <div class="cycle-name">End-of-week log</div>
+        <div class="cycle-desc">Record what changed, what improved, what to test next week. System compounds week on week.</div>
+      </div>
+    </div>
+    <div class="cycle-arrow-row"><div class="cycle-loop-label">↺ <span>Repeats every week. Each cycle the system gets smarter.</span></div></div>
+
+    <div class="review-title">Weekly review — 3 areas to audit</div>
+    <div class="review-grid">
+      <div class="review-section">
+        <div class="rev-sec-title">Conversation quality</div>
+        <div class="rev-item"><div class="rev-check"></div>Where did leads stop responding?</div>
+        <div class="rev-item"><div class="rev-check"></div>Which questions got the best engagement?</div>
+        <div class="rev-item"><div class="rev-check"></div>Did the objection handling work or stall?</div>
+        <div class="rev-item"><div class="rev-check"></div>Did Claude stay in your voice or drift generic?</div>
+      </div>
+      <div class="review-section">
+        <div class="rev-sec-title">Pipeline numbers</div>
+        <div class="rev-item"><div class="rev-check"></div>Total new leads this week</div>
+        <div class="rev-item"><div class="rev-check"></div>Leads qualified vs leads cold</div>
+        <div class="rev-item"><div class="rev-check"></div>Booking link clicked vs booked</div>
+        <div class="rev-item"><div class="rev-check"></div>Sales made (low + high ticket)</div>
+      </div>
+      <div class="review-section">
+        <div class="rev-sec-title">Traffic sources</div>
+        <div class="rev-item"><div class="rev-check"></div>Which ad creative sent the most qualified leads?</div>
+        <div class="rev-item"><div class="rev-check"></div>Which organic post triggered the most ManyChat flows?</div>
+        <div class="rev-item"><div class="rev-check"></div>Paid vs organic lead quality — is there a difference?</div>
+        <div class="rev-item"><div class="rev-check"></div>Any traffic source generating unqualified volume?</div>
+      </div>
+    </div>
+
+    <div class="improve-box">
+      <div class="improve-title">⚡ The improvement compound cycle</div>
+      <div class="improve-flow">
+        <div class="improve-item">Read dead threads</div>
+        <div class="improve-arrow">→</div>
+        <div class="improve-item">Identify drop-off point</div>
+        <div class="improve-arrow">→</div>
+        <div class="improve-item">Rewrite that response only</div>
+        <div class="improve-arrow">→</div>
+        <div class="improve-item">Run for 7 days</div>
+        <div class="improve-arrow">→</div>
+        <div class="improve-item">Compare conversion rate</div>
+        <div class="improve-arrow">→</div>
+        <div class="improve-item">Keep or revert</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text"><strong>30 minutes a week is all this takes.</strong> Most people build the system and never look at it again. The ones who review it weekly end up with a setter that converts at 3–5x the rate of set-and-forget. <strong>The conversations the AI is having are the most valuable data your business generates. Read them.</strong></div>
+    </div>
+  </div>
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+</body>
+</html>

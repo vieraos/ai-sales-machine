@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Sales Toolkit — Traffic</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--navy);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── TOP NAV ── */
+.top-bar {
+  background: rgba(8,13,26,0.95);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--gold), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+}
+.nav-tab {
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: transparent;
+  color: var(--muted);
+}
+.nav-tab:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.nav-tab.active { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+.nav-series {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.nav-series span { color: var(--gold); font-weight: 600; }
+
+/* ── HERO ── */
+.hero {
+  padding: 40px 32px 28px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(168,85,247,0.04) 0%, transparent 100%);
+}
+.hero-eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 8px;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.hero-title span {
+  background: linear-gradient(90deg, var(--gold), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub { font-size: 14px; color: var(--muted); max-width: 560px; }
+
+/* ── PANELS ── */
+.panel { display: none; padding: 32px; }
+.panel.active { display: block; }
+
+/* ── SHARED FORM STYLES ── */
+.tool-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.tool-desc { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.section-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: block;
+}
+.form-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.input-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.input-group { display: flex; flex-direction: column; gap: 5px; }
+.input-group.full { grid-column: 1 / -1; }
+label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.input-wrap { position: relative; }
+.pfx {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px; color: var(--muted); pointer-events: none;
+}
+input[type=number], input[type=text], textarea, select {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 13px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.18s;
+}
+input[type=number] { padding-left: 28px; }
+input:focus, textarea:focus, select:focus { border-color: var(--purple); }
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+textarea { resize: vertical; min-height: 72px; }
+select { cursor: pointer; }
+option { background: var(--card); }
+
+.primary-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--purple), var(--teal));
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: opacity 0.18s;
+  margin-bottom: 20px;
+}
+.primary-btn:hover { opacity: 0.88; }
+
+.ghost-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 18px;
+  color: var(--muted);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.ghost-btn:hover { border-color: var(--purple); color: var(--text); }
+
+/* ── RESULTS / OUTPUT ── */
+.results { display: none; }
+.results.show { display: block; }
+
+.result-hero {
+  background: linear-gradient(135deg, rgba(241,196,15,0.1), rgba(168,85,247,0.07));
+  border: 1px solid rgba(241,196,15,0.3);
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.rh-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.rh-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--gold);
+  margin-bottom: 4px;
+  line-height: 1;
+}
+.rh-sub { font-size: 12px; color: var(--muted); }
+
+.result-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.result-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.res-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.rc-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.rc-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--teal);
+  margin-bottom: 3px;
+}
+.rc-note { font-size: 10px; color: var(--muted); line-height: 1.35; }
+
+.verdict-box {
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 13px;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+.verdict-box.green { background: rgba(74,222,128,0.06); border: 1px solid rgba(74,222,128,0.2); color: #4ade80; }
+.verdict-box.gold  { background: rgba(241,196,15,0.06); border: 1px solid rgba(241,196,15,0.2); color: var(--gold); }
+.verdict-box.red   { background: rgba(255,107,107,0.06); border: 1px solid rgba(255,107,107,0.2); color: #FF6B6B; }
+.verdict-box strong { font-weight: 700; }
+
+/* ── HOOK OUTPUT ── */
+.hooks-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.hook-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.hc-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 9px;
+}
+.hook-card:nth-child(odd) .hc-badge  { background: rgba(168,85,247,0.12); color: var(--purple); }
+.hook-card:nth-child(even) .hc-badge { background: rgba(26,188,156,0.12); color: var(--teal); }
+.hc-text { font-size: 15px; color: #fff; line-height: 1.5; margin-bottom: 10px; }
+.copy-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  color: var(--muted);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.copy-btn:hover { background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.35); color: var(--purple); }
+.copy-btn.ok { background: rgba(26,188,156,0.1); border-color: rgba(26,188,156,0.35); color: var(--teal); }
+
+/* ── AD TRACKER TABLE ── */
+.add-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px 100px 100px 80px;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+.add-btn {
+  background: linear-gradient(135deg, var(--purple), var(--teal));
+  border: none;
+  border-radius: 9px;
+  height: 40px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.18s;
+}
+.add-btn:hover { opacity: 0.88; }
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.kpi-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.kpi-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+}
+.kpi-card:nth-child(1) .kpi-val { color: var(--gold); }
+.kpi-card:nth-child(2) .kpi-val { color: var(--teal); }
+.kpi-card:nth-child(3) .kpi-val { color: var(--purple); }
+.kpi-card:nth-child(4) .kpi-val { color: #4ade80; }
+
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.tw-header {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+table { width: 100%; border-collapse: collapse; }
+th {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.015);
+  white-space: nowrap;
+}
+td {
+  padding: 11px 14px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.035);
+  color: var(--text);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+.vbadge {
+  padding: 3px 9px;
+  border-radius: 10px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+}
+.vbadge.scale    { background: rgba(74,222,128,0.12); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+.vbadge.iterate  { background: rgba(241,196,15,0.12); color: var(--gold); border: 1px solid rgba(241,196,15,0.25); }
+.vbadge.kill     { background: rgba(255,107,107,0.12); color: #FF6B6B; border: 1px solid rgba(255,107,107,0.25); }
+.vbadge.wait     { background: rgba(168,85,247,0.12); color: var(--purple); border: 1px solid rgba(168,85,247,0.25); }
+.roas-good { color: #4ade80; font-weight: 700; font-family: 'Bebas Neue', sans-serif; }
+.roas-warn { color: var(--gold); font-weight: 700; font-family: 'Bebas Neue', sans-serif; }
+.roas-bad  { color: #FF6B6B; font-weight: 700; font-family: 'Bebas Neue', sans-serif; }
+.del-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 17px; padding: 2px 6px; transition: color 0.15s; }
+.del-btn:hover { color: #FF6B6B; }
+.empty-td { text-align: center; color: var(--muted); font-size: 12px; padding: 28px !important; }
+.clear-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  color: var(--muted);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.clear-btn:hover { border-color: #FF6B6B; color: #FF6B6B; }
+
+.rule-note {
+  background: rgba(241,196,15,0.05);
+  border: 1px solid rgba(241,196,15,0.18);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.rule-note strong { color: var(--gold); }
+
+/* ── FOOTER ── */
+.page-footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 32px;
+  text-align: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--gold), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.15em;
+}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="brand">The AI Sales Toolkit</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPanel('calc')">Ad Calculator</button>
+    <button class="nav-tab" onclick="showPanel('hook')">Hook Builder</button>
+    <button class="nav-tab" onclick="showPanel('tracker')">Ad Tracker</button>
+  </div>
+  <div class="nav-series">Part <span>1 of 3</span> — Traffic</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 1 & 2 · Traffic Tools</div>
+  <div class="hero-title">Know your numbers. <span>Build winning ads.</span></div>
+  <div class="hero-sub">Three tools to run profitable paid traffic — from setting your thresholds to writing hooks to tracking what's actually working.</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PANEL 1: AD SPEND CALCULATOR              -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel active" id="panel-calc">
+  <div class="tool-title">Ad Spend Threshold Calculator</div>
+  <div class="tool-desc">Know exactly how much you can afford to pay per customer before you spend a dollar.</div>
+
+  <div class="form-box">
+    <span class="section-label">Your offer + numbers</span>
+    <div class="input-grid" style="margin-bottom:14px">
+      <div class="input-group">
+        <label>Front-end offer price</label>
+        <div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-price" placeholder="97"></div>
+      </div>
+      <div class="input-group">
+        <label>Average order value (with upsells)</label>
+        <div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-aov" placeholder="147"></div>
+      </div>
+      <div class="input-group">
+        <label>Est. conversion rate (%)</label>
+        <div class="input-wrap"><span class="pfx">%</span><input type="number" id="c-conv" placeholder="2"></div>
+      </div>
+      <div class="input-group">
+        <label>Target ROAS</label>
+        <div class="input-wrap"><span class="pfx" style="font-size:12px">×</span><input type="number" id="c-roas" placeholder="2" step="0.1"></div>
+      </div>
+      <div class="input-group">
+        <label>Monthly ad budget</label>
+        <div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-budget" placeholder="1000"></div>
+      </div>
+      <div class="input-group">
+        <label>Customer LTV</label>
+        <div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-ltv" placeholder="500"></div>
+      </div>
+    </div>
+    <button class="primary-btn" onclick="calcRun()">Calculate My Thresholds</button>
+  </div>
+
+  <div class="results" id="calc-results">
+    <div class="result-hero">
+      <div class="rh-label">Maximum cost per purchase</div>
+      <div class="rh-val" id="cr-maxcpp">$0</div>
+      <div class="rh-sub">Spend more than this per sale and you're losing money</div>
+    </div>
+    <div class="result-grid-3">
+      <div class="res-card"><div class="rc-label">Break-even CPP</div><div class="rc-val" id="cr-beven">$0</div><div class="rc-note">Spending exactly what you earn</div></div>
+      <div class="res-card"><div class="rc-label">Max CPL</div><div class="rc-val" id="cr-maxcpl">$0</div><div class="rc-note">Based on your conversion rate</div></div>
+      <div class="res-card"><div class="rc-label">Est. monthly sales</div><div class="rc-val" id="cr-sales">0</div><div class="rc-note">At your budget + conv rate</div></div>
+    </div>
+    <div class="result-grid-3">
+      <div class="res-card"><div class="rc-label">Monthly revenue est.</div><div class="rc-val" id="cr-rev">$0</div><div class="rc-note">Front-end × projected sales</div></div>
+      <div class="res-card"><div class="rc-label">Target ROAS CPP</div><div class="rc-val" id="cr-tcpp">$0</div><div class="rc-note">CPP needed to hit your ROAS</div></div>
+      <div class="res-card"><div class="rc-label">LTV-adjusted max CPP</div><div class="rc-val" id="cr-ltvcpp">$0</div><div class="rc-note">Factoring full customer value</div></div>
+    </div>
+    <div class="verdict-box" id="cr-verdict"></div>
+    <div style="text-align:center"><button class="ghost-btn" onclick="calcReset()">Reset</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PANEL 2: HOOK BUILDER                     -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel" id="panel-hook">
+  <div class="tool-title">Hook Formula Builder</div>
+  <div class="tool-desc">Fill in your audience and offer — get 6 scroll-stopping hooks ready to test in ads and content.</div>
+
+  <div class="form-box">
+    <span class="section-label">Your offer + audience</span>
+    <div class="input-grid" style="margin-bottom:14px">
+      <div class="input-group">
+        <label>Who is this for? (specific)</label>
+        <input type="text" id="h-audience" placeholder="Coaches who are already running Meta ads">
+      </div>
+      <div class="input-group">
+        <label>Desired outcome</label>
+        <input type="text" id="h-outcome" placeholder="Get qualified leads booking calls in DMs automatically">
+      </div>
+      <div class="input-group">
+        <label>Main pain right now</label>
+        <input type="text" id="h-pain" placeholder="Spending on ads but getting zero qualified DMs">
+      </div>
+      <div class="input-group">
+        <label>Timeframe / mechanism (optional)</label>
+        <input type="text" id="h-mech" placeholder="In 48 hours — AI setter built and running">
+      </div>
+      <div class="input-group full">
+        <label>Objection they have</label>
+        <input type="text" id="h-obj" placeholder="Without posting every day or being glued to phone">
+      </div>
+    </div>
+    <button class="primary-btn" onclick="hookRun()">Generate My Hooks</button>
+  </div>
+
+  <div class="results" id="hook-results">
+    <div class="hooks-list" id="hooks-list"></div>
+    <div style="text-align:center"><button class="ghost-btn" onclick="hookReset()">Start Over</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PANEL 3: AD TRACKER                       -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel" id="panel-tracker">
+  <div class="tool-title">7-Day Ad Tracker</div>
+  <div class="tool-desc">Add your running ads. Enter spend and revenue at day 7. Get instant kill / iterate / scale verdicts.</div>
+
+  <div class="form-box">
+    <span class="section-label">Add an ad</span>
+    <div class="add-row">
+      <div><label>Ad name / creative</label><input type="text" id="t-name" placeholder="100 Ideas Static v1"></div>
+      <div><label>Type</label><input type="text" id="t-type" placeholder="Static / Video / UGC"></div>
+      <div><label>Spend ($)</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="t-spend" placeholder="300"></div></div>
+      <div><label>Revenue ($)</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="t-rev" placeholder="780"></div></div>
+      <div><label>Sales</label><input type="number" id="t-sales" placeholder="8" style="padding-left:13px"></div>
+      <div><label>&nbsp;</label><button class="add-btn" onclick="trackerAdd()">+ Add</button></div>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-label">Total spend</div><div class="kpi-val" id="t-tot-spend">$0</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total revenue</div><div class="kpi-val" id="t-tot-rev">$0</div></div>
+    <div class="kpi-card"><div class="kpi-label">Blended ROAS</div><div class="kpi-val" id="t-tot-roas">0×</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total sales</div><div class="kpi-val" id="t-tot-sales">0</div></div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="tw-header">
+      <span>Ad Performance</span>
+      <button class="clear-btn" onclick="trackerClear()">Clear all</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Ad</th><th>Type</th><th>Spend</th><th>Revenue</th><th>ROAS</th><th>CPP</th><th>Sales</th><th>Verdict</th><th></th></tr>
+      </thead>
+      <tbody id="t-body">
+        <tr><td class="empty-td" colspan="9">No ads yet — add your first ad above</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rule-note">
+    <strong>7-day rule:</strong> Don't touch any ad before day 7. ROAS ≥ 2× = scale. ROAS 1–2× = iterate (change ONE thing). ROAS below 1× = kill immediately.
+  </div>
+</div>
+
+<div class="page-footer">VIERAOS · The AI Sales Toolkit — Part 1: Traffic</div>
+
+<script>
+// ── NAV ──
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── CALCULATOR ──
+function calcRun() {
+  const price  = parseFloat(document.getElementById('c-price').value)  || 0;
+  const aov    = parseFloat(document.getElementById('c-aov').value)    || price;
+  const conv   = parseFloat(document.getElementById('c-conv').value)   || 0;
+  const roas   = parseFloat(document.getElementById('c-roas').value)   || 2;
+  const budget = parseFloat(document.getElementById('c-budget').value) || 0;
+  const ltv    = parseFloat(document.getElementById('c-ltv').value)    || price;
+  if (!price || !conv || !budget) { alert('Please fill in offer price, conversion rate, and budget.'); return; }
+  const maxCpp   = aov / roas;
+  const maxCpl   = maxCpp * (conv / 100);
+  const estLeads = budget / maxCpl;
+  const estSales = estLeads * (conv / 100);
+  const estRev   = estSales * aov;
+  const ltvCpp   = ltv / roas;
+  document.getElementById('cr-maxcpp').textContent  = '$' + maxCpp.toFixed(0);
+  document.getElementById('cr-beven').textContent   = '$' + aov.toFixed(0);
+  document.getElementById('cr-maxcpl').textContent  = '$' + maxCpl.toFixed(2);
+  document.getElementById('cr-sales').textContent   = Math.round(estSales);
+  document.getElementById('cr-rev').textContent     = '$' + estRev.toFixed(0);
+  document.getElementById('cr-tcpp').textContent    = '$' + maxCpp.toFixed(0);
+  document.getElementById('cr-ltvcpp').textContent  = '$' + ltvCpp.toFixed(0);
+  const actualCpp = estSales > 0 ? budget / estSales : 999;
+  const vEl = document.getElementById('cr-verdict');
+  if (actualCpp <= maxCpp) {
+    vEl.className = 'verdict-box green';
+    vEl.innerHTML = `<strong>✅ Your numbers work.</strong> Projected CPP of $${actualCpp.toFixed(0)} sits below your $${maxCpp.toFixed(0)} threshold. You're profitable at these numbers — focus on volume.`;
+  } else if (actualCpp <= aov) {
+    vEl.className = 'verdict-box gold';
+    vEl.innerHTML = `<strong>⚠️ Marginal.</strong> CPP of $${actualCpp.toFixed(0)} is below break-even but above target ROAS. Improve conversion rate, lift AOV through upsells, or factor in your full LTV ($${ltv}) to justify the spend.`;
+  } else {
+    vEl.className = 'verdict-box red';
+    vEl.innerHTML = `<strong>🚨 Doesn't work yet.</strong> Projected CPP of $${actualCpp.toFixed(0)} is over break-even of $${aov.toFixed(0)}. Fix conversion rate, raise front-end price, or build a stronger upsell stack before spending.`;
+  }
+  document.getElementById('calc-results').classList.add('show');
+}
+function calcReset() {
+  ['c-price','c-aov','c-conv','c-roas','c-budget','c-ltv'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('calc-results').classList.remove('show');
+}
+
+// ── HOOK BUILDER ──
+function hookRun() {
+  const audience = document.getElementById('h-audience').value.trim();
+  const outcome  = document.getElementById('h-outcome').value.trim();
+  const pain     = document.getElementById('h-pain').value.trim();
+  const mech     = document.getElementById('h-mech').value.trim();
+  const obj      = document.getElementById('h-obj').value.trim();
+  if (!audience || !outcome || !pain) { alert('Fill in audience, outcome, and pain at minimum.'); return; }
+  const hooks = [
+    { type: 'Pain Hook',        text: `If you're ${pain.toLowerCase()}, this is for you.` },
+    { type: 'Outcome Hook',     text: `How to ${outcome.toLowerCase()}${mech ? ' — ' + mech.toLowerCase() : ''}.` },
+    { type: 'Contrast Hook',    text: `Stop letting ${pain.toLowerCase().split(' ').slice(0,6).join(' ')} drain your budget. Here's what actually gets you ${outcome.toLowerCase().split(' ').slice(0,5).join(' ')} instead.` },
+    { type: 'Specificity Hook', text: `${audience}: here's how to ${outcome.toLowerCase()}${obj ? ' — ' + obj.toLowerCase() : ''}.` },
+    { type: 'Story Hook',       text: `I was ${pain.toLowerCase().split(' ').slice(0,8).join(' ')} — until I built a system that now ${outcome.toLowerCase().split(' ').slice(0,7).join(' ')} automatically.` },
+    { type: 'Controversy Hook', text: `The reason your ads aren't working isn't your creative — it's what happens after the click. Here's the fix.` }
+  ];
+  const list = document.getElementById('hooks-list');
+  list.innerHTML = hooks.map(h => `
+    <div class="hook-card">
+      <div class="hc-badge">${h.type}</div>
+      <div class="hc-text">${h.text}</div>
+      <button class="copy-btn" onclick="copyText(this,'${h.text.replace(/'/g,"\\'")}')">Copy</button>
+    </div>`).join('');
+  document.getElementById('hook-results').classList.add('show');
+}
+function hookReset() {
+  ['h-audience','h-outcome','h-pain','h-mech','h-obj'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('hook-results').classList.remove('show');
+}
+
+// ── TRACKER ──
+let ads = [];
+function trackerAdd() {
+  const name  = document.getElementById('t-name').value.trim();
+  const type  = document.getElementById('t-type').value.trim() || '—';
+  const spend = parseFloat(document.getElementById('t-spend').value) || 0;
+  const rev   = parseFloat(document.getElementById('t-rev').value)   || 0;
+  const sales = parseInt(document.getElementById('t-sales').value)   || 0;
+  if (!name || !spend) { alert('Enter ad name and spend.'); return; }
+  ads.push({ id: Date.now(), name, type, spend, rev, sales });
+  ['t-name','t-type','t-spend','t-rev','t-sales'].forEach(id => document.getElementById(id).value = '');
+  trackerRender(); trackerKpis();
+}
+function trackerDel(id) { ads = ads.filter(a => a.id !== id); trackerRender(); trackerKpis(); }
+function trackerClear() { ads = []; trackerRender(); trackerKpis(); }
+function trackerRender() {
+  const tbody = document.getElementById('t-body');
+  if (!ads.length) { tbody.innerHTML = '<tr><td class="empty-td" colspan="9">No ads yet — add your first ad above</td></tr>'; return; }
+  tbody.innerHTML = ads.map(a => {
+    const roas = a.spend > 0 ? a.rev / a.spend : 0;
+    const cpp  = a.sales > 0 ? a.spend / a.sales : 0;
+    const rc   = roas >= 2 ? 'roas-good' : roas >= 1 ? 'roas-warn' : roas > 0 ? 'roas-bad' : '';
+    const v    = roas >= 2 ? ['scale','↑ Scale'] : roas >= 1 ? ['iterate','→ Iterate'] : roas > 0 ? ['kill','✗ Kill'] : ['wait','No data'];
+    return `<tr>
+      <td style="font-weight:600">${a.name}</td>
+      <td style="color:var(--muted)">${a.type}</td>
+      <td>$${a.spend.toFixed(0)}</td>
+      <td>$${a.rev.toFixed(0)}</td>
+      <td class="${rc}">${roas > 0 ? roas.toFixed(1)+'×' : '—'}</td>
+      <td>${cpp > 0 ? '$'+cpp.toFixed(0) : '—'}</td>
+      <td>${a.sales}</td>
+      <td><span class="vbadge ${v[0]}">${v[1]}</span></td>
+      <td><button class="del-btn" onclick="trackerDel(${a.id})">×</button></td>
+    </tr>`;
+  }).join('');
+}
+function trackerKpis() {
+  const ts = ads.reduce((s,a)=>s+a.spend,0), tr = ads.reduce((s,a)=>s+a.rev,0), tsl = ads.reduce((s,a)=>s+a.sales,0);
+  document.getElementById('t-tot-spend').textContent = '$'+ts.toFixed(0);
+  document.getElementById('t-tot-rev').textContent   = '$'+tr.toFixed(0);
+  document.getElementById('t-tot-roas').textContent  = ts > 0 ? (tr/ts).toFixed(1)+'×' : '0×';
+  document.getElementById('t-tot-sales').textContent = tsl;
+}
+
+// ── COPY UTIL ──
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

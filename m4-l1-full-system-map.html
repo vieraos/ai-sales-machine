@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4L1 · The Full System Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D0D0D;
+  --card: #151515;
+  --border: #282828;
+  --gold: #D4A843;
+  --purple: #c084fc;
+  --teal: #2dd4bf;
+  --green: #4ade80;
+  --text: #FFFFFF;
+  --muted: #666;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--navy);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.lesson-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px; text-align: center;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px; font-weight: 400;
+  text-align: center; color: #fff;
+  letter-spacing: 0.04em; margin-bottom: 6px;
+}
+
+h1 span { color: var(--gold); }
+
+.subtitle {
+  font-size: 13px; color: var(--muted);
+  text-align: center; margin-bottom: 36px;
+}
+
+.diagram { width: 100%; max-width: 1040px; }
+
+/* TOP LABEL ROW */
+.phase-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.phase-label {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 6px 0;
+}
+.phase-label.p1 { color: var(--gold); }
+.phase-label.p2 { color: var(--teal); }
+.phase-label.p3 { color: var(--purple); }
+.phase-label.p4 { color: var(--green); }
+
+/* MAIN FLOW ROW */
+.flow-row {
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr 48px 1fr 48px 1fr;
+  gap: 0;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* PHASE CARDS */
+.phase-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 16px;
+  position: relative;
+  overflow: hidden;
+}
+.phase-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.phase-card.p1::before { background: var(--gold); box-shadow: 0 0 8px rgba(212,168,67,0.6); }
+.phase-card.p2::before { background: var(--teal); box-shadow: 0 0 8px rgba(45,212,191,0.5); }
+.phase-card.p3::before { background: var(--purple); box-shadow: 0 0 8px rgba(192,132,252,0.5); }
+.phase-card.p4::before { background: var(--green); box-shadow: 0 0 8px rgba(74,222,128,0.5); }
+
+.phase-icon { font-size: 26px; margin-bottom: 8px; display: block; }
+.phase-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 0.05em; line-height: 1;
+  margin-bottom: 6px;
+}
+.phase-card.p1 .phase-name { color: var(--gold); }
+.phase-card.p2 .phase-name { color: var(--teal); }
+.phase-card.p3 .phase-name { color: var(--purple); }
+.phase-card.p4 .phase-name { color: var(--green); }
+
+.phase-items { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.phase-items li {
+  font-size: 11px; color: var(--muted);
+  display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;
+}
+.phase-items li::before {
+  content: '';
+  width: 4px; height: 4px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 5px;
+}
+.phase-card.p1 .phase-items li::before { background: var(--gold); }
+.phase-card.p2 .phase-items li::before { background: var(--teal); }
+.phase-card.p3 .phase-items li::before { background: var(--purple); }
+.phase-card.p4 .phase-items li::before { background: var(--green); }
+
+/* ARROWS */
+.flow-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.arrow-line {
+  width: 100%;
+  height: 2px;
+  position: relative;
+}
+.arrow-line.gold { background: linear-gradient(90deg, rgba(212,168,67,0.3), rgba(212,168,67,0.8)); }
+.arrow-line.teal { background: linear-gradient(90deg, rgba(45,212,191,0.3), rgba(45,212,191,0.8)); }
+.arrow-line.purple { background: linear-gradient(90deg, rgba(192,132,252,0.3), rgba(192,132,252,0.8)); }
+
+.arrow-head {
+  width: 0; height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  align-self: flex-end;
+  margin-top: -6px;
+  margin-right: 2px;
+}
+.arrow-head.gold { border-left: 8px solid var(--gold); }
+.arrow-head.teal { border-left: 8px solid var(--teal); }
+.arrow-head.purple { border-left: 8px solid var(--purple); }
+
+.arrow-label {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+  text-align: center; margin-top: 4px;
+  white-space: nowrap;
+}
+
+/* DETAIL ROW */
+.detail-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.detail-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 14px;
+}
+.detail-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  margin-bottom: 8px;
+}
+.detail-card:nth-child(1) .detail-title { color: var(--gold); }
+.detail-card:nth-child(2) .detail-title { color: var(--teal); }
+.detail-card:nth-child(3) .detail-title { color: var(--purple); }
+.detail-card:nth-child(4) .detail-title { color: var(--green); }
+.detail-items { display: flex; flex-direction: column; gap: 4px; }
+.detail-item {
+  font-size: 11px; color: var(--muted); line-height: 1.4;
+  padding: 4px 8px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 5px;
+}
+.detail-item strong { color: var(--text); font-weight: 600; }
+
+/* BOTTOM RULE BOX */
+.rule-box {
+  background: rgba(212,168,67,0.05);
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: 12px;
+  padding: 16px 22px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.rule-icon { font-size: 20px; flex-shrink: 0; }
+.rule-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.rule-text strong { color: var(--gold); font-weight: 600; }
+
+.footer {
+  margin-top: 28px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 700;
+  color: var(--gold); opacity: 0.5;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.phase-card { animation: fadeUp 0.5s ease both; }
+.phase-card.p1 { animation-delay: 0.05s; }
+.phase-card.p2 { animation-delay: 0.15s; }
+.phase-card.p3 { animation-delay: 0.25s; }
+.phase-card.p4 { animation-delay: 0.35s; }
+</style>
+</head>
+<body>
+
+<div class="lesson-tag">Module 4 · Lesson 1 · VIERAOS Free Course</div>
+<h1>The Full <span>System Map</span></h1>
+<p class="subtitle">Before you build anything · here's every piece, how it connects, and what it does.</p>
+
+<div class="diagram">
+
+  <!-- PHASE LABELS -->
+  <div class="phase-labels">
+    <div class="phase-label p1">Phase 1 · Traffic</div>
+    <div class="phase-label p2">Phase 2 · Capture</div>
+    <div class="phase-label p3">Phase 3 · Qualify</div>
+    <div class="phase-label p4">Phase 4 · Convert</div>
+  </div>
+
+  <!-- MAIN FLOW -->
+  <div class="flow-row">
+
+    <!-- TRAFFIC -->
+    <div class="phase-card p1">
+      <span class="phase-icon">📣</span>
+      <div class="phase-name">Traffic</div>
+      <ul class="phase-items">
+        <li>Paid ads (Meta)</li>
+        <li>Organic content</li>
+        <li>Comment triggers keyword</li>
+        <li>Lead finds your profile</li>
+      </ul>
+    </div>
+
+    <!-- ARROW 1 -->
+    <div class="flow-arrow">
+      <div class="arrow-line gold"></div>
+      <div class="arrow-head gold"></div>
+      
+    </div>
+
+    <!-- CAPTURE -->
+    <div class="phase-card p2">
+      <span class="phase-icon">🎯</span>
+      <div class="phase-name">Capture</div>
+      <ul class="phase-items">
+        <li>ManyChat fires instantly</li>
+        <li>Lead magnet delivered</li>
+        <li>First qualifier asked</li>
+        <li>Tagged in CRM by source</li>
+      </ul>
+    </div>
+
+    <!-- ARROW 2 -->
+    <div class="flow-arrow">
+      <div class="arrow-line teal"></div>
+      <div class="arrow-head teal"></div>
+      
+    </div>
+
+    <!-- QUALIFY -->
+    <div class="phase-card p3">
+      <span class="phase-icon">🤖</span>
+      <div class="phase-name">AI Setter</div>
+      <ul class="phase-items">
+        <li>Claude API takes over</li>
+        <li>Qualifies in your voice</li>
+        <li>Handles objections</li>
+        <li>Runs 24/7 automatically</li>
+      </ul>
+    </div>
+
+    <!-- ARROW 3 -->
+    <div class="flow-arrow">
+      <div class="arrow-line purple"></div>
+      <div class="arrow-head purple"></div>
+      
+    </div>
+
+    <!-- CONVERT -->
+    <div class="phase-card p4">
+      <span class="phase-icon">💰</span>
+      <div class="phase-name">Convert</div>
+      <ul class="phase-items">
+        <li>Booking link sent</li>
+        <li>Payment link sent</li>
+        <li>Human closes high ticket</li>
+        <li>Nurture tag for not yet</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- DETAIL ROW -->
+  <div class="detail-row">
+
+    <div class="detail-card">
+      <div class="detail-title">Traffic Tools</div>
+      <div class="detail-items">
+        <div class="detail-item"><strong>Meta Ads Manager</strong> · ABO testing, CBO scaling</div>
+        <div class="detail-item"><strong>Instagram/Facebook</strong> · organic posts with keyword CTAs</div>
+        <div class="detail-item"><strong>Retargeting</strong> · warm audiences from video + profile</div>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-title">Capture Stack</div>
+      <div class="detail-items">
+        <div class="detail-item"><strong>ManyChat</strong> · keyword trigger, DM automation</div>
+        <div class="detail-item"><strong>Lead magnet</strong> · delivered instantly in DMs</div>
+        <div class="detail-item"><strong>GHL / CRM</strong> · tagged by source from day one</div>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-title">AI Setter Stack</div>
+      <div class="detail-items">
+        <div class="detail-item"><strong>Claude API</strong> · your voice, your qualifiers</div>
+        <div class="detail-item"><strong>System prompt</strong> · identity, goal, handoff rules</div>
+        <div class="detail-item"><strong>Weekly review</strong> · improve conversion every week</div>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-title">Conversion Outcomes</div>
+      <div class="detail-items">
+        <div class="detail-item"><strong>Discovery call</strong> · booked via Calendly or GHL</div>
+        <div class="detail-item"><strong>Direct sale</strong> · payment link for low ticket</div>
+        <div class="detail-item"><strong>Nurture</strong> · tagged, sequenced, followed up</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RULE BOX -->
+  <div class="rule-box">
+    <div class="rule-icon">⚡</div>
+    <div class="rule-text">
+      <strong>Every lesson in Module 4 builds one piece of this map.</strong>
+      By the end you will have a working version of this entire system running in your business.
+      Traffic comes in. ManyChat captures it. Your AI setter qualifies it in your voice. Outcome is a booked call, a direct sale, or a nurtured lead.
+      <strong>Built once. Runs forever.</strong>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">VIERAOS · AI Sales Machine</div>
+
+</body>
+</html>

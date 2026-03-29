@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Setter Script Builder — VIERAOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 24px}
+  .tool-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;max-width:580px}
+  .tool{width:100%;max-width:780px}
+
+  .form-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+  .form-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:16px}
+  .form-section:nth-child(1) .form-title{color:var(--teal)}
+  .form-section:nth-child(2) .form-title{color:var(--purple)}
+  .form-section:nth-child(3) .form-title{color:var(--gold)}
+
+  .input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .input-group{margin-bottom:14px}
+  .input-group.full{grid-column:1/-1}
+  label{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:5px}
+  input[type=text],textarea,select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:#fff;font-family: 'Inter', sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+  input[type=text]:focus,textarea:focus,select:focus{border-color:var(--teal)}
+  textarea{min-height:80px;resize:vertical}
+  select{cursor:pointer}
+  option{background:var(--card)}
+
+  .gen-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--purple));border:none;border-radius:10px;padding:15px;font-family: 'Bebas Neue', sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:.05em;transition:opacity .2s;margin-bottom:20px}
+  .gen-btn:hover{opacity:.9}
+
+  /* OUTPUT */
+  .output{display:none;flex-direction:column;gap:16px}
+  .output.show{display:flex}
+  .output-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:4px}
+
+  .script-box{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  .script-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.02)}
+  .script-header-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:var(--teal)}
+  .copy-all-btn{background:rgba(26,188,156,.1);border:1px solid rgba(26,188,156,.3);border-radius:6px;padding:5px 12px;color:var(--teal);font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:all .2s}
+  .copy-all-btn:hover{background:rgba(26,188,156,.2)}
+  .copy-all-btn.copied{background:rgba(241,196,15,.1);border-color:rgba(241,196,15,.3);color:var(--gold)}
+  .script-content{padding:20px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;font-family: 'Inter', sans-serif}
+  .script-content .label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);display:block;margin-top:16px;margin-bottom:4px}
+  .script-content .label:first-child{margin-top:0}
+
+  .tip-box{background:rgba(241,196,15,.06);border:1px solid rgba(241,196,15,.2);border-radius:10px;padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.6}
+  .tip-box strong{color:var(--gold)}
+
+  .reset-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:10px 20px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .2s;align-self:center}
+  .reset-btn:hover{border-color:var(--teal);color:var(--text)}
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 44px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; opacity: 0.6; }
+  .form-box, .add-section, .input-panel { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn, .gen-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .rule-note, .tip-box, .rule-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.18) !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  .kpi-card, .total-card, .tracker-wrap, .table-wrap, .script-box, .preview-box, .checklist-box, .preview-section, .score-card, .audit-section { background: #111111 !important; border-color: #2a2a2a !important; }
+  .tw-head, .tw-header, .weeks-header, .sb-header, .preview-head { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .hook-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  .result-hero { background: rgba(241,196,15,0.08) !important; border-color: rgba(241,196,15,0.3) !important; }
+  .res-card { background: #111111 !important; border-color: #2a2a2a !important; }
+
+</style>
+</head>
+<body>
+  <div class="tool-tag">Module 4 Tool · VIERAOS Free Course</div>
+  <h1>AI Setter <span>Script Builder</span></h1>
+  <p class="subtitle">Fill in your details and get a complete Claude system prompt — ready to paste into your AI setter setup.</p>
+
+  <div class="tool">
+    <div class="form-section">
+      <div class="form-title">Your business + voice</div>
+      <div class="input-grid">
+        <div class="input-group">
+          <label>Your name (AI setter persona)</label>
+          <input type="text" id="name" placeholder="Jessica">
+        </div>
+        <div class="input-group">
+          <label>Business name</label>
+          <input type="text" id="bizName" placeholder="VIERAOS">
+        </div>
+        <div class="input-group full">
+          <label>Describe your tone/voice in 2–3 sentences</label>
+          <textarea id="voice" placeholder="Direct and confident but warm. I use humour sometimes but I don't fluff. I speak like a knowledgeable friend, not a corporate robot."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-title">Your offer + ideal buyer</div>
+      <div class="input-grid">
+        <div class="input-group">
+          <label>Main high-ticket offer name + price</label>
+          <input type="text" id="htOffer" placeholder="AI Sales System setup — $2,997">
+        </div>
+        <div class="input-group">
+          <label>Main low-ticket offer name + price</label>
+          <input type="text" id="ltOffer" placeholder="AI Setter Blueprint — $97">
+        </div>
+        <div class="input-group full">
+          <label>Who is your ideal buyer? (role, situation)</label>
+          <textarea id="buyer" placeholder="Coaches, consultants, and digital product sellers who already have an offer and audience, are running or considering ads, and want to generate qualified leads in their DMs without being glued to their phone."></textarea>
+        </div>
+        <div class="input-group full">
+          <label>What 3 things qualify a hot lead?</label>
+          <textarea id="qualifiers" placeholder="1. Has an existing offer (course, coaching, membership)&#10;2. Is already spending money on ads or tools&#10;3. Making at least $2k/month in their business already"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-title">Conversion setup</div>
+      <div class="input-grid">
+        <div class="input-group">
+          <label>Booking link URL</label>
+          <input type="text" id="bookingLink" placeholder="calendly.com/yourname/discovery">
+        </div>
+        <div class="input-group">
+          <label>Low-ticket payment link URL</label>
+          <input type="text" id="paymentLink" placeholder="yoursite.com/buy/blueprint">
+        </div>
+        <div class="input-group full">
+          <label>Most common objection you hear</label>
+          <input type="text" id="objection" placeholder="I need to think about it / I don't have the tech skills">
+        </div>
+      </div>
+    </div>
+
+    <button class="gen-btn" onclick="generateScript()">Build My Setter Script</button>
+
+    <div class="output" id="output">
+      <div class="output-title">Your Claude System Prompt — ready to paste</div>
+      <div class="script-box">
+        <div class="script-header">
+          <div class="script-header-title">Claude System Prompt</div>
+          <button class="copy-all-btn" id="copyAllBtn" onclick="copyAll()">Copy all</button>
+        </div>
+        <div class="script-content" id="scriptContent"></div>
+      </div>
+      <div class="tip-box">
+        <strong>How to use this:</strong> Paste this entire system prompt into your Claude API setup as the "system" message. Then pass each incoming DM conversation as the "user" message with context: "The following is a DM conversation thread. Continue the conversation as [Name]:" followed by the thread. Review and personalise the prompt with your real examples before going live.
+      </div>
+      <button class="reset-btn" onclick="resetScript()">Start Over</button>
+    </div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+<script>
+function generateScript() {
+  const name = document.getElementById('name').value.trim() || 'Your AI Setter';
+  const bizName = document.getElementById('bizName').value.trim() || 'your business';
+  const voice = document.getElementById('voice').value.trim() || 'Direct, warm, and confident without being corporate.';
+  const htOffer = document.getElementById('htOffer').value.trim() || '[High-ticket offer]';
+  const ltOffer = document.getElementById('ltOffer').value.trim() || '[Low-ticket offer]';
+  const buyer = document.getElementById('buyer').value.trim() || 'Business owners who have an offer and want more qualified leads.';
+  const qualifiers = document.getElementById('qualifiers').value.trim() || '1. Has an existing offer\n2. Already spending money on growth\n3. Making revenue in their business';
+  const bookingLink = document.getElementById('bookingLink').value.trim() || '[Booking link here]';
+  const paymentLink = document.getElementById('paymentLink').value.trim() || '[Payment link here]';
+  const objection = document.getElementById('objection').value.trim() || 'I need to think about it';
+
+  const script = `IDENTITY
+You are ${name}, an AI assistant representing ${bizName}. You speak in first person as ${name}. You are NOT an AI assistant — you are ${name}. Never break character. Never mention AI, Claude, or that you are automated.
+
+VOICE & TONE
+${voice}
+
+Keep messages short (2–4 sentences max). One question per message only — never stack questions. Warm but direct. No corporate language. No exclamation mark spam. Sound like a smart friend, not a sales bot.
+
+YOUR GOAL
+You are having a genuine DM conversation with someone who just received a lead magnet from ${bizName}. Your job is to:
+1. Make them feel welcomed and seen
+2. Qualify them through natural conversation
+3. Send the booking link (${bookingLink}) to qualified leads
+4. Send the payment link (${paymentLink}) for the low-ticket offer when timing is right
+5. Tag unqualified leads as "nurture" — they're not lost, just not ready yet
+
+IDEAL BUYER PROFILE
+${buyer}
+
+A qualified hot lead has ALL of these:
+${qualifiers}
+
+CONVERSATION FLOW
+Message 1: Welcome them, confirm lead magnet delivered, ask first qualifying question (natural, not salesy)
+Message 2-3: Go deeper based on their answer. Understand their situation. Find the pain.
+Message 4: Reflect their situation back to them. Position the offer as the solution to their specific problem.
+Message 5: Soft CTA — "Want me to send you a link?" for booking or payment depending on qualification.
+
+HANDLING THE OBJECTION "${objection}"
+When they say this, respond with empathy first: "Totally get that." Then reframe: ask what specifically they'd want to understand better before moving forward. This usually surfaces the real objection which you can address.
+
+HANDOFF TRIGGERS — flag these for human follow-up
+- Lead mentions a budget over $10k
+- Lead is a warm referral or someone they recognise
+- Lead expresses strong frustration or upset emotion
+- Lead asks a complex technical question outside your scope
+
+WHAT NOT TO DO
+- Never send the booking link in the first 2 messages
+- Never mention competitor products
+- Never use phrases like "I understand your hesitation" or "Great question!" — these sound robotic
+- Never send multiple links at once
+- Never respond with more than 4 sentences per message`;
+
+  document.getElementById('scriptContent').textContent = script;
+  document.getElementById('output').classList.add('show');
+}
+
+function copyAll() {
+  const text = document.getElementById('scriptContent').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyAllBtn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy all'; btn.classList.remove('copied'); }, 2500);
+  });
+}
+
+function resetScript() {
+  ['name','bizName','voice','htOffer','ltOffer','buyer','qualifiers','bookingLink','paymentLink','objection'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('output').classList.remove('show');
+}
+</script>
+</body>
+</html>

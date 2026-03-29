@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Sales Toolkit — System</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background: var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh}
+
+.top-bar{background:rgba(8,13,26,.95);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.brand{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:800;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.12em;text-transform:uppercase}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{padding:7px 16px;border-radius:8px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all .18s;text-transform:uppercase;letter-spacing:.08em;background:transparent;color:var(--muted)}
+.nav-tab:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.nav-tab.active{background:rgba(241,196,15,.15);color:var(--gold);border:1px solid rgba(241,196,15,.3)}
+.nav-series{font-family: 'Bebas Neue', sans-serif;font-size:10px;color:var(--muted);letter-spacing:.1em}
+.nav-series span{color:var(--gold);font-weight:600}
+
+.hero{padding:40px 32px 28px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(241,196,15,.04) 0%,transparent 100%)}
+.hero-eyebrow{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.hero-title{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:6px}
+.hero-title span{background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:14px;color:var(--muted);max-width:580px}
+
+.panel{display:none;padding:32px}
+.panel.active{display:block}
+
+.tool-title{font-family: 'Bebas Neue', sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
+.tool-desc{font-size:13px;color:var(--muted);margin-bottom:28px}
+.form-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.sec-label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px;display:block}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.input-group{margin-bottom:12px}
+.full{grid-column:1/-1}
+label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:5px}
+input[type=text],input[type=number],textarea,select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;padding:11px 13px;color:#fff;font-family: 'Inter', sans-serif;font-size:14px;outline:none;transition:border-color .18s}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+textarea{resize:vertical;min-height:80px}
+select{cursor:pointer}
+option{background:var(--card)}
+
+.primary-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--purple));border:none;border-radius:10px;padding:14px;font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:#000;cursor:pointer;letter-spacing:.05em;transition:opacity .18s;margin-bottom:20px}
+.primary-btn:hover{opacity:.88}
+.ghost-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:9px 18px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .18s}
+.ghost-btn:hover{border-color:var(--gold);color:var(--text)}
+
+/* SCRIPT BUILDER OUTPUT */
+.script-box{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;display:none}
+.script-box.show{display:block}
+.sb-header{padding:13px 18px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:space-between}
+.sb-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:var(--gold)}
+.copy-all-btn{background:rgba(241,196,15,.1);border:1px solid rgba(241,196,15,.3);border-radius:6px;padding:5px 12px;color:var(--gold);font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:all .18s}
+.copy-all-btn:hover{background:rgba(241,196,15,.2)}
+.copy-all-btn.ok{background:rgba(26,188,156,.1);border-color:rgba(26,188,156,.3);color:var(--teal)}
+.sb-content{padding:22px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;font-family: 'Inter', sans-serif;max-height:520px;overflow-y:auto}
+
+.tip-box{background:rgba(241,196,15,.05);border:1px solid rgba(241,196,15,.18);border-radius:10px;padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:16px}
+.tip-box strong{color:var(--gold)}
+
+/* TRACKER */
+.pfx-wrap{position:relative}
+.pfx{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+.pfx-wrap input{padding-left:28px}
+
+.add-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 80px;gap:10px;align-items:end;margin-bottom:16px}
+.add-btn{background:linear-gradient(135deg,var(--gold),var(--purple));border:none;border-radius:9px;height:40px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;color:#000;cursor:pointer;transition:opacity .18s}
+.add-btn:hover{opacity:.88}
+
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.kpi-label{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
+.kpi-val{font-family: 'Bebas Neue', sans-serif;font-size:22px;font-weight:800}
+.kpi-card:nth-child(1) .kpi-val{color:var(--gold)}
+.kpi-card:nth-child(2) .kpi-val{color:var(--teal)}
+.kpi-card:nth-child(3) .kpi-val{color:var(--purple)}
+.kpi-card:nth-child(4) .kpi-val{color:#4ade80}
+.kpi-card:nth-child(5) .kpi-val{color:var(--gold)}
+
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.tw-head{padding:13px 18px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02);font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:#fff;display:flex;justify-content:space-between;align-items:center}
+table{width:100%;border-collapse:collapse}
+th{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);background:rgba(255,255,255,.015);white-space:nowrap}
+td{padding:11px 14px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.035);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.rg{color:#4ade80;font-weight:700;font-family: 'Bebas Neue', sans-serif}
+.rw{color:var(--gold);font-weight:700;font-family: 'Bebas Neue', sans-serif}
+.rb{color:#FF6B6B;font-weight:700;font-family: 'Bebas Neue', sans-serif}
+.del-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;padding:2px 6px;transition:color .15s}
+.del-btn:hover{color:#FF6B6B}
+.empty-td{text-align:center;color:var(--muted);font-size:12px;padding:28px!important}
+.clear-btn{background:transparent;border:1px solid var(--border);border-radius:6px;padding:5px 12px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all .18s}
+.clear-btn:hover{border-color:#FF6B6B;color:#FF6B6B}
+
+.insights-box{background:rgba(241,196,15,.05);border:1px solid rgba(241,196,15,.18);border-radius:10px;padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:16px}
+.insights-box strong{color:var(--gold)}
+
+.page-footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="brand">The AI Sales Toolkit</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPanel('script')">AI Setter Script</button>
+    <button class="nav-tab" onclick="showPanel('tracker')">Performance Tracker</button>
+  </div>
+  <div class="nav-series">Part <span>3 of 3</span> — System</div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Module 4 & 5 · System Tools</div>
+  <div class="hero-title">Build your setter. <span>Track your system.</span></div>
+  <div class="hero-sub">Generate a complete Claude system prompt for your AI setter — and track weekly performance to compound results over time.</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PANEL 1: AI SETTER SCRIPT BUILDER         -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel active" id="panel-script">
+  <div class="tool-title">AI Setter Script Builder</div>
+  <div class="tool-desc">Fill in your details and get a complete Claude system prompt — ready to paste straight into your AI setter setup.</div>
+
+  <div class="form-box">
+    <span class="sec-label">Your business + voice</span>
+    <div class="input-grid">
+      <div class="input-group"><label>Your name (setter persona)</label><input type="text" id="s-name" placeholder="Jessica"></div>
+      <div class="input-group"><label>Business name</label><input type="text" id="s-biz" placeholder="VIERAOS"></div>
+      <div class="input-group full"><label>Describe your tone in 2–3 sentences</label><textarea id="s-voice" placeholder="Direct and confident but warm. I use humour sometimes but I don't fluff. I speak like a knowledgeable friend, not a corporate robot."></textarea></div>
+    </div>
+  </div>
+
+  <div class="form-box">
+    <span class="sec-label">Your offer + ideal buyer</span>
+    <div class="input-grid">
+      <div class="input-group"><label>High-ticket offer name + price</label><input type="text" id="s-ht" placeholder="AI Sales System setup — $2,997"></div>
+      <div class="input-group"><label>Low-ticket offer name + price</label><input type="text" id="s-lt" placeholder="AI Setter Blueprint — $97"></div>
+      <div class="input-group full"><label>Who is your ideal buyer?</label><textarea id="s-buyer" placeholder="Coaches, consultants, and digital product sellers who have an offer and audience, are running or considering ads, and want qualified leads in their DMs without being glued to their phone."></textarea></div>
+      <div class="input-group full"><label>What 3 things qualify a hot lead?</label><textarea id="s-qual" placeholder="1. Has an existing offer&#10;2. Already spending money on ads or tools&#10;3. Making at least $2k/month already"></textarea></div>
+    </div>
+  </div>
+
+  <div class="form-box">
+    <span class="sec-label">Conversion setup</span>
+    <div class="input-grid">
+      <div class="input-group"><label>Booking link URL</label><input type="text" id="s-book" placeholder="calendly.com/yourname/discovery"></div>
+      <div class="input-group"><label>Low-ticket payment link URL</label><input type="text" id="s-pay" placeholder="yoursite.com/buy/blueprint"></div>
+      <div class="input-group full"><label>Most common objection you hear</label><input type="text" id="s-obj" placeholder="I need to think about it / I don't have the tech skills"></div>
+    </div>
+  </div>
+
+  <button class="primary-btn" onclick="buildScript()">Build My Setter Script</button>
+
+  <div class="script-box" id="script-box">
+    <div class="sb-header">
+      <div class="sb-title">Claude System Prompt — copy and paste into your setup</div>
+      <button class="copy-all-btn" id="copy-all-btn" onclick="copyScript()">Copy all</button>
+    </div>
+    <div class="sb-content" id="script-content"></div>
+  </div>
+
+  <div class="tip-box" id="script-tip" style="display:none">
+    <strong>How to use this:</strong> Paste this entire prompt as the "system" message in your Claude API setup. Pass each DM thread as the "user" message: "The following is a DM conversation thread. Continue as [Name]:" followed by the thread. Personalise with real examples of your voice before going live.
+  </div>
+
+  <div style="text-align:center;display:none" id="script-reset-wrap">
+    <button class="ghost-btn" onclick="resetScript()">Start Over</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PANEL 2: PERFORMANCE TRACKER              -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel" id="panel-tracker">
+  <div class="tool-title">Weekly Performance Tracker</div>
+  <div class="tool-desc">Log your numbers each week. Spot trends, identify leaks, and watch your system compound.</div>
+
+  <div class="form-box">
+    <span class="sec-label">Log this week</span>
+    <div class="add-row">
+      <div><label>Week of</label><input type="text" id="w-week" placeholder="Mar 24"></div>
+      <div><label>Ad spend ($)</label><div class="pfx-wrap"><span class="pfx">$</span><input type="number" id="w-spend" placeholder="800"></div></div>
+      <div><label>Revenue ($)</label><div class="pfx-wrap"><span class="pfx">$</span><input type="number" id="w-rev" placeholder="2100"></div></div>
+      <div><label>New leads</label><input type="number" id="w-leads" placeholder="60" style="padding-left:13px"></div>
+      <div><label>Sales made</label><input type="number" id="w-sales" placeholder="14" style="padding-left:13px"></div>
+      <div><label>Calls booked</label><input type="number" id="w-calls" placeholder="7" style="padding-left:13px"></div>
+      <div><label>&nbsp;</label><button class="add-btn" onclick="addWeek()">+ Log</button></div>
+    </div>
+    <div class="input-grid">
+      <div class="input-group"><label>DMs → qualified rate (%)</label><input type="number" id="w-qrate" placeholder="12" style="padding-left:13px"></div>
+      <div class="input-group"><label>CPP ($)</label><div class="pfx-wrap"><span class="pfx">$</span><input type="number" id="w-cpp" placeholder="57"></div></div>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-label">Total revenue</div><div class="kpi-val" id="k-rev">$0</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total spend</div><div class="kpi-val" id="k-spend">$0</div></div>
+    <div class="kpi-card"><div class="kpi-label">Avg ROAS</div><div class="kpi-val" id="k-roas">0×</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total leads</div><div class="kpi-val" id="k-leads">0</div></div>
+    <div class="kpi-card"><div class="kpi-label">Avg CPP</div><div class="kpi-val" id="k-cpp">$0</div></div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="tw-head">
+      <span>Week by week</span>
+      <button class="clear-btn" onclick="clearWeeks()">Clear all</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Week</th><th>Spend</th><th>Revenue</th><th>ROAS</th><th>Leads</th><th>Sales</th><th>Calls</th><th>Conv %</th><th>CPP</th><th></th></tr>
+      </thead>
+      <tbody id="weeks-body">
+        <tr><td class="empty-td" colspan="10">No weeks logged yet — enter your numbers above</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insights-box" id="insights">📊 Log at least 2 weeks of data to see trends and insights.</div>
+</div>
+
+<div class="page-footer">VIERAOS · The AI Sales Toolkit — Part 3: System</div>
+
+<script>
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── SCRIPT BUILDER ──
+function buildScript() {
+  const name  = document.getElementById('s-name').value.trim()  || 'Your AI Setter';
+  const biz   = document.getElementById('s-biz').value.trim()   || 'your business';
+  const voice = document.getElementById('s-voice').value.trim() || 'Direct, warm, and confident without being corporate.';
+  const ht    = document.getElementById('s-ht').value.trim()    || '[High-ticket offer]';
+  const lt    = document.getElementById('s-lt').value.trim()    || '[Low-ticket offer]';
+  const buyer = document.getElementById('s-buyer').value.trim() || 'Business owners who have an offer and want more qualified leads.';
+  const qual  = document.getElementById('s-qual').value.trim()  || '1. Has an existing offer\n2. Spending money on growth\n3. Already making revenue';
+  const book  = document.getElementById('s-book').value.trim()  || '[Booking link here]';
+  const pay   = document.getElementById('s-pay').value.trim()   || '[Payment link here]';
+  const obj   = document.getElementById('s-obj').value.trim()   || 'I need to think about it';
+
+  const script = `IDENTITY
+You are ${name}, an AI assistant representing ${biz}. You speak in first person as ${name}. You are NOT an AI — you are ${name}. Never break character. Never mention Claude, AI, or automation.
+
+VOICE & TONE
+${voice}
+
+Keep messages short (2–4 sentences max). One question per message only — never stack. Warm but direct. No corporate language. Sound like a smart friend, not a sales bot.
+
+YOUR GOAL
+You are having a genuine DM conversation with someone who just received a lead magnet. Your job is to:
+1. Make them feel welcomed and seen
+2. Qualify them through natural conversation
+3. Send the booking link (${book}) to qualified leads
+4. Send the payment link (${pay}) for the low-ticket offer when timing is right
+5. Tag unqualified leads as "nurture" — not lost, just not ready yet
+
+IDEAL BUYER
+${buyer}
+
+A qualified hot lead has ALL of these:
+${qual}
+
+CONVERSATION FLOW
+Message 1: Welcome, confirm lead magnet delivered, ask first qualifying question (natural, not salesy)
+Messages 2–3: Go deeper based on their answers. Understand their situation. Find the real pain.
+Message 4: Reflect their situation back. Position the offer as the solution to their specific problem.
+Message 5: Soft CTA — "Want me to send you a link?" — for booking or payment depending on qualification.
+
+HANDLING THE OBJECTION "${obj}"
+Respond with empathy first: "Totally get that." Then ask what specifically they'd want to understand before deciding. This surfaces the real objection which you can then address directly.
+
+HANDOFF TRIGGERS — flag these for human follow-up
+- Lead mentions budget over $10k
+- Lead is a warm referral
+- Lead expresses strong frustration or distress
+- Complex technical question outside your scope
+
+WHAT NOT TO DO
+- Never send the booking link in the first 2 messages
+- Never use "I understand your hesitation" or "Great question!" — robotic
+- Never send multiple links at once
+- Never respond with more than 4 sentences per message
+- Never mention you are AI, Claude, or automated`;
+
+  document.getElementById('script-content').textContent = script;
+  document.getElementById('script-box').classList.add('show');
+  document.getElementById('script-tip').style.display = 'block';
+  document.getElementById('script-reset-wrap').style.display = 'block';
+}
+
+function copyScript() {
+  const text = document.getElementById('script-content').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-all-btn');
+    btn.textContent = 'Copied!'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy all'; btn.classList.remove('ok'); }, 2500);
+  });
+}
+
+function resetScript() {
+  ['s-name','s-biz','s-voice','s-ht','s-lt','s-buyer','s-qual','s-book','s-pay','s-obj'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('script-box').classList.remove('show');
+  document.getElementById('script-tip').style.display = 'none';
+  document.getElementById('script-reset-wrap').style.display = 'none';
+}
+
+// ── PERFORMANCE TRACKER ──
+let weeks = [];
+function addWeek() {
+  const week  = document.getElementById('w-week').value.trim() || 'Unknown';
+  const spend = parseFloat(document.getElementById('w-spend').value) || 0;
+  const rev   = parseFloat(document.getElementById('w-rev').value)   || 0;
+  const leads = parseInt(document.getElementById('w-leads').value)   || 0;
+  const sales = parseInt(document.getElementById('w-sales').value)   || 0;
+  const calls = parseInt(document.getElementById('w-calls').value)   || 0;
+  const qrate = parseFloat(document.getElementById('w-qrate').value) || 0;
+  const cpp   = parseFloat(document.getElementById('w-cpp').value)   || (sales > 0 ? spend/sales : 0);
+  if (!spend && !rev) { alert('Enter at least spend and revenue.'); return; }
+  weeks.unshift({ week, spend, rev, leads, sales, calls, qrate, cpp });
+  ['w-week','w-spend','w-rev','w-leads','w-sales','w-calls','w-qrate','w-cpp'].forEach(id => document.getElementById(id).value = '');
+  renderWeeks(); updateKpis(); renderInsights();
+}
+function renderWeeks() {
+  const tb = document.getElementById('weeks-body');
+  if (!weeks.length) { tb.innerHTML = '<tr><td class="empty-td" colspan="10">No weeks logged yet</td></tr>'; return; }
+  tb.innerHTML = weeks.map((w,i) => {
+    const roas = w.spend > 0 ? w.rev/w.spend : 0;
+    const rc = roas >= 2 ? 'rg' : roas >= 1 ? 'rw' : roas > 0 ? 'rb' : '';
+    return `<tr>
+      <td style="font-weight:600">${w.week}</td>
+      <td>$${w.spend.toFixed(0)}</td>
+      <td>$${w.rev.toFixed(0)}</td>
+      <td class="${rc}">${roas > 0 ? roas.toFixed(1)+'×' : '—'}</td>
+      <td>${w.leads}</td>
+      <td>${w.sales}</td>
+      <td>${w.calls}</td>
+      <td>${w.qrate > 0 ? w.qrate.toFixed(1)+'%' : '—'}</td>
+      <td>${w.cpp > 0 ? '$'+w.cpp.toFixed(0) : '—'}</td>
+      <td><button class="del-btn" onclick="delWeek(${i})">×</button></td>
+    </tr>`;
+  }).join('');
+}
+function delWeek(i) { weeks.splice(i,1); renderWeeks(); updateKpis(); renderInsights(); }
+function clearWeeks() { weeks = []; renderWeeks(); updateKpis(); document.getElementById('insights').innerHTML = '📊 Log at least 2 weeks of data to see trends and insights.'; }
+function updateKpis() {
+  const tr = weeks.reduce((s,w)=>s+w.rev,0);
+  const ts = weeks.reduce((s,w)=>s+w.spend,0);
+  const tl = weeks.reduce((s,w)=>s+w.leads,0);
+  const vc = weeks.filter(w=>w.cpp>0);
+  const ac = vc.length ? vc.reduce((s,w)=>s+w.cpp,0)/vc.length : 0;
+  document.getElementById('k-rev').textContent   = '$'+tr.toFixed(0);
+  document.getElementById('k-spend').textContent = '$'+ts.toFixed(0);
+  document.getElementById('k-roas').textContent  = ts > 0 ? (tr/ts).toFixed(1)+'×' : '0×';
+  document.getElementById('k-leads').textContent = tl;
+  document.getElementById('k-cpp').textContent   = ac > 0 ? '$'+ac.toFixed(0) : '$0';
+}
+function renderInsights() {
+  if (weeks.length < 2) return;
+  const latest = weeks[0], prev = weeks[1];
+  const lr = latest.spend > 0 ? latest.rev/latest.spend : 0;
+  const pr = prev.spend   > 0 ? prev.rev/prev.spend     : 0;
+  const trend = lr > pr ? '📈 up' : lr < pr ? '📉 down' : '→ steady';
+  const verdict = lr >= 2 ? '✅ Above 2× — scale your winning ad by 20%.'
+    : lr >= 1 ? '⚠️ Between 1–2× — iterate on best creative, check setter conversion.'
+    : '🚨 Below 1× — audit your ads immediately. Something needs killing or fixing.';
+  document.getElementById('insights').innerHTML = `<strong>System trends:</strong> ROAS is ${trend} vs last week (${pr.toFixed(1)}× → ${lr.toFixed(1)}×). ${verdict}${latest.cpp > 0 && latest.cpp < 50 ? ' CPP looks healthy.' : latest.cpp > 0 ? ' CPP is climbing — check upsell performance and AOV.' : ''}`;
+}
+</script>
+</body>
+</html>

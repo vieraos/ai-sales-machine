@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1L4 — Offer Audit Framework</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .lesson-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  h1 span {
+    background: linear-gradient(90deg, var(--coral), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .diagram { width: 100%; max-width: 960px; }
+
+  /* COLD TRAFFIC NEEDS */
+  .needs-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .needs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .need-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .need-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .need-card:nth-child(1)::before { background: var(--purple); }
+  .need-card:nth-child(2)::before { background: var(--teal); }
+  .need-card:nth-child(3)::before { background: var(--gold); }
+
+  .need-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+
+  .need-card:nth-child(1) .need-num { color: var(--purple); }
+  .need-card:nth-child(2) .need-num { color: var(--teal); }
+  .need-card:nth-child(3) .need-num { color: var(--gold); }
+
+  .need-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .need-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .need-example {
+    margin-top: 12px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .need-card:nth-child(1) .need-example { background: rgba(168,85,247,0.08); color: rgba(168,85,247,0.9); }
+  .need-card:nth-child(2) .need-example { background: rgba(26,188,156,0.08); color: rgba(26,188,156,0.9); }
+  .need-card:nth-child(3) .need-example { background: rgba(241,196,15,0.08); color: rgba(241,196,15,0.9); }
+
+  /* SPECIFICITY SCALE */
+  .spec-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .spec-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .spec-compare {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .spec-bad {
+    background: rgba(255,107,107,0.06);
+    border: 1px solid rgba(255,107,107,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .spec-good {
+    background: rgba(26,188,156,0.06);
+    border: 1px solid rgba(26,188,156,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .spec-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .spec-bad .spec-label { color: var(--coral); }
+  .spec-good .spec-label { color: var(--teal); }
+
+  .spec-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+  .spec-arrow { text-align: center; font-size: 20px; color: var(--muted); }
+
+  /* MISMATCH WARNING */
+  .mismatch-box {
+    background: rgba(255,107,107,0.06);
+    border: 1px solid rgba(255,107,107,0.25);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+
+  .mismatch-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--coral);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mismatch-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .mismatch-step {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 600;
+  }
+
+  .mismatch-step.ad { background: rgba(168,85,247,0.12); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+  .mismatch-step.page { background: rgba(26,188,156,0.12); color: var(--teal); border: 1px solid rgba(26,188,156,0.3); }
+  .mismatch-step.dead { background: rgba(255,107,107,0.12); color: var(--coral); border: 1px solid rgba(255,107,107,0.3); }
+
+  .mismatch-arrow { color: var(--muted); font-size: 16px; }
+  .mismatch-x { color: var(--coral); font-size: 20px; font-weight: 700; }
+
+  /* CHECKLIST */
+  .checklist-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .check-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .check-icon { flex-shrink: 0; font-size: 16px; }
+
+  .footer {
+    margin-top: 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--gold), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.15em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .need-card { animation: fadeUp 0.4s ease both; }
+  .need-card:nth-child(1) { animation-delay: 0.1s; }
+  .need-card:nth-child(2) { animation-delay: 0.2s; }
+  .need-card:nth-child(3) { animation-delay: 0.3s; }
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+
+  <div class="lesson-tag">Module 1 · Lesson 4 · VIERAOS Free Course</div>
+  <h1>Offer-Market <span>Fit</span></h1>
+  <p class="subtitle">Most ads fail before they run. Here's what cold traffic needs to see before they'll opt in.</p>
+
+  <div class="diagram">
+
+    <div class="needs-title">What cold traffic needs from your offer</div>
+
+    <div class="needs-grid">
+      <div class="need-card">
+        <div class="need-num">Need 01</div>
+        <div class="need-title">A clear outcome</div>
+        <div class="need-desc">They need to know exactly what they're getting and what changes for them. Vague = scroll past.</div>
+        <div class="need-example">"Build a digital product that sells on impulse" not "scale your business with AI"</div>
+      </div>
+      <div class="need-card">
+        <div class="need-num">Need 02</div>
+        <div class="need-title">A believable timeframe</div>
+        <div class="need-desc">The faster the result, the higher the conversion — but it must be credible or trust collapses.</div>
+        <div class="need-example">"In a day" or "in 10 minutes" beats "eventually" — but only if you can back it up</div>
+      </div>
+      <div class="need-card">
+        <div class="need-num">Need 03</div>
+        <div class="need-title">A reason to trust YOU</div>
+        <div class="need-desc">Why you specifically? Results, proof, methodology, authority. Cold traffic needs this fast.</div>
+        <div class="need-example">"Trained on millions in sales data" / "500+ students" / "I made $X doing this"</div>
+      </div>
+    </div>
+
+    <!-- SPECIFICITY -->
+    <div class="spec-box">
+      <div class="spec-title">The Specificity Test</div>
+
+      <div class="spec-compare">
+        <div class="spec-bad">
+          <div class="spec-label">✗ Vague — cold traffic scrolls</div>
+          <div class="spec-text">"Scale your online business with the power of AI tools"</div>
+        </div>
+        <div class="spec-arrow">→</div>
+        <div class="spec-good">
+          <div class="spec-label">✓ Specific — cold traffic stops</div>
+          <div class="spec-text">"Turn your scattered ideas into a sellable digital product in one day — without tech skills"</div>
+        </div>
+      </div>
+
+      <div class="spec-compare">
+        <div class="spec-bad">
+          <div class="spec-label">✗ Mechanism-first</div>
+          <div class="spec-text">"My AI mentor system uses Claude API and ManyChat automation"</div>
+        </div>
+        <div class="spec-arrow">→</div>
+        <div class="spec-good">
+          <div class="spec-label">✓ Outcome-first</div>
+          <div class="spec-text">"Get qualified leads DMing you while you sleep — without posting 3x a day"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MISMATCH WARNING -->
+    <div class="mismatch-box">
+      <div class="mismatch-title">⚠️ The Messaging Mismatch Killer</div>
+      <div class="mismatch-flow">
+        <div class="mismatch-step ad">Ad promises: "daily leads on autopilot"</div>
+        <div class="mismatch-arrow">→</div>
+        <div class="mismatch-step page">Page headline: "Welcome to the AI Sales Course"</div>
+        <div class="mismatch-arrow">→</div>
+        <div class="mismatch-x">✗</div>
+        <div class="mismatch-step dead">Bounce. Sale dead. Ad blamed.</div>
+      </div>
+      <div style="font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5;">
+        The ad and the landing page must say the same thing. If your ad hook is "stop running unprofitable ads" — your page headline better speak to that exact pain immediately. The disconnect between ad promise and page delivery kills conversions even when the CTR is great.
+      </div>
+    </div>
+
+    <!-- PRE-LAUNCH CHECKLIST -->
+    <div class="checklist-title">✓ Before you spend a dollar — check these</div>
+    <div class="check-grid">
+      <div class="check-item"><span class="check-icon">🎯</span> My offer has ONE specific outcome stated clearly</div>
+      <div class="check-item"><span class="check-icon">⏱</span> My offer has a specific, believable timeframe</div>
+      <div class="check-item"><span class="check-icon">🏆</span> I have proof or authority that backs the claim</div>
+      <div class="check-item"><span class="check-icon">🔗</span> My ad hook matches my landing page headline exactly</div>
+      <div class="check-item"><span class="check-icon">❄️</span> I've read my offer as if I'm cold traffic who doesn't know me</div>
+      <div class="check-item"><span class="check-icon">💬</span> My copy leads with desire, not mechanism or AI jargon</div>
+    </div>
+
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+</body>
+</html>

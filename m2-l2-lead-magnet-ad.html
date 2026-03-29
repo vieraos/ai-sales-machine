@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2L2 — Lead Magnet Ad Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background: var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+  .lesson-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:32px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:48px}
+  .diagram{width:100%;max-width:960px}
+
+  /* FLOW STEPS */
+  .flow{display:flex;align-items:stretch;gap:0;margin-bottom:28px;overflow-x:auto;padding-bottom:4px}
+  .flow-step{flex:1;min-width:140px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 14px;text-align:center;position:relative}
+  .flow-step:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--muted);z-index:2;background: var(--navy);padding:0 2px}
+  .flow-step:not(:last-child){margin-right:20px}
+  .step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;margin:0 auto 10px}
+  .flow-step:nth-child(1) .step-num{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.4)}
+  .flow-step:nth-child(2) .step-num{background:rgba(26,188,156,.15);color:var(--teal);border:1px solid rgba(26,188,156,.4)}
+  .flow-step:nth-child(3) .step-num{background:rgba(241,196,15,.15);color:var(--gold);border:1px solid rgba(241,196,15,.4)}
+  .flow-step:nth-child(4) .step-num{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.4)}
+  .flow-step:nth-child(5) .step-num{background:rgba(26,188,156,.15);color:var(--teal);border:1px solid rgba(26,188,156,.4)}
+  .step-icon{font-size:24px;margin-bottom:8px}
+  .step-name{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px}
+  .step-desc{font-size:11px;color:var(--muted);line-height:1.4}
+
+  /* TWO COL */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+  .col-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+  .col-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .col-box:nth-child(1) .col-title{color:var(--purple)}
+  .col-box:nth-child(2) .col-title{color:var(--teal)}
+  .item{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:12px;color:var(--text);line-height:1.4}
+  .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+  .col-box:nth-child(1) .dot{background:var(--purple)}
+  .col-box:nth-child(2) .dot{background:var(--teal)}
+
+  /* WHY DM beats link */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+  .compare-card{border-radius:12px;padding:18px}
+  .compare-card.bad{background:rgba(255,107,107,.05);border:1px solid rgba(255,107,107,.2)}
+  .compare-card.good{background:rgba(26,188,156,.05);border:1px solid rgba(26,188,156,.2)}
+  .compare-label{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+  .compare-card.bad .compare-label{color:#FF6B6B}
+  .compare-card.good .compare-label{color:var(--teal)}
+  .compare-title{font-family: 'Bebas Neue', sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px}
+  .compare-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .rule-box{background:rgba(241,196,15,.06);border:1px solid rgba(241,196,15,.2);border-radius:12px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start}
+  .rule-icon{font-size:22px;flex-shrink:0}
+  .rule-text{font-size:13px;color:var(--muted);line-height:1.6}
+  .rule-text strong{color:var(--gold);font-weight:600}
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .flow-step{animation:fadeUp .4s ease both}
+  .flow-step:nth-child(1){animation-delay:.05s}
+  .flow-step:nth-child(2){animation-delay:.1s}
+  .flow-step:nth-child(3){animation-delay:.15s}
+  .flow-step:nth-child(4){animation-delay:.2s}
+  .flow-step:nth-child(5){animation-delay:.25s}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+  <div class="lesson-tag">Module 2 · Lesson 2 · VIERAOS Free Course</div>
+  <h1>The Lead Magnet <span>Ad Flow</span></h1>
+  <p class="subtitle">Comment → trigger → DM → opt-in. This is the top-of-funnel system that feeds everything else.</p>
+
+  <div class="diagram">
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-icon">📣</div>
+        <div class="step-name">Ad or Post</div>
+        <div class="step-desc">Paid lead gen ad or organic content post with keyword CTA</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-icon">💬</div>
+        <div class="step-name">Comment Trigger</div>
+        <div class="step-desc">Person comments the keyword. ManyChat detects it instantly.</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-icon">📩</div>
+        <div class="step-name">Auto DM Sent</div>
+        <div class="step-desc">ManyChat fires a DM in seconds. Lead magnet delivered automatically.</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-icon">🤖</div>
+        <div class="step-name">AI Setter Kicks In</div>
+        <div class="step-desc">Claude API takes over. Qualifies the lead through conversation.</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div class="step-icon">📞</div>
+        <div class="step-name">Call or Sale</div>
+        <div class="step-desc">Qualified lead books a call or buys direct. Tagged in CRM.</div>
+      </div>
+    </div>
+
+    <!-- WHY DM vs LINK -->
+    <div class="compare">
+      <div class="compare-card bad">
+        <div class="compare-label">✗ Link Click Ads</div>
+        <div class="compare-title">Traffic to a page</div>
+        <div class="compare-desc">Higher friction. Cold traffic bounces. No relationship built. You get a lead but they don't know you. Hard to follow up.</div>
+      </div>
+      <div class="compare-card good">
+        <div class="compare-label">✓ Comment to DM</div>
+        <div class="compare-title">Conversation started</div>
+        <div class="compare-desc">Lower friction. Algorithm rewards comments. Lead is already in your DMs. AI can qualify immediately. Warmer from step one.</div>
+      </div>
+    </div>
+
+    <!-- WHAT MAKES A GOOD LEAD MAGNET -->
+    <div class="two-col">
+      <div class="col-box">
+        <div class="col-title">What makes a good lead magnet</div>
+        <div class="item"><div class="dot"></div>Solves ONE specific, immediate problem</div>
+        <div class="item"><div class="dot"></div>Fast to consume (under 10 minutes)</div>
+        <div class="item"><div class="dot"></div>Creates a natural "what's next?" moment</div>
+        <div class="item"><div class="dot"></div>Speaks directly to your ideal buyer's biggest frustration</div>
+        <div class="item"><div class="dot"></div>Title formula: "How to [desired outcome] without [common objection]"</div>
+      </div>
+      <div class="col-box">
+        <div class="col-title">ManyChat keyword setup</div>
+        <div class="item"><div class="dot"></div>Choose a short, memorable keyword (eg. "LEADS", "GUIDE", "FREE")</div>
+        <div class="item"><div class="dot"></div>Connect to your Instagram and Facebook Page</div>
+        <div class="item"><div class="dot"></div>Welcome message → deliver lead magnet → ask first qualifying question</div>
+        <div class="item"><div class="dot"></div>Tag leads by source (paid ad vs organic post)</div>
+        <div class="item"><div class="dot"></div>Connect to CRM via Zapier or native integration</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text"><strong>Why this works at scale:</strong> The moment someone comments your keyword, ManyChat fires a DM in seconds. Your AI setter then handles the conversation 24/7. <strong>You wake up to qualified leads already in your pipeline</strong> — without being online. The comment also signals the algorithm to show your post to more people, making your organic reach compound.</div>
+    </div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+</body>
+</html>

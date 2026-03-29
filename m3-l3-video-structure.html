@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3L3 — Short Form Video for Lead Gen</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background: var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+  .lesson-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:32px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:48px}
+  .diagram{width:100%;max-width:960px}
+
+  /* VIDEO STRUCTURE */
+  .video-wrap{display:grid;grid-template-columns:240px 1fr;gap:24px;margin-bottom:28px}
+  .phone-mock{background:var(--card);border:2px solid var(--border);border-radius:28px;padding:12px;display:flex;flex-direction:column;gap:2px;min-height:420px;position:relative}
+  .phone-notch{width:60px;height:6px;background:var(--border);border-radius:3px;margin:0 auto 10px}
+  .video-segment{border-radius:8px;padding:10px 12px;flex:1;display:flex;flex-direction:column;justify-content:center}
+  .seg-time{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+  .seg-name{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
+  .seg-desc{font-size:10px;color:var(--muted);line-height:1.3}
+  .video-segment:nth-child(2){background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3)}
+  .video-segment:nth-child(2) .seg-time{color:var(--purple)}
+  .video-segment:nth-child(3){background:rgba(26,188,156,.1);border:1px solid rgba(26,188,156,.25)}
+  .video-segment:nth-child(3) .seg-time{color:var(--teal)}
+  .video-segment:nth-child(4){background:rgba(241,196,15,.08);border:1px solid rgba(241,196,15,.2)}
+  .video-segment:nth-child(4) .seg-time{color:var(--gold)}
+  .video-segment:nth-child(5){background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3)}
+  .video-segment:nth-child(5) .seg-time{color:var(--purple)}
+
+  .video-notes{display:flex;flex-direction:column;gap:12px}
+  .note-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+  .note-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;margin-bottom:8px}
+  .note-card:nth-child(1) .note-title{color:var(--purple)}
+  .note-card:nth-child(2) .note-title{color:var(--teal)}
+  .note-card:nth-child(3) .note-title{color:var(--gold)}
+  .note-items{display:flex;flex-direction:column;gap:5px}
+  .note-item{font-size:11px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;line-height:1.4}
+  .note-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+  .note-card:nth-child(1) .note-dot{background:var(--purple)}
+  .note-card:nth-child(2) .note-dot{background:var(--teal)}
+  .note-card:nth-child(3) .note-dot{background:var(--gold)}
+
+  /* HOOK TYPES */
+  .hooks-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:14px}
+  .hooks-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+  .hook-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center}
+  .hook-type{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;color:var(--muted)}
+  .hook-example{font-size:11px;color:var(--text);line-height:1.4;font-style:italic}
+
+  .rule-box{background:rgba(241,196,15,.06);border:1px solid rgba(241,196,15,.2);border-radius:12px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start}
+  .rule-icon{font-size:22px;flex-shrink:0}
+  .rule-text{font-size:13px;color:var(--muted);line-height:1.6}
+  .rule-text strong{color:var(--gold);font-weight:600}
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+  <div class="lesson-tag">Module 3 · Lesson 3 · VIERAOS Free Course</div>
+  <h1>Short Form Video <span>for Lead Gen</span></h1>
+  <p class="subtitle">Not virality. Not views. Buyers. Here's how to structure every video to attract the right person and push them to your DMs.</p>
+
+  <div class="diagram">
+    <div class="video-wrap">
+      <!-- PHONE MOCK -->
+      <div class="phone-mock">
+        <div class="phone-notch"></div>
+        <div class="video-segment">
+          <div class="seg-time" style="color:var(--muted)">0:00</div>
+          <div class="seg-name" style="color:var(--muted)">▶ Video starts</div>
+        </div>
+        <div class="video-segment">
+          <div class="seg-time">0:00 – 0:03</div>
+          <div class="seg-name">The Hook</div>
+          <div class="seg-desc">Calls out your specific person. Pattern interrupt. They stop scrolling.</div>
+        </div>
+        <div class="video-segment">
+          <div class="seg-time">0:03 – 0:20</div>
+          <div class="seg-name">The One Insight</div>
+          <div class="seg-desc">One thing taught deeply. Not five things shallowly.</div>
+        </div>
+        <div class="video-segment">
+          <div class="seg-time">0:20 – 0:40</div>
+          <div class="seg-name">The Proof</div>
+          <div class="seg-desc">Your result or a student result that backs the insight up.</div>
+        </div>
+        <div class="video-segment">
+          <div class="seg-time">0:40 – end</div>
+          <div class="seg-name">The CTA</div>
+          <div class="seg-desc">Specific action + specific reason. Comment keyword → DM.</div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="video-notes">
+        <div class="note-card">
+          <div class="note-title">Hook rules (first 3 seconds)</div>
+          <div class="note-items">
+            <div class="note-item"><div class="note-dot"></div>Call out your specific person by situation, not by title</div>
+            <div class="note-item"><div class="note-dot"></div>Buyer hooks → outcome-led or problem-specific. Not entertainment hooks.</div>
+            <div class="note-item"><div class="note-dot"></div>On-screen text = tells the algorithm who to show it to. Use it deliberately.</div>
+            <div class="note-item"><div class="note-dot"></div>Pattern interrupt in the first frame. Blurry, unexpected angle, bold statement.</div>
+          </div>
+        </div>
+        <div class="note-card">
+          <div class="note-title">The one insight rule</div>
+          <div class="note-items">
+            <div class="note-item"><div class="note-dot"></div>One concept, taught well, beats five concepts taught shallowly every time</div>
+            <div class="note-item"><div class="note-dot"></div>The insight should make them think "I never heard it explained that way"</div>
+            <div class="note-item"><div class="note-dot"></div>Move positions, change expressions, use hands — keep engagement in longer videos</div>
+          </div>
+        </div>
+        <div class="note-card">
+          <div class="note-title">CTA formula</div>
+          <div class="note-items">
+            <div class="note-item"><div class="note-dot"></div>Specific action: "Comment [keyword]" not "follow for more"</div>
+            <div class="note-item"><div class="note-dot"></div>Specific reason: "and I'll send you the [exact thing]"</div>
+            <div class="note-item"><div class="note-dot"></div>Create urgency: "it takes 48 hours to set up and it works forever"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOOK TYPES -->
+    <div class="hooks-title">4 buyer-attracting hook types</div>
+    <div class="hooks-grid">
+      <div class="hook-card">
+        <div class="hook-type">Pain Hook</div>
+        <div class="hook-example">"If you're posting every day and still not getting qualified leads in your DMs..."</div>
+      </div>
+      <div class="hook-card">
+        <div class="hook-type">Outcome Hook</div>
+        <div class="hook-example">"How I get 30+ qualified leads in my DMs every week without posting more than 3x"</div>
+      </div>
+      <div class="hook-card">
+        <div class="hook-type">Controversy Hook</div>
+        <div class="hook-example">"Stop building a personal brand. Build a system instead. Here's why."</div>
+      </div>
+      <div class="hook-card">
+        <div class="hook-type">Story Hook</div>
+        <div class="hook-example">"I woke up to 47 DMs from qualified leads. Here's the one post that caused it."</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text"><strong>500 right views vs 500,000 wrong views.</strong> A Reel watched by 500 people who are already running ads and spending money on tools will generate more revenue than one with 500k views from people who are just interested in entrepreneurship. <strong>Optimise for buyer specificity, not viral reach.</strong></div>
+    </div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+</body>
+</html>

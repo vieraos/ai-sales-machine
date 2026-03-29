@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1L3 — Paid vs Organic</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .lesson-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  h1 span {
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .diagram { width: 100%; max-width: 960px; }
+
+  /* MAIN TWO LANES */
+  .lanes {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    margin-bottom: 32px;
+    align-items: start;
+  }
+
+  .lane {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+  }
+
+  .lane.organic { border-top: 3px solid var(--teal); }
+  .lane.paid { border-top: 3px solid var(--purple); }
+
+  .lane-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lane-icon { font-size: 28px; }
+
+  .lane-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .lane.organic .lane-title { color: var(--teal); }
+  .lane.paid .lane-title { color: var(--purple); }
+
+  .lane-role {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 600;
+  }
+
+  /* JOB ITEMS */
+  .job-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+  .job-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .job-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .lane.organic .job-dot { background: var(--teal); }
+  .lane.paid .job-dot { background: var(--purple); }
+
+  .job-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .job-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* STATS */
+  .lane-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat-chip {
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .lane.organic .stat-chip { background: rgba(26,188,156,0.08); border: 1px solid rgba(26,188,156,0.2); }
+  .lane.paid .stat-chip { background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.2); }
+
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .lane.organic .stat-val { color: var(--teal); }
+  .lane.paid .stat-val { color: var(--purple); }
+
+  .stat-label { font-size: 10px; color: var(--muted); }
+
+  /* MIDDLE DIVIDER */
+  .lane-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding-top: 80px;
+  }
+
+  .divider-line { width: 1px; flex: 1; background: var(--border); }
+
+  .divider-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: rgba(241,196,15,0.12);
+    color: var(--gold);
+    border: 1px solid rgba(241,196,15,0.3);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 0.1em;
+  }
+
+  /* SEQUENCE BOX */
+  .sequence-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .sequence-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .seq-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+
+  .seq-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 18px;
+    font-size: 16px;
+    color: var(--muted);
+  }
+
+  .seq-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .seq-step:nth-child(1) .seq-num { background: rgba(26,188,156,0.15); color: var(--teal); border: 1px solid rgba(26,188,156,0.4); }
+  .seq-step:nth-child(2) .seq-num { background: rgba(26,188,156,0.15); color: var(--teal); border: 1px solid rgba(26,188,156,0.4); }
+  .seq-step:nth-child(3) .seq-num { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.4); }
+  .seq-step:nth-child(4) .seq-num { background: rgba(241,196,15,0.15); color: var(--gold); border: 1px solid rgba(241,196,15,0.4); }
+
+  .seq-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .seq-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .sequence-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  /* RETARGETING BRIDGE */
+  .bridge-box {
+    background: rgba(241,196,15,0.05);
+    border: 1px solid rgba(241,196,15,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .bridge-icon { font-size: 22px; flex-shrink: 0; }
+  .bridge-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+  }
+  .bridge-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .bridge-body strong { color: var(--text); }
+
+  .footer {
+    margin-top: 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--gold), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.15em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .lane { animation: fadeUp 0.5s ease both; }
+  .lane.organic { animation-delay: 0.1s; }
+  .lane.paid { animation-delay: 0.25s; }
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+
+  <div class="lesson-tag">Module 1 · Lesson 3 · VIERAOS Free Course</div>
+  <h1>Paid vs <span>Organic</span></h1>
+  <p class="subtitle">They are not the same thing. They have completely different jobs.</p>
+
+  <div class="diagram">
+
+    <div class="lanes">
+
+      <!-- ORGANIC LANE -->
+      <div class="lane organic">
+        <div class="lane-header">
+          <div class="lane-icon">🎬</div>
+          <div>
+            <div class="lane-title">Organic</div>
+            <div class="lane-role">Trust lever</div>
+          </div>
+        </div>
+
+        <div class="job-list">
+          <div class="job-item">
+            <div class="job-dot"></div>
+            <div>
+              <div class="job-text">Build authority over time</div>
+              <div class="job-sub">Consistent posting = people know, like, trust you before they opt in</div>
+            </div>
+          </div>
+          <div class="job-item">
+            <div class="job-dot"></div>
+            <div>
+              <div class="job-text">Validate your message for free</div>
+              <div class="job-sub">What gets engagement = what you then put in your ads</div>
+            </div>
+          </div>
+          <div class="job-item">
+            <div class="job-dot"></div>
+            <div>
+              <div class="job-text">Build retargeting audiences</div>
+              <div class="job-sub">Video viewers, profile visitors, engagers = warm paid retargeting pools</div>
+            </div>
+          </div>
+          <div class="job-item">
+            <div class="job-dot"></div>
+            <div>
+              <div class="job-text">Compound over time</div>
+              <div class="job-sub">Old posts keep generating leads. Paid stops the second you stop spending.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lane-stats">
+          <div class="stat-chip">
+            <div class="stat-val">Slow</div>
+            <div class="stat-label">Speed to results</div>
+          </div>
+          <div class="stat-chip">
+            <div class="stat-val">High</div>
+            <div class="stat-label">Trust built</div>
+          </div>
+          <div class="stat-chip">
+            <div class="stat-val">Free</div>
+            <div class="stat-label">Cost to run</div>
+          </div>
+          <div class="stat-chip">
+            <div class="stat-val">∞</div>
+            <div class="stat-label">Compounds forever</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MIDDLE -->
+      <div class="lane-divider">
+        <div class="divider-line"></div>
+        <div class="divider-badge">WORKS TOGETHER</div>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- PAID LANE -->
+      <div class="lane paid">
+        <div class="lane-header">
+          <div class="lane-icon">💸</div>
+          <div>
+            <div class="lane-title">Paid Ads</div>
+            <div class="lane-role">Volume lever</div>
+          </div>
+        </div>
+
+        <div class="job-list">
+          <div class="job-item">
+            <div class="job-dot"></div>
+            <div>
+              <div class="job-text">Buy speed and volume</div>
+              <div class="job-sub">Get in front of thousands immediately — not over months of posting</div>
+            </div>
+          </div>
+          <div class="job-item">
+            <div class="job-dot"></div>
+            <div>
+              <div class="job-text">Scale what organic already proved</div>
+              <div class="job-sub">Your best organic post becomes your best ad. Stop guessing what the market wants.</div>
+            </div>
+          </div>
+          <div class="job-item">
+            <div class="job-dot"></div>
+            <div>
+              <div class="job-text">Collect data fast</div>
+              <div class="job-sub">$300 in testing tells you more about your market than 3 months of organic</div>
+            </div>
+          </div>
+          <div class="job-item">
+            <div class="job-dot"></div>
+            <div>
+              <div class="job-text">Retarget warm organic audiences</div>
+              <div class="job-sub">Run ads to people who already watched your videos or visited your profile</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lane-stats">
+          <div class="stat-chip">
+            <div class="stat-val">Fast</div>
+            <div class="stat-label">Speed to results</div>
+          </div>
+          <div class="stat-chip">
+            <div class="stat-val">Low</div>
+            <div class="stat-label">Trust built cold</div>
+          </div>
+          <div class="stat-chip">
+            <div class="stat-val">$$</div>
+            <div class="stat-label">Cost to run</div>
+          </div>
+          <div class="stat-chip">
+            <div class="stat-val">Stops</div>
+            <div class="stat-label">When spend stops</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEQUENCE -->
+    <div class="sequence-box">
+      <div class="sequence-title">⚡ The right order</div>
+      <div class="sequence-steps">
+        <div class="seq-step">
+          <div class="seq-num">1</div>
+          <div class="seq-label">Post organically</div>
+          <div class="seq-desc">Find what resonates. Test messaging for free.</div>
+        </div>
+        <div class="seq-step">
+          <div class="seq-num">2</div>
+          <div class="seq-label">Watch what wins</div>
+          <div class="seq-desc">High engagement post = validated message angle</div>
+        </div>
+        <div class="seq-step">
+          <div class="seq-num">3</div>
+          <div class="seq-label">Run paid on it</div>
+          <div class="seq-desc">Pour budget behind what already works</div>
+        </div>
+        <div class="seq-step">
+          <div class="seq-num">4</div>
+          <div class="seq-label">Retarget with paid</div>
+          <div class="seq-desc">Warm organic audience → cheapest paid leads</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRIDGE -->
+    <div class="bridge-box">
+      <div class="bridge-icon">🔗</div>
+      <div>
+        <div class="bridge-title">The bridge: Retargeting</div>
+        <div class="bridge-body">
+          Organic creates warm audiences (video viewers, profile visitors, post engagers). Paid retargeting runs ads to exactly those people. <strong>This is your cheapest, highest-converting traffic</strong> — they already know you. The two channels feed each other when set up correctly.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Gen Post Builder — VIERAOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 24px}
+  .tool-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--purple),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;max-width:560px}
+  .tool{width:100%;max-width:820px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .left-col,.right-col{display:flex;flex-direction:column;gap:16px}
+
+  .form-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+  .form-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+  .form-section:nth-child(1) .form-title{color:var(--purple)}
+  .form-section:nth-child(2) .form-title{color:var(--teal)}
+  .form-section:nth-child(3) .form-title{color:var(--gold)}
+  .input-group{margin-bottom:12px}
+  label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:4px}
+  input[type=text],textarea,select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:#fff;font-family: 'Inter', sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+  input[type=text]:focus,textarea:focus,select:focus{border-color:var(--purple)}
+  textarea{min-height:68px;resize:vertical}
+  select{cursor:pointer}
+  option{background:var(--card)}
+
+  .gen-btn{width:100%;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:10px;padding:14px;font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;transition:opacity .2s}
+  .gen-btn:hover{opacity:.9}
+
+  /* POST PREVIEW */
+  .preview-section{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  .preview-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.02)}
+  .preview-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:var(--teal)}
+  .copy-post-btn{background:rgba(26,188,156,.1);border:1px solid rgba(26,188,156,.3);border-radius:6px;padding:5px 12px;color:var(--teal);font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:all .2s}
+  .copy-post-btn:hover{background:rgba(26,188,156,.2)}
+  .copy-post-btn.copied{background:rgba(241,196,15,.1);border-color:rgba(241,196,15,.3);color:var(--gold)}
+  .post-content{padding:18px;font-size:14px;line-height:1.75;color:var(--text);white-space:pre-wrap;min-height:200px;font-family: 'Inter', sans-serif}
+  .post-content.empty{color:var(--muted);font-size:13px;font-style:italic}
+
+  /* CHECKLIST */
+  .checklist-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+  .checklist-title{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px}
+  .check-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:12px;color:var(--text);line-height:1.4}
+  .check-icon{flex-shrink:0;font-size:14px}
+
+  @media(max-width:700px){.tool{grid-template-columns:1fr}}
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 44px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; opacity: 0.6; }
+  .form-box, .add-section, .input-panel { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn, .gen-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .rule-note, .tip-box, .rule-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.18) !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  .kpi-card, .total-card, .tracker-wrap, .table-wrap, .script-box, .preview-box, .checklist-box, .preview-section, .score-card, .audit-section { background: #111111 !important; border-color: #2a2a2a !important; }
+  .tw-head, .tw-header, .weeks-header, .sb-header, .preview-head { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .hook-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  .result-hero { background: rgba(241,196,15,0.08) !important; border-color: rgba(241,196,15,0.3) !important; }
+  .res-card { background: #111111 !important; border-color: #2a2a2a !important; }
+
+</style>
+</head>
+<body>
+  <div class="tool-tag">Module 3 Tool · VIERAOS Free Course</div>
+  <h1>Lead Gen Post <span>Builder</span></h1>
+  <p class="subtitle">Fill in your details and generate a ManyChat-ready lead gen post with a keyword CTA.</p>
+
+  <div class="tool">
+    <div class="left-col">
+      <div class="form-section">
+        <div class="form-title">Your lead magnet</div>
+        <div class="input-group">
+          <label>Lead magnet name</label>
+          <input type="text" id="lmName" placeholder="The AI Setter Blueprint">
+        </div>
+        <div class="input-group">
+          <label>What does it help them do?</label>
+          <input type="text" id="lmOutcome" placeholder="Build an AI setter that qualifies leads in their DMs automatically">
+        </div>
+        <div class="input-group">
+          <label>ManyChat keyword</label>
+          <input type="text" id="keyword" placeholder="SETTER">
+        </div>
+        <div class="input-group">
+          <label>Hook type</label>
+          <select id="hookType">
+            <option value="pain">Pain Hook</option>
+            <option value="outcome">Outcome Hook</option>
+            <option value="story">Story Hook</option>
+            <option value="number">Number/List Hook</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-title">Your audience</div>
+        <div class="input-group">
+          <label>Who is this for?</label>
+          <input type="text" id="audience" placeholder="Coaches and digital product sellers">
+        </div>
+        <div class="input-group">
+          <label>Their biggest frustration right now</label>
+          <textarea id="frustration" placeholder="They're spending on ads and posting content but still getting zero qualified DMs or call bookings"></textarea>
+        </div>
+      </div>
+
+      <button class="gen-btn" onclick="buildPost()">Build My Post</button>
+    </div>
+
+    <div class="right-col">
+      <div class="preview-section">
+        <div class="preview-header">
+          <div class="preview-title">Post preview</div>
+          <button class="copy-post-btn" id="copyPostBtn" onclick="copyPost()">Copy post</button>
+        </div>
+        <div class="post-content empty" id="postContent">Your post will appear here after you click Build My Post →</div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-title">Before you post — checklist</div>
+        <div class="check-item"><span class="check-icon">🤖</span>ManyChat keyword is set up and live</div>
+        <div class="check-item"><span class="check-icon">🔗</span>Lead magnet delivery message is ready in ManyChat</div>
+        <div class="check-item"><span class="check-icon">❓</span>First qualifying question is in the ManyChat DM flow</div>
+        <div class="check-item"><span class="check-icon">📌</span>Consider pinning this post after it gets early engagement</div>
+        <div class="check-item"><span class="check-icon">🔁</span>Set a reminder to repurpose as an ad in 7 days if it performs</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+<script>
+function buildPost() {
+  const lmName = document.getElementById('lmName').value.trim() || 'my free guide';
+  const lmOutcome = document.getElementById('lmOutcome').value.trim() || 'automate your lead generation';
+  const keyword = document.getElementById('keyword').value.trim().toUpperCase() || 'FREE';
+  const hookType = document.getElementById('hookType').value;
+  const audience = document.getElementById('audience').value.trim() || 'business owners';
+  const frustration = document.getElementById('frustration').value.trim() || 'spending on ads with no results';
+
+  let hook = '';
+  if (hookType === 'pain') {
+    hook = `If you're ${audience.toLowerCase()} and you're ${frustration.toLowerCase()}...\n\nYou need to see this.`;
+  } else if (hookType === 'outcome') {
+    hook = `How ${audience.toLowerCase()} are now able to ${lmOutcome.toLowerCase()} — without being online 24/7.`;
+  } else if (hookType === 'story') {
+    hook = `6 months ago I was ${frustration.toLowerCase()}.\n\nNow my system handles it automatically while I sleep.\n\nHere's what changed:`;
+  } else {
+    hook = `3 reasons why ${audience.toLowerCase()} keep ${frustration.toLowerCase().split(' ').slice(0,5).join(' ')}:\n\n(and what to do instead)`;
+  }
+
+  const body = `The problem isn't your offer. It isn't your content. It's what happens — or doesn't happen — after someone shows interest.
+
+Most ${audience.toLowerCase()} have no system for that gap. And that's where all the leads fall through.
+
+I put together ${lmName} to show you exactly how to ${lmOutcome.toLowerCase()}.
+
+It's free. It takes less than 10 minutes to read. And if you implement it, you'll never manually chase a lead again.`;
+
+  const cta = `Comment "${keyword}" below and I'll send it straight to your DMs. 👇`;
+
+  const post = `${hook}\n\n${body}\n\n${cta}`;
+
+  const el = document.getElementById('postContent');
+  el.textContent = post;
+  el.classList.remove('empty');
+}
+
+function copyPost() {
+  const text = document.getElementById('postContent').textContent;
+  if (!text || document.getElementById('postContent').classList.contains('empty')) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyPostBtn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy post'; btn.classList.remove('copied'); }, 2500);
+  });
+}
+</script>
+</body>
+</html>

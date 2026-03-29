@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M5L2 — Your Performance Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background: var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 24px}
+  .lesson-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:32px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px}
+  .diagram{width:100%;max-width:1000px}
+
+  /* MOCK DASHBOARD */
+  .dashboard{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px}
+
+  /* DASH HEADER */
+  .dash-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.02)}
+  .dash-title{font-family: 'Bebas Neue', sans-serif;font-size:14px;font-weight:700;color:#fff}
+  .dash-date{font-size:11px;color:var(--muted)}
+  .dash-badge{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;background:rgba(26,188,156,.12);color:var(--teal)}
+
+  /* KPI ROW */
+  .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 16px;text-align:center;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-label{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
+  .kpi-val{font-family: 'Bebas Neue', sans-serif;font-size:24px;font-weight:800;margin-bottom:4px}
+  .kpi:nth-child(1) .kpi-val{color:var(--gold)}
+  .kpi:nth-child(2) .kpi-val{color:var(--teal)}
+  .kpi:nth-child(3) .kpi-val{color:var(--purple)}
+  .kpi:nth-child(4) .kpi-val{color:var(--teal)}
+  .kpi:nth-child(5) .kpi-val{color:var(--gold)}
+  .kpi-trend{font-size:10px;font-family: 'Bebas Neue', sans-serif;font-weight:600}
+  .kpi-trend.up{color:#4ade80}
+  .kpi-trend.down{color:#FF6B6B}
+  .kpi-trend.flat{color:var(--muted)}
+
+  /* MIDDLE ROW */
+  .mid-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--border)}
+  .mid-section{padding:18px 18px;border-right:1px solid var(--border)}
+  .mid-section:last-child{border-right:none}
+  .mid-title{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:12px}
+
+  /* SOURCE TABLE */
+  .source-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px}
+  .source-row:last-child{border-bottom:none}
+  .source-name{color:var(--text);font-weight:500}
+  .source-bar-wrap{flex:1;margin:0 10px;height:4px;background:var(--border);border-radius:2px}
+  .source-bar{height:100%;border-radius:2px}
+  .source-val{color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:600;white-space:nowrap}
+
+  /* PIPELINE */
+  .pipe-stage{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+  .pipe-stage:last-child{border-bottom:none}
+  .pipe-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:8px}
+  .pipe-label{font-size:11px;color:var(--text);flex:1;display:flex;align-items:center}
+  .pipe-count{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;color:#fff}
+
+  /* AD PERFORMANCE */
+  .ad-row{padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+  .ad-row:last-child{border-bottom:none}
+  .ad-name{font-size:11px;color:var(--text);margin-bottom:4px;font-weight:500}
+  .ad-stats{display:flex;gap:10px}
+  .ad-stat{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:600}
+  .ad-stat.good{color:#4ade80}
+  .ad-stat.warn{color:var(--gold)}
+  .ad-stat.bad{color:#FF6B6B}
+
+  /* BOTTOM ROW */
+  .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .bottom-section{padding:16px 18px;border-right:1px solid var(--border)}
+  .bottom-section:last-child{border-right:none}
+  .alert-item{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;margin-bottom:7px;font-size:11px}
+  .alert-item.red{background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.18);color:#FF6B6B}
+  .alert-item.gold{background:rgba(241,196,15,.06);border:1px solid rgba(241,196,15,.2);color:var(--gold)}
+  .alert-item.green{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);color:#4ade80}
+
+  /* LEGEND */
+  .legend-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:14px}
+  .legend-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+  .legend-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+  .legend-val{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;margin-bottom:4px}
+  .legend-item:nth-child(1) .legend-val{color:var(--gold)}
+  .legend-item:nth-child(2) .legend-val{color:var(--teal)}
+  .legend-item:nth-child(3) .legend-val{color:var(--purple)}
+  .legend-item:nth-child(4) .legend-val{color:#4ade80}
+  .legend-item:nth-child(5) .legend-val{color:#FF6B6B}
+  .legend-label{font-size:10px;color:var(--muted);line-height:1.3}
+
+  .rule-box{background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.2);border-radius:12px;padding:16px 20px;display:flex;gap:14px}
+  .rule-icon{font-size:22px;flex-shrink:0}
+  .rule-text{font-size:13px;color:var(--muted);line-height:1.6}
+  .rule-text strong{color:var(--purple);font-weight:600}
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+  <div class="lesson-tag">Module 5 · Lesson 2 · VIERAOS Free Course</div>
+  <h1>Your <span>Performance Dashboard</span></h1>
+  <p class="subtitle">This is what your weekly numbers should look like laid out in one place. Know where to look and what each number is telling you.</p>
+
+  <div class="diagram">
+
+    <!-- MOCK DASHBOARD -->
+    <div class="dashboard">
+
+      <!-- HEADER -->
+      <div class="dash-header">
+        <div class="dash-title">AI Sales Machine — Weekly Overview</div>
+        <div class="dash-date">Week of March 24, 2025</div>
+        <div class="dash-badge">● Live</div>
+      </div>
+
+      <!-- KPI ROW -->
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">Revenue this week</div><div class="kpi-val">$3,840</div><div class="kpi-trend up">↑ +12% vs last wk</div></div>
+        <div class="kpi"><div class="kpi-label">New leads</div><div class="kpi-val">84</div><div class="kpi-trend up">↑ +7 vs last wk</div></div>
+        <div class="kpi"><div class="kpi-label">ROAS</div><div class="kpi-val">2.7×</div><div class="kpi-trend up">↑ up from 2.1×</div></div>
+        <div class="kpi"><div class="kpi-label">Conv. rate DM→sale</div><div class="kpi-val">8.3%</div><div class="kpi-trend flat">→ steady</div></div>
+        <div class="kpi"><div class="kpi-label">CPP</div><div class="kpi-val">$38</div><div class="kpi-trend down">↓ up from $31</div></div>
+      </div>
+
+      <!-- MIDDLE ROW -->
+      <div class="mid-row">
+
+        <!-- TRAFFIC SOURCES -->
+        <div class="mid-section">
+          <div class="mid-title">Lead sources this week</div>
+          <div class="source-row"><span class="source-name">Meta Ads — Static</span><div class="source-bar-wrap"><div class="source-bar" style="width:72%;background:var(--purple)"></div></div><span class="source-val">36 leads</span></div>
+          <div class="source-row"><span class="source-name">Organic Reels</span><div class="source-bar-wrap"><div class="source-bar" style="width:42%;background:var(--teal)"></div></div><span class="source-val">21 leads</span></div>
+          <div class="source-row"><span class="source-name">Meta Ads — Video</span><div class="source-bar-wrap"><div class="source-bar" style="width:28%;background:var(--purple)"></div></div><span class="source-val">14 leads</span></div>
+          <div class="source-row"><span class="source-name">Retargeting</span><div class="source-bar-wrap"><div class="source-bar" style="width:26%;background:var(--gold)"></div></div><span class="source-val">13 leads</span></div>
+        </div>
+
+        <!-- PIPELINE -->
+        <div class="mid-section">
+          <div class="mid-title">Pipeline status</div>
+          <div class="pipe-stage"><div class="pipe-label"><div class="pipe-dot" style="background:var(--muted)"></div>Cold (unqualified)</div><div class="pipe-count">41</div></div>
+          <div class="pipe-stage"><div class="pipe-label"><div class="pipe-dot" style="background:var(--gold)"></div>Warm (qualifying)</div><div class="pipe-count">22</div></div>
+          <div class="pipe-stage"><div class="pipe-label"><div class="pipe-dot" style="background:var(--purple)"></div>Hot (link sent)</div><div class="pipe-count">11</div></div>
+          <div class="pipe-stage"><div class="pipe-label"><div class="pipe-dot" style="background:#4ade80"></div>Booked call</div><div class="pipe-count">7</div></div>
+          <div class="pipe-stage"><div class="pipe-label"><div class="pipe-dot" style="background:var(--teal)"></div>Sold — low ticket</div><div class="pipe-count">6</div></div>
+          <div class="pipe-stage"><div class="pipe-label"><div class="pipe-dot" style="background:var(--gold)"></div>Sold — high ticket</div><div class="pipe-count">1</div></div>
+        </div>
+
+        <!-- AD PERFORMANCE -->
+        <div class="mid-section">
+          <div class="mid-title">Ad creative performance</div>
+          <div class="ad-row"><div class="ad-name">100 Ideas Static v1</div><div class="ad-stats"><span class="ad-stat good">ROAS 3.2×</span><span class="ad-stat good">CPP $28</span><span class="ad-stat good">↑ Scale</span></div></div>
+          <div class="ad-row"><div class="ad-name">Pain Hook Talking Head</div><div class="ad-stats"><span class="ad-stat warn">ROAS 1.9×</span><span class="ad-stat warn">CPP $42</span><span class="ad-stat warn">→ Iterate</span></div></div>
+          <div class="ad-row"><div class="ad-name">Outcome Hook Video</div><div class="ad-stats"><span class="ad-stat warn">ROAS 1.4×</span><span class="ad-stat warn">CPP $57</span><span class="ad-stat warn">→ Watch</span></div></div>
+          <div class="ad-row"><div class="ad-name">Testimonial UGC</div><div class="ad-stats"><span class="ad-stat bad">ROAS 0.8×</span><span class="ad-stat bad">CPP $91</span><span class="ad-stat bad">✗ Kill</span></div></div>
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW -->
+      <div class="bottom-row">
+        <div class="bottom-section">
+          <div class="mid-title">🚨 Alerts — action needed</div>
+          <div class="alert-item red">Testimonial UGC ad: ROAS below 1:1 for 7 days — KILL immediately</div>
+          <div class="alert-item gold">CPP rising on Pain Hook ad — check if audience is fatiguing</div>
+          <div class="alert-item gold">7 calls booked — confirm all have confirmation emails sent</div>
+        </div>
+        <div class="bottom-section">
+          <div class="mid-title">✅ Wins this week</div>
+          <div class="alert-item green">100 Ideas Static hit 3.2× ROAS — create 3 variations this week</div>
+          <div class="alert-item green">Organic Reels generated 21 leads — repurpose top performer as ad</div>
+          <div class="alert-item green">Setter conversion rate holding steady at 8.3% — no prompt changes needed</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- WHAT EACH NUMBER MEANS -->
+    <div class="legend-title">What each KPI is telling you</div>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-val">Revenue</div><div class="legend-label">Is the whole system paying for itself?</div></div>
+      <div class="legend-item"><div class="legend-val">New Leads</div><div class="legend-label">Is traffic working? Enough volume coming in?</div></div>
+      <div class="legend-item"><div class="legend-val">ROAS</div><div class="legend-label">Is paid traffic profitable? Below 2× = problem.</div></div>
+      <div class="legend-item"><div class="legend-val">Conv. Rate</div><div class="legend-label">Is the setter closing? DMs → sales ratio.</div></div>
+      <div class="legend-item"><div class="legend-val">CPP Rising</div><div class="legend-label">Audience fatiguing. New creative needed.</div></div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text"><strong>This dashboard is a replica of what Viera OS tracks automatically.</strong> You can build a version of this manually in Google Sheets right now — it doesn't need to be fancy. <strong>The habit of looking at these numbers weekly is more valuable than any tool.</strong> Data you don't act on is just noise.</div>
+    </div>
+  </div>
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+</body>
+</html>

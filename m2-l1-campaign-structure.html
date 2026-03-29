@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2L1 — Campaign Structure</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .lesson-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  h1 span {
+    background: linear-gradient(90deg, var(--purple), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle { font-size: 14px; color: var(--muted); text-align: center; margin-bottom: 48px; }
+  .diagram { width: 100%; max-width: 960px; }
+
+  /* CAMPAIGN HIERARCHY */
+  .hierarchy { display: flex; flex-direction: column; gap: 0; margin-bottom: 28px; }
+
+  /* LEVEL WRAPPER */
+  .level {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .level-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .level-connector {
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .connector-trunk {
+    width: 2px;
+    height: 100%;
+    background: var(--border);
+  }
+
+  .connector-branches {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0;
+  }
+
+  /* CAMPAIGN CARD (top) */
+  .campaign-card {
+    background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(168,85,247,0.05));
+    border: 1px solid rgba(168,85,247,0.5);
+    border-radius: 14px;
+    padding: 18px 32px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .campaign-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+
+  .campaign-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .campaign-sub { font-size: 12px; color: var(--muted); }
+
+  /* THREE CAMPAIGN TYPES */
+  .camp-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .camp-type {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .camp-type::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .camp-type.testing::before { background: var(--teal); }
+  .camp-type.scaling::before { background: var(--purple); }
+  .camp-type.retargeting::before { background: var(--gold); }
+
+  .camp-type-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .camp-type.testing .camp-type-badge { background: rgba(26,188,156,0.12); color: var(--teal); }
+  .camp-type.scaling .camp-type-badge { background: rgba(168,85,247,0.12); color: var(--purple); }
+  .camp-type.retargeting .camp-type-badge { background: rgba(241,196,15,0.12); color: var(--gold); }
+
+  .camp-type-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .camp-type-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+
+  .camp-type-specs { display: flex; flex-direction: column; gap: 6px; }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+  }
+
+  .spec-row:last-child { border-bottom: none; }
+  .spec-key { color: var(--muted); }
+  .spec-val { color: var(--text); font-weight: 500; font-family: 'Bebas Neue', sans-serif; font-size: 11px; }
+
+  /* ABO vs CBO RULE */
+  .rule-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .rule-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .rule-card.abo .rule-card-title { color: var(--teal); }
+  .rule-card.cbo .rule-card-title { color: var(--purple); }
+
+  .rule-card-sub { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .rule-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .rule-card.abo .rule-dot { background: var(--teal); }
+  .rule-card.cbo .rule-dot { background: var(--purple); }
+
+  /* THE GOLDEN RULE */
+  .golden-rule {
+    background: linear-gradient(135deg, rgba(241,196,15,0.08), rgba(168,85,247,0.06));
+    border: 1px solid rgba(241,196,15,0.25);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .golden-icon { font-size: 28px; flex-shrink: 0; }
+  .golden-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .golden-text strong { color: var(--gold); font-weight: 600; }
+
+  .footer {
+    margin-top: 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--gold), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.15em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .camp-type { animation: fadeUp 0.4s ease both; }
+  .camp-type:nth-child(1) { animation-delay: 0.1s; }
+  .camp-type:nth-child(2) { animation-delay: 0.2s; }
+  .camp-type:nth-child(3) { animation-delay: 0.3s; }
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+
+  <div class="lesson-tag">Module 2 · Lesson 1 · VIERAOS Free Course</div>
+  <h1>Ad Campaign <span>Structure</span></h1>
+  <p class="subtitle">Three layers. Each does a different job. Here's how they work together.</p>
+
+  <div class="diagram">
+
+    <!-- THREE CAMPAIGN TYPES -->
+    <div class="camp-types">
+
+      <div class="camp-type testing">
+        <div class="camp-type-badge">Phase 1</div>
+        <div class="camp-type-name">ABO Testing</div>
+        <div class="camp-type-desc">Ad Budget Optimisation. You control exactly how much each ad spends. Use this to find your winners before you scale anything.</div>
+        <div class="camp-type-specs">
+          <div class="spec-row"><span class="spec-key">Budget control</span><span class="spec-val">Per ad set</span></div>
+          <div class="spec-row"><span class="spec-key">Goal</span><span class="spec-val">Find winners</span></div>
+          <div class="spec-row"><span class="spec-key">Creatives</span><span class="spec-val">3–4 per set</span></div>
+          <div class="spec-row"><span class="spec-key">Timeline</span><span class="spec-val">7 days minimum</span></div>
+          <div class="spec-row"><span class="spec-key">Budget start</span><span class="spec-val">$50–$100/day</span></div>
+        </div>
+      </div>
+
+      <div class="camp-type scaling">
+        <div class="camp-type-badge">Phase 2</div>
+        <div class="camp-type-name">CBO Scaling</div>
+        <div class="camp-type-desc">Campaign Budget Optimisation. Meta decides where to spend across your ad sets. Only use this once you have proven winners from ABO.</div>
+        <div class="camp-type-specs">
+          <div class="spec-row"><span class="spec-key">Budget control</span><span class="spec-val">Campaign level</span></div>
+          <div class="spec-row"><span class="spec-key">Goal</span><span class="spec-val">Scale winners</span></div>
+          <div class="spec-row"><span class="spec-key">Creatives</span><span class="spec-val">3+ proven winners</span></div>
+          <div class="spec-row"><span class="spec-key">Audience</span><span class="spec-val">Broad + Advantage+</span></div>
+          <div class="spec-row"><span class="spec-key">Scaling</span><span class="spec-val">+20% every 3 days</span></div>
+        </div>
+      </div>
+
+      <div class="camp-type retargeting">
+        <div class="camp-type-badge">Always On</div>
+        <div class="camp-type-name">Retargeting CBO</div>
+        <div class="camp-type-desc">Separate campaign. Runs ads to people who already watched your video, visited your profile, or clicked but didn't buy. Cheapest leads you'll ever get.</div>
+        <div class="camp-type-specs">
+          <div class="spec-row"><span class="spec-key">Audience</span><span class="spec-val">Warm only</span></div>
+          <div class="spec-row"><span class="spec-key">Goal</span><span class="spec-val">Convert warm traffic</span></div>
+          <div class="spec-row"><span class="spec-key">Budget</span><span class="spec-val">20–30% of total</span></div>
+          <div class="spec-row"><span class="spec-key">Windows</span><span class="spec-val">3d / 7d / 14d / 30d</span></div>
+          <div class="spec-row"><span class="spec-key">Expected CPL</span><span class="spec-val">50–70% cheaper</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ABO vs CBO RULE -->
+    <div class="rule-grid">
+      <div class="rule-card abo">
+        <div class="rule-card-title">ABO [TEST]</div>
+        <div class="rule-card-sub">When to use it</div>
+        <div class="rule-item"><div class="rule-dot"></div>You're launching a new creative or angle</div>
+        <div class="rule-item"><div class="rule-dot"></div>You don't have proven winners yet</div>
+        <div class="rule-item"><div class="rule-dot"></div>You want to see which specific ad is performing</div>
+        <div class="rule-item"><div class="rule-dot"></div>You're iterating on an existing winner</div>
+      </div>
+      <div class="rule-card cbo">
+        <div class="rule-card-title">CBO [SCALE]</div>
+        <div class="rule-card-sub">When to use it</div>
+        <div class="rule-item"><div class="rule-dot"></div>You have 3+ creatives with proven ROAS</div>
+        <div class="rule-item"><div class="rule-dot"></div>You want Meta to find the best audiences</div>
+        <div class="rule-item"><div class="rule-dot"></div>You're ready to increase budget significantly</div>
+        <div class="rule-item"><div class="rule-dot"></div>You have your numbers locked (CPP, AOV, threshold)</div>
+      </div>
+    </div>
+
+    <!-- GOLDEN RULE -->
+    <div class="golden-rule">
+      <div class="golden-icon">⚡</div>
+      <div class="golden-text">
+        <strong>The rule that saves your ad budget:</strong> Never put money into CBO until ABO has given you proven winners. CBO amplifies whatever you give it — give it untested ads and you're just spending faster to lose faster. <strong>Build winners in ABO. Scale winners in CBO.</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+</body>
+</html>

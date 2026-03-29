@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2L5 — Testing & Scaling</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background: var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+  .lesson-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:32px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:48px}
+  .diagram{width:100%;max-width:960px}
+
+  /* DECISION TREE */
+  .tree{display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:28px}
+
+  .tree-node{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 24px;text-align:center;min-width:280px}
+  .tree-node.start{background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.05));border-color:rgba(168,85,247,.5);min-width:360px}
+  .tree-node.decision{background:linear-gradient(135deg,rgba(241,196,15,.08),rgba(241,196,15,.03));border-color:rgba(241,196,15,.4);border-radius:50px;min-width:320px}
+
+  .node-label{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+  .tree-node.start .node-label{color:var(--purple)}
+  .tree-node.decision .node-label{color:var(--gold)}
+  .node-title{font-family: 'Bebas Neue', sans-serif;font-size:15px;font-weight:700;color:#fff}
+  .node-sub{font-size:11px;color:var(--muted);margin-top:3px}
+
+  .tree-arrow{height:28px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:18px}
+
+  /* BRANCHES */
+  .branches{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;width:100%;margin-bottom:28px}
+  .branch{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .branch-label{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;text-align:center}
+  .branch.kill .branch-label{background:rgba(255,107,107,.12);color:#FF6B6B;border:1px solid rgba(255,107,107,.3)}
+  .branch.iterate .branch-label{background:rgba(241,196,15,.12);color:var(--gold);border:1px solid rgba(241,196,15,.3)}
+  .branch.scale .branch-label{background:rgba(26,188,156,.12);color:var(--teal);border:1px solid rgba(26,188,156,.3)}
+  .branch-line{width:1px;height:20px;background:var(--border)}
+  .branch-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;width:100%;text-align:center}
+  .branch.kill .branch-card{border-color:rgba(255,107,107,.3);background:rgba(255,107,107,.04)}
+  .branch.iterate .branch-card{border-color:rgba(241,196,15,.3);background:rgba(241,196,15,.04)}
+  .branch.scale .branch-card{border-color:rgba(26,188,156,.3);background:rgba(26,188,156,.04)}
+  .branch-trigger{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;margin-bottom:6px}
+  .branch.kill .branch-trigger{color:#FF6B6B}
+  .branch.iterate .branch-trigger{color:var(--gold)}
+  .branch.scale .branch-trigger{color:var(--teal)}
+  .branch-action{font-size:12px;color:var(--muted);line-height:1.5}
+
+  /* WINNER VARIATION RULE */
+  .variation-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:24px}
+  .variation-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+  .variation-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
+  .var-step{padding:14px 16px;text-align:center;border-right:1px solid var(--border)}
+  .var-step:last-child{border-right:none}
+  .var-badge{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:8px}
+  .var-step:nth-child(1) .var-badge{background:rgba(26,188,156,.12);color:var(--teal)}
+  .var-step:nth-child(2) .var-badge{background:rgba(168,85,247,.12);color:var(--purple)}
+  .var-step:nth-child(3) .var-badge{background:rgba(241,196,15,.12);color:var(--gold)}
+  .var-name{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px}
+  .var-desc{font-size:11px;color:var(--muted);line-height:1.4}
+
+  /* METRICS TABLE */
+  .metrics-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;text-align:center}
+  .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .metric-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center}
+  .metric-name{font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
+  .metric-val{font-family: 'Bebas Neue', sans-serif;font-size:18px;font-weight:800;color:var(--gold);margin-bottom:3px}
+  .metric-note{font-size:10px;color:var(--muted)}
+
+  .rule-box{background:rgba(241,196,15,.06);border:1px solid rgba(241,196,15,.2);border-radius:12px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start}
+  .rule-icon{font-size:22px;flex-shrink:0}
+  .rule-text{font-size:13px;color:var(--muted);line-height:1.6}
+  .rule-text strong{color:var(--gold);font-weight:600}
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
+  .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  table td { border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
+  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
+  .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
+  .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .dashboard { background: #111111 !important; border-color: #1f1f1f !important; }
+  .dash-header { background: #0A0A0A !important; }
+  .kpi-row { border-color: #1f1f1f !important; }
+  .kpi { border-color: #1f1f1f !important; }
+  .mid-row { border-color: #1f1f1f !important; }
+  .mid-section { border-color: #1f1f1f !important; }
+  .bottom-row { border-color: #1f1f1f !important; }
+  .bottom-section { border-color: #1f1f1f !important; }
+  .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
+  .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+
+</style>
+</head>
+<body>
+  <div class="lesson-tag">Module 2 · Lesson 5 · VIERAOS Free Course</div>
+  <h1>Test, Kill & <span>Scale</span></h1>
+  <p class="subtitle">The 7-day rule. The kill trigger. The scale trigger. Know these three things and you'll never waste ad budget again.</p>
+
+  <div class="diagram">
+
+    <!-- DECISION TREE -->
+    <div class="tree">
+      <div class="tree-node start">
+        <div class="node-label">Launch</div>
+        <div class="node-title">ABO campaign goes live</div>
+        <div class="node-sub">3–4 creatives · Broad audience · Advantage+ on</div>
+      </div>
+      <div class="tree-arrow">↓</div>
+      <div class="tree-node">
+        <div class="node-label">The only rule</div>
+        <div class="node-title">Do not touch it for 7 days</div>
+        <div class="node-sub">No optimising, no pausing, no "just checking". Let Meta learn.</div>
+      </div>
+      <div class="tree-arrow">↓</div>
+      <div class="tree-node decision">
+        <div class="node-label">Day 7 — Check your numbers</div>
+        <div class="node-title">What is the ROAS on each ad?</div>
+      </div>
+    </div>
+
+    <!-- BRANCHES -->
+    <div class="branches">
+      <div class="branch kill">
+        <div class="branch-label">ROAS below 1:1</div>
+        <div class="branch-line"></div>
+        <div class="branch-card">
+          <div class="branch-trigger">Kill it</div>
+          <div class="branch-action">Spending more than earning. Turn it off immediately. Don't negotiate. Don't give it "one more day".</div>
+        </div>
+      </div>
+      <div class="branch iterate">
+        <div class="branch-label">ROAS 1:1 to 2:1</div>
+        <div class="branch-line"></div>
+        <div class="branch-card">
+          <div class="branch-trigger">Iterate</div>
+          <div class="branch-action">Something is working but not enough. Change ONE variable — hook only, or creative only, or copy only. Never two things at once.</div>
+        </div>
+      </div>
+      <div class="branch scale">
+        <div class="branch-label">ROAS above 2:1</div>
+        <div class="branch-line"></div>
+        <div class="branch-card">
+          <div class="branch-trigger">Scale it</div>
+          <div class="branch-action">Winner found. Increase budget by 20% every 3 days. Create 3 variations before testing any new concepts.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WINNER VARIATION -->
+    <div class="variation-box">
+      <div class="variation-title">⚡ The Winner Variation Rule — Do This Before Testing Anything New</div>
+      <div class="variation-steps">
+        <div class="var-step">
+          <div class="var-badge">Variation 1</div>
+          <div class="var-name">Change the hook only</div>
+          <div class="var-desc">Same body copy, same CTA, same creative format. Just swap the first 3 seconds or opening line.</div>
+        </div>
+        <div class="var-step">
+          <div class="var-badge">Variation 2</div>
+          <div class="var-name">Change the creative only</div>
+          <div class="var-desc">Same copy. Different visual format — talking head → static, or B-roll → UGC. Same message, new fingerprint.</div>
+        </div>
+        <div class="var-step">
+          <div class="var-badge">Variation 3</div>
+          <div class="var-name">Change the copy only</div>
+          <div class="var-desc">Same creative. New body copy — different agitation angle, different buyer stage, slightly different CTA.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- METRICS -->
+    <div class="metrics-title">The numbers that actually matter</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-name">ROAS target</div>
+        <div class="metric-val">2:1+</div>
+        <div class="metric-note">Minimum to scale. 3:1+ = strong winner.</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">CPP target</div>
+        <div class="metric-val">≤50%</div>
+        <div class="metric-note">Cost per purchase ≤ 50% of front-end price</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">Scale increment</div>
+        <div class="metric-val">+20%</div>
+        <div class="metric-note">Budget increase every 3 days when ROAS holds</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">Kill threshold</div>
+        <div class="metric-val">$0</div>
+        <div class="metric-note">Spent over CPP target with zero sales → off</div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text"><strong>The mistake that bleeds budgets:</strong> Turning off ads before day 7 because "it's not working yet." Meta's learning phase needs time and data. An ad that looks dead at day 2 can turn into a winner by day 5. <strong>The 7-day rule is the single most important habit to build.</strong> Set it and leave it alone.</div>
+    </div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+</body>
+</html>

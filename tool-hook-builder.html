@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hook Formula Builder — VIERAOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+  .tool-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;text-align:center}
+  h1{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
+  h1 span{background:linear-gradient(90deg,var(--purple),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;max-width:560px}
+  .tool{width:100%;max-width:720px}
+
+  .form-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+  .form-title{font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--purple);margin-bottom:16px}
+  .input-group{margin-bottom:14px}
+  label{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:5px}
+  input[type=text],textarea,select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:#fff;font-family: 'Inter', sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+  input[type=text]:focus,textarea:focus,select:focus{border-color:var(--purple)}
+  textarea{min-height:70px;resize:vertical}
+  select{cursor:pointer}
+  option{background:var(--card)}
+  .input-hint{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .gen-btn{width:100%;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:10px;padding:15px;font-family: 'Bebas Neue', sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:.05em;transition:opacity .2s;margin-bottom:20px}
+  .gen-btn:hover{opacity:.9}
+
+  /* HOOKS OUTPUT */
+  .hooks-output{display:none;flex-direction:column;gap:12px}
+  .hooks-output.show{display:flex}
+  .hooks-title{font-family: 'Bebas Neue', sans-serif;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:4px}
+  .hook-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;position:relative}
+  .hook-type-badge{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:12px;display:inline-block;margin-bottom:10px}
+  .hook-card:nth-child(odd) .hook-type-badge{background:rgba(168,85,247,.12);color:var(--purple)}
+  .hook-card:nth-child(even) .hook-type-badge{background:rgba(26,188,156,.12);color:var(--teal)}
+  .hook-text{font-size:15px;color:#fff;line-height:1.5;margin-bottom:10px}
+  .hook-actions{display:flex;gap:8px}
+  .copy-btn{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;padding:6px 12px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s}
+  .copy-btn:hover{background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.4);color:var(--purple)}
+  .copy-btn.copied{background:rgba(26,188,156,.1);border-color:rgba(26,188,156,.4);color:var(--teal)}
+
+  .reset-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:10px 20px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .2s;align-self:center;margin-top:4px}
+  .reset-btn:hover{border-color:var(--purple);color:var(--text)}
+
+  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+
+  /* ── MANUS BRAND OVERRIDES ── */
+  body { background: #0A0A0A !important; }
+  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 44px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
+  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  .footer, .page-footer { color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; opacity: 0.6; }
+  .form-box, .add-section, .input-panel { background: #111111 !important; border-color: #2a2a2a !important; }
+  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
+  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
+  .primary-btn, .gen-btn, .calc-btn, .gen-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
+  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
+  .rule-note, .tip-box, .rule-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.18) !important; }
+  table th { background: #111111 !important; color: #888 !important; }
+  .kpi-card, .total-card, .tracker-wrap, .table-wrap, .script-box, .preview-box, .checklist-box, .preview-section, .score-card, .audit-section { background: #111111 !important; border-color: #2a2a2a !important; }
+  .tw-head, .tw-header, .weeks-header, .sb-header, .preview-head { background: #0A0A0A !important; border-color: #1f1f1f !important; }
+  .verdict-box.green { background: rgba(45,212,191,0.08) !important; }
+  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .checkbox { border-color: #2a2a2a !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox::after { color: #000 !important; }
+  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .hook-card { background: #111111 !important; border-color: #2a2a2a !important; }
+  .result-hero { background: rgba(241,196,15,0.08) !important; border-color: rgba(241,196,15,0.3) !important; }
+  .res-card { background: #111111 !important; border-color: #2a2a2a !important; }
+
+</style>
+</head>
+<body>
+  <div class="tool-tag">Module 2 Tool · VIERAOS Free Course</div>
+  <h1>Hook Formula <span>Builder</span></h1>
+  <p class="subtitle">Fill in your offer details and get 6 scroll-stopping hooks — ready to use in your ads and content.</p>
+
+  <div class="tool">
+    <div class="form-section">
+      <div class="form-title">Your offer + audience</div>
+      <div class="input-group">
+        <label>Who is this for? (be specific)</label>
+        <input type="text" id="audience" placeholder="Coaches and digital product sellers who are already running ads">
+        <div class="input-hint">The more specific, the better the hooks</div>
+      </div>
+      <div class="input-group">
+        <label>What's the desired outcome?</label>
+        <input type="text" id="outcome" placeholder="Get qualified leads booking calls in their DMs automatically">
+      </div>
+      <div class="input-group">
+        <label>What's the main pain they have right now?</label>
+        <input type="text" id="pain" placeholder="Spending on ads but getting zero qualified DMs or calls booked">
+      </div>
+      <div class="input-group">
+        <label>What's the timeframe or mechanism?</label>
+        <input type="text" id="mechanism" placeholder="In 48 hours — AI setter built and running in their DMs">
+        <div class="input-hint">Optional but makes hooks much stronger</div>
+      </div>
+      <div class="input-group">
+        <label>What objection do they have?</label>
+        <input type="text" id="objection" placeholder="Without posting every day or being glued to their phone">
+      </div>
+    </div>
+
+    <button class="gen-btn" onclick="generateHooks()">Generate My Hooks</button>
+
+    <div class="hooks-output" id="hooksOutput">
+      <div class="hooks-title">Your 6 hooks — copy and test</div>
+      <div id="hooksList"></div>
+      <button class="reset-btn" onclick="resetTool()">Start Over</button>
+    </div>
+  </div>
+
+  <div class="footer">VIERAOS · AI Sales Machine</div>
+
+<script>
+function generateHooks() {
+  const audience = document.getElementById('audience').value.trim();
+  const outcome = document.getElementById('outcome').value.trim();
+  const pain = document.getElementById('pain').value.trim();
+  const mechanism = document.getElementById('mechanism').value.trim();
+  const objection = document.getElementById('objection').value.trim();
+
+  if (!audience || !outcome || !pain) {
+    alert('Please fill in audience, desired outcome and main pain at minimum.');
+    return;
+  }
+
+  const hooks = [
+    {
+      type: 'Pain Hook',
+      text: `If you're ${pain.toLowerCase()}, this is for you.`
+    },
+    {
+      type: 'Outcome Hook',
+      text: `How to ${outcome.toLowerCase()}${mechanism ? ' — ' + mechanism.toLowerCase() : ''}.`
+    },
+    {
+      type: 'Contrast Hook',
+      text: `Stop ${pain.toLowerCase().replace('spending','wasting').replace('running','posting')}. Here's what actually gets you ${outcome.toLowerCase().split(' ').slice(0,5).join(' ')} instead.`
+    },
+    {
+      type: 'Specificity Hook',
+      text: `${audience.split(' ').slice(0,5).join(' ')}: here's how to ${outcome.toLowerCase()}${objection ? ' — ' + objection.toLowerCase() : ''}.`
+    },
+    {
+      type: 'Story Hook',
+      text: `I was ${pain.toLowerCase().split(' ').slice(0,8).join(' ')} — until I built a system that now ${outcome.toLowerCase().split(' ').slice(0,7).join(' ')} automatically.`
+    },
+    {
+      type: 'Controversy Hook',
+      text: `The reason your ads aren't working isn't your creative — it's what happens after the click. Here's the fix.`
+    }
+  ];
+
+  const list = document.getElementById('hooksList');
+  list.innerHTML = '';
+
+  hooks.forEach((hook, i) => {
+    const card = document.createElement('div');
+    card.className = 'hook-card';
+    card.innerHTML = `
+      <div class="hook-type-badge">${hook.type}</div>
+      <div class="hook-text">${hook.text}</div>
+      <div class="hook-actions">
+        <button class="copy-btn" onclick="copyHook(this, '${hook.text.replace(/'/g,"\\'")}')">Copy hook</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  document.getElementById('hooksOutput').classList.add('show');
+}
+
+function copyHook(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy hook'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function resetTool() {
+  ['audience','outcome','pain','mechanism','objection'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('hooksOutput').classList.remove('show');
+  document.getElementById('hooksList').innerHTML = '';
+}
+</script>
+</body>
+</html>
