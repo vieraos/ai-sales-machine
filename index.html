@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Sales Machine — Free Tool Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A0A0A;
+    --card: #111111;
+    --card2: #181818;
+    --border: #2a2a2a;
+    --gold: #D4A843;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+    --coral: #FF6B6B;
+    --text: #FFFFFF;
+    --muted: #888888;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--navy);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding:60px 24px}
+
+  .header{text-align:center;margin-bottom:64px}
+  .eyebrow{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--purple);margin-bottom:14px}
+  h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,6vw,72px);line-height:1;margin-bottom:16px}
+  h1 span{background:linear-gradient(90deg,var(--purple),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto;line-height:1.6}
+
+  .section-label{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+
+  /* TOOLKITS */
+  .toolkits{max-width:1100px;margin:0 auto 64px}
+  .toolkit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+  .toolkit-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
+  .toolkit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--teal))}
+  .toolkit-card:hover{border-color:var(--purple);transform:translateY(-2px)}
+  .toolkit-badge{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--purple);background:rgba(192,132,252,.1);padding:4px 10px;border-radius:20px;display:inline-block;width:fit-content}
+  .toolkit-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff}
+  .toolkit-desc{font-size:13px;color:var(--muted);line-height:1.5}
+  .toolkit-cta{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.1em;color:var(--teal);margin-top:auto;display:flex;align-items:center;gap:6px}
+  .toolkit-cta::after{content:'→'}
+
+  /* TOOLS */
+  .tools{max-width:1100px;margin:0 auto}
+  .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+  .tool-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s;display:flex;flex-direction:column;gap:8px}
+  .tool-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+  .tool-icon{font-size:22px;margin-bottom:2px}
+  .tool-name{font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;letter-spacing:.03em}
+  .tool-desc{font-size:12px;color:var(--muted);line-height:1.5}
+  .tool-open{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.1em;color:var(--teal);margin-top:auto}
+
+  .footer{text-align:center;margin-top:80px;padding-top:32px;border-top:1px solid var(--border)}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.2em;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .footer-sub{font-size:12px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Free Tool Suite</div>
+  <h1>AI Sales <span>Machine</span></h1>
+  <p class="subtitle">Everything you need to build a paid traffic system that converts cold strangers into booked calls on autopilot.</p>
+</div>
+
+<!-- TOOLKITS -->
+<div class="toolkits">
+  <div class="section-label">Toolkit Apps</div>
+  <div class="toolkit-grid">
+
+    <a href="toolkit/toolkit-1-traffic.html" class="toolkit-card">
+      <span class="toolkit-badge">Toolkit 01</span>
+      <div class="toolkit-title">Traffic System Toolkit</div>
+      <p class="toolkit-desc">Map your traffic buckets, audit your offer, and diagnose exactly why your ads aren't converting.</p>
+      <span class="toolkit-cta">Open Toolkit</span>
+    </a>
+
+    <a href="toolkit/toolkit-2-content.html" class="toolkit-card">
+      <span class="toolkit-badge">Toolkit 02</span>
+      <div class="toolkit-title">Content Engine Toolkit</div>
+      <p class="toolkit-desc">Build your authority stack, content flywheel, and video structure to turn organic into a lead machine.</p>
+      <span class="toolkit-cta">Open Toolkit</span>
+    </a>
+
+    <a href="toolkit/toolkit-3-system.html" class="toolkit-card">
+      <span class="toolkit-badge">Toolkit 03</span>
+      <div class="toolkit-title">Sales System Toolkit</div>
+      <p class="toolkit-desc">Map your full AI sales system, ManyChat flows, and hybrid handoff process end to end.</p>
+      <span class="toolkit-cta">Open Toolkit</span>
+    </a>
+
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div class="tools">
+  <div class="section-label">Standalone Tools</div>
+  <div class="tools-grid">
+
+    <a href="tools/tool-ad-spend-calculator.html" class="tool-card">
+      <div class="tool-icon">💸</div>
+      <div class="tool-name">Ad Spend Calculator</div>
+      <p class="tool-desc">Know exactly what to spend to hit your revenue target.</p>
+      <span class="tool-open">Open Tool →</span>
+    </a>
+
+    <a href="tools/tool-hook-builder.html" class="tool-card">
+      <div class="tool-icon">🎣</div>
+      <div class="tool-name">Hook Formula Builder</div>
+      <p class="tool-desc">Generate scroll-stopping hooks for ads and organic content.</p>
+      <span class="tool-open">Open Tool →</span>
+    </a>
+
+    <a href="tools/tool-7-day-ad-tracker.html" class="tool-card">
+      <div class="tool-icon">📊</div>
+      <div class="tool-name">7-Day Ad Tracker</div>
+      <p class="tool-desc">Track and optimise your ad performance day by day.</p>
+      <span class="tool-open">Open Tool →</span>
+    </a>
+
+    <a href="tools/tool-lead-gen-post-builder.html" class="tool-card">
+      <div class="tool-icon">✍️</div>
+      <div class="tool-name">Lead Gen Post Builder</div>
+      <p class="tool-desc">Build high-converting organic posts that drive DMs and optins.</p>
+      <span class="tool-open">Open Tool →</span>
+    </a>
+
+    <a href="tools/tool-profile-audit.html" class="tool-card">
+      <div class="tool-icon">🔍</div>
+      <div class="tool-name">Profile Audit Tool</div>
+      <p class="tool-desc">Score and fix your social profile so cold traffic actually converts.</p>
+      <span class="tool-open">Open Tool →</span>
+    </a>
+
+    <a href="tools/tool-setter-script-builder.html" class="tool-card">
+      <div class="tool-icon">💬</div>
+      <div class="tool-name">Setter Script Builder</div>
+      <p class="tool-desc">Build your AI-powered DM script to qualify and book leads.</p>
+      <span class="tool-open">Open Tool →</span>
+    </a>
+
+    <a href="tools/tool-performance-tracker.html" class="tool-card">
+      <div class="tool-icon">📈</div>
+      <div class="tool-name">Performance Tracker</div>
+      <p class="tool-desc">Weekly review dashboard to keep your system optimised.</p>
+      <span class="tool-open">Open Tool →</span>
+    </a>
+
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-logo">VIERAOS</div>
+  <p class="footer-sub">Part of the AI Sales Machine free course</p>
+</div>
+
+</body>
+</html>
