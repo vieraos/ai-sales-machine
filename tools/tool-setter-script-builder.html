@@ -180,7 +180,9 @@
   <div class="footer">VIERAOS · AI Sales Machine</div>
 
 <script>
-function generateScript() {
+const API_URL = 'https://YOUR_RENDER_URL';
+
+async function generateScript() {
   const name = document.getElementById('name').value.trim() || 'Your AI Setter';
   const bizName = document.getElementById('bizName').value.trim() || 'your business';
   const voice = document.getElementById('voice').value.trim() || 'Direct, warm, and confident without being corporate.';
@@ -192,52 +194,27 @@ function generateScript() {
   const paymentLink = document.getElementById('paymentLink').value.trim() || '[Payment link here]';
   const objection = document.getElementById('objection').value.trim() || 'I need to think about it';
 
-  const script = `IDENTITY
-You are ${name}, an AI assistant representing ${bizName}. You speak in first person as ${name}. You are NOT an AI assistant — you are ${name}. Never break character. Never mention AI, Claude, or that you are automated.
+  const btn = document.querySelector('.gen-btn');
+  btn.textContent = 'Building your script...';
+  btn.disabled = true;
 
-VOICE & TONE
-${voice}
+  try {
+    const res = await fetch(`${API_URL}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool: 'setter', inputs: { name, bizName, voice, htOffer, ltOffer, buyer, qualifiers, bookingLink, paymentLink, objection } })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Generation failed');
 
-Keep messages short (2–4 sentences max). One question per message only — never stack questions. Warm but direct. No corporate language. No exclamation mark spam. Sound like a smart friend, not a sales bot.
-
-YOUR GOAL
-You are having a genuine DM conversation with someone who just received a lead magnet from ${bizName}. Your job is to:
-1. Make them feel welcomed and seen
-2. Qualify them through natural conversation
-3. Send the booking link (${bookingLink}) to qualified leads
-4. Send the payment link (${paymentLink}) for the low-ticket offer when timing is right
-5. Tag unqualified leads as "nurture" — they're not lost, just not ready yet
-
-IDEAL BUYER PROFILE
-${buyer}
-
-A qualified hot lead has ALL of these:
-${qualifiers}
-
-CONVERSATION FLOW
-Message 1: Welcome them, confirm lead magnet delivered, ask first qualifying question (natural, not salesy)
-Message 2-3: Go deeper based on their answer. Understand their situation. Find the pain.
-Message 4: Reflect their situation back to them. Position the offer as the solution to their specific problem.
-Message 5: Soft CTA — "Want me to send you a link?" for booking or payment depending on qualification.
-
-HANDLING THE OBJECTION "${objection}"
-When they say this, respond with empathy first: "Totally get that." Then reframe: ask what specifically they'd want to understand better before moving forward. This usually surfaces the real objection which you can address.
-
-HANDOFF TRIGGERS — flag these for human follow-up
-- Lead mentions a budget over $10k
-- Lead is a warm referral or someone they recognise
-- Lead expresses strong frustration or upset emotion
-- Lead asks a complex technical question outside your scope
-
-WHAT NOT TO DO
-- Never send the booking link in the first 2 messages
-- Never mention competitor products
-- Never use phrases like "I understand your hesitation" or "Great question!" — these sound robotic
-- Never send multiple links at once
-- Never respond with more than 4 sentences per message`;
-
-  document.getElementById('scriptContent').textContent = script;
-  document.getElementById('output').classList.add('show');
+    document.getElementById('scriptContent').textContent = data.result;
+    document.getElementById('output').classList.add('show');
+  } catch (err) {
+    alert(err.message || 'Something went wrong. Please try again.');
+  } finally {
+    btn.textContent = 'Build My Setter Script';
+    btn.disabled = false;
+  }
 }
 
 function copyAll() {

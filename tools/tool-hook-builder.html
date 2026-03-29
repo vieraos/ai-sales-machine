@@ -131,7 +131,9 @@
   <div class="footer">VIERAOS · AI Sales Machine</div>
 
 <script>
-function generateHooks() {
+const API_URL = 'https://YOUR_RENDER_URL';
+
+async function generateHooks() {
   const audience = document.getElementById('audience').value.trim();
   const outcome = document.getElementById('outcome').value.trim();
   const pain = document.getElementById('pain').value.trim();
@@ -143,50 +145,41 @@ function generateHooks() {
     return;
   }
 
-  const hooks = [
-    {
-      type: 'Pain Hook',
-      text: `If you're ${pain.toLowerCase()}, this is for you.`
-    },
-    {
-      type: 'Outcome Hook',
-      text: `How to ${outcome.toLowerCase()}${mechanism ? ' — ' + mechanism.toLowerCase() : ''}.`
-    },
-    {
-      type: 'Contrast Hook',
-      text: `Stop ${pain.toLowerCase().replace('spending','wasting').replace('running','posting')}. Here's what actually gets you ${outcome.toLowerCase().split(' ').slice(0,5).join(' ')} instead.`
-    },
-    {
-      type: 'Specificity Hook',
-      text: `${audience.split(' ').slice(0,5).join(' ')}: here's how to ${outcome.toLowerCase()}${objection ? ' — ' + objection.toLowerCase() : ''}.`
-    },
-    {
-      type: 'Story Hook',
-      text: `I was ${pain.toLowerCase().split(' ').slice(0,8).join(' ')} — until I built a system that now ${outcome.toLowerCase().split(' ').slice(0,7).join(' ')} automatically.`
-    },
-    {
-      type: 'Controversy Hook',
-      text: `The reason your ads aren't working isn't your creative — it's what happens after the click. Here's the fix.`
-    }
-  ];
+  const btn = document.querySelector('.gen-btn');
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
 
-  const list = document.getElementById('hooksList');
-  list.innerHTML = '';
+  try {
+    const res = await fetch(`${API_URL}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool: 'hooks', inputs: { audience, outcome, pain, mechanism, objection } })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Generation failed');
 
-  hooks.forEach((hook, i) => {
-    const card = document.createElement('div');
-    card.className = 'hook-card';
-    card.innerHTML = `
-      <div class="hook-type-badge">${hook.type}</div>
-      <div class="hook-text">${hook.text}</div>
-      <div class="hook-actions">
-        <button class="copy-btn" onclick="copyHook(this, '${hook.text.replace(/'/g,"\\'")}')">Copy hook</button>
-      </div>
-    `;
-    list.appendChild(card);
-  });
-
-  document.getElementById('hooksOutput').classList.add('show');
+    const list = document.getElementById('hooksList');
+    list.innerHTML = '';
+    data.hooks.forEach((hook) => {
+      const safeText = hook.text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const card = document.createElement('div');
+      card.className = 'hook-card';
+      card.innerHTML = `
+        <div class="hook-type-badge">${hook.type}</div>
+        <div class="hook-text">${hook.text}</div>
+        <div class="hook-actions">
+          <button class="copy-btn" onclick="copyHook(this, '${safeText}')">Copy hook</button>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+    document.getElementById('hooksOutput').classList.add('show');
+  } catch (err) {
+    alert(err.message || 'Something went wrong. Please try again.');
+  } finally {
+    btn.textContent = 'Generate My Hooks';
+    btn.disabled = false;
+  }
 }
 
 function copyHook(btn, text) {

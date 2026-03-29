@@ -160,7 +160,9 @@
   <div class="footer">VIERAOS · AI Sales Machine</div>
 
 <script>
-function buildPost() {
+const API_URL = 'https://YOUR_RENDER_URL';
+
+async function buildPost() {
   const lmName = document.getElementById('lmName').value.trim() || 'my free guide';
   const lmOutcome = document.getElementById('lmOutcome').value.trim() || 'automate your lead generation';
   const keyword = document.getElementById('keyword').value.trim().toUpperCase() || 'FREE';
@@ -168,32 +170,28 @@ function buildPost() {
   const audience = document.getElementById('audience').value.trim() || 'business owners';
   const frustration = document.getElementById('frustration').value.trim() || 'spending on ads with no results';
 
-  let hook = '';
-  if (hookType === 'pain') {
-    hook = `If you're ${audience.toLowerCase()} and you're ${frustration.toLowerCase()}...\n\nYou need to see this.`;
-  } else if (hookType === 'outcome') {
-    hook = `How ${audience.toLowerCase()} are now able to ${lmOutcome.toLowerCase()} — without being online 24/7.`;
-  } else if (hookType === 'story') {
-    hook = `6 months ago I was ${frustration.toLowerCase()}.\n\nNow my system handles it automatically while I sleep.\n\nHere's what changed:`;
-  } else {
-    hook = `3 reasons why ${audience.toLowerCase()} keep ${frustration.toLowerCase().split(' ').slice(0,5).join(' ')}:\n\n(and what to do instead)`;
+  const btn = document.querySelector('.gen-btn');
+  btn.textContent = 'Writing your post...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API_URL}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool: 'post', inputs: { lmName, lmOutcome, keyword, hookType, audience, frustration } })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Generation failed');
+
+    const el = document.getElementById('postContent');
+    el.textContent = data.result;
+    el.classList.remove('empty');
+  } catch (err) {
+    alert(err.message || 'Something went wrong. Please try again.');
+  } finally {
+    btn.textContent = 'Build My Post';
+    btn.disabled = false;
   }
-
-  const body = `The problem isn't your offer. It isn't your content. It's what happens — or doesn't happen — after someone shows interest.
-
-Most ${audience.toLowerCase()} have no system for that gap. And that's where all the leads fall through.
-
-I put together ${lmName} to show you exactly how to ${lmOutcome.toLowerCase()}.
-
-It's free. It takes less than 10 minutes to read. And if you implement it, you'll never manually chase a lead again.`;
-
-  const cta = `Comment "${keyword}" below and I'll send it straight to your DMs. 👇`;
-
-  const post = `${hook}\n\n${body}\n\n${cta}`;
-
-  const el = document.getElementById('postContent');
-  el.textContent = post;
-  el.classList.remove('empty');
 }
 
 function copyPost() {
