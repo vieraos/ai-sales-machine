@@ -533,58 +533,74 @@ tr:last-child td { border-bottom: none; }
 <!-- PANEL 1: AD SPEND CALCULATOR              -->
 <!-- ══════════════════════════════════════════ -->
 <div class="panel active" id="panel-calc">
-  <div class="tool-title">Ad Spend Threshold Calculator</div>
-  <div class="tool-desc">Know exactly how much you can afford to pay per customer before you spend a dollar.</div>
+  <div class="tool-title">Ad Spend Calculator</div>
+  <div class="tool-desc">Know exactly what you can spend to get a customer — and whether your numbers actually work.</div>
 
-  <div class="form-box">
-    <span class="section-label">Your offer + numbers</span>
-    <div class="input-grid" style="margin-bottom:14px">
-      <div class="input-group">
-        <label>Front-end offer price</label>
-        <div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-price" placeholder="97"></div>
-      </div>
-      <div class="input-group">
-        <label>Average order value (with upsells)</label>
-        <div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-aov" placeholder="147"></div>
-      </div>
-      <div class="input-group">
-        <label>Est. conversion rate (%)</label>
-        <div class="input-wrap"><span class="pfx">%</span><input type="number" id="c-conv" placeholder="2"></div>
-      </div>
-      <div class="input-group">
-        <label>Target ROAS</label>
-        <div class="input-wrap"><span class="pfx" style="font-size:12px">×</span><input type="number" id="c-roas" placeholder="2" step="0.1"></div>
-      </div>
-      <div class="input-group">
-        <label>Monthly ad budget</label>
-        <div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-budget" placeholder="1000"></div>
-      </div>
-      <div class="input-group">
-        <label>Customer LTV</label>
-        <div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-ltv" placeholder="500"></div>
-      </div>
-    </div>
-    <button class="primary-btn" onclick="calcRun()">Calculate My Thresholds</button>
+  <div style="display:flex;background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:4px;margin-bottom:20px;gap:4px">
+    <button id="calc-lt-btn" onclick="calcSetMode('lt')" style="flex:1;padding:10px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.08em;border:none;border-radius:7px;cursor:pointer;background:linear-gradient(135deg,var(--purple),var(--teal));color:#fff">Low-Ticket Funnel</button>
+    <button id="calc-ht-btn" onclick="calcSetMode('ht')" style="flex:1;padding:10px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.08em;border:none;border-radius:7px;cursor:pointer;background:transparent;color:var(--muted)">High-Ticket Funnel</button>
   </div>
 
-  <div class="results" id="calc-results">
-    <div class="result-hero">
-      <div class="rh-label">Maximum cost per purchase</div>
-      <div class="rh-val" id="cr-maxcpp">$0</div>
-      <div class="rh-sub">Spend more than this per sale and you're losing money</div>
+  <!-- LT FORM -->
+  <div id="calc-lt-form">
+    <div class="form-box">
+      <span class="section-label">LT · Product / Course / Membership</span>
+      <div class="input-grid" style="margin-bottom:14px">
+        <div class="input-group"><label>Front-end offer price</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-price" placeholder="97"></div></div>
+        <div class="input-group"><label>AOV (incl. upsells) — same as price if no upsells</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-aov" placeholder="147"></div></div>
+        <div class="input-group"><label>Sales page conv. rate — use 2% if unsure</label><div class="input-wrap"><span class="pfx">%</span><input type="number" id="c-conv" placeholder="2"></div></div>
+        <div class="input-group"><label>Target ROAS — 2× is a good start</label><div class="input-wrap"><span class="pfx" style="font-size:12px">×</span><input type="number" id="c-roas" placeholder="2" step="0.1"></div></div>
+        <div class="input-group"><label>Monthly ad budget</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-budget" placeholder="1000"></div></div>
+        <div class="input-group"><label>LTV — if one purchase only, use AOV</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="c-ltv" placeholder="500"></div></div>
+      </div>
+      <button class="primary-btn" onclick="calcRunLT()">Calculate My Numbers</button>
     </div>
-    <div class="result-grid-3">
-      <div class="res-card"><div class="rc-label">Break-even CPP</div><div class="rc-val" id="cr-beven">$0</div><div class="rc-note">Spending exactly what you earn</div></div>
-      <div class="res-card"><div class="rc-label">Max CPL</div><div class="rc-val" id="cr-maxcpl">$0</div><div class="rc-note">Based on your conversion rate</div></div>
-      <div class="res-card"><div class="rc-label">Est. monthly sales</div><div class="rc-val" id="cr-sales">0</div><div class="rc-note">At your budget + conv rate</div></div>
+    <div class="results" id="calc-lt-results">
+      <div class="result-hero"><div class="rh-label">Max Cost Per Purchase (CPP)</div><div class="rh-val" id="cr-maxcpp">$0</div><div class="rh-sub">Spend more than this per sale and you're losing money at your target ROAS</div></div>
+      <div class="result-grid-3">
+        <div class="res-card"><div class="rc-label">Break-even CPP</div><div class="rc-val" id="cr-beven">$0</div><div class="rc-note">Spending exactly what you earn</div></div>
+        <div class="res-card"><div class="rc-label">Max CPL</div><div class="rc-val" id="cr-maxcpl">$0</div><div class="rc-note">Based on your conv rate</div></div>
+        <div class="res-card"><div class="rc-label">Est. monthly sales</div><div class="rc-val" id="cr-sales">0</div><div class="rc-note">At your budget + conv rate</div></div>
+      </div>
+      <div class="result-grid-3">
+        <div class="res-card"><div class="rc-label">Monthly revenue est.</div><div class="rc-val" id="cr-rev">$0</div><div class="rc-note">AOV × projected sales</div></div>
+        <div class="res-card"><div class="rc-label">Projected ROAS</div><div class="rc-val" id="cr-roas">0×</div><div class="rc-note">Return on your budget</div></div>
+        <div class="res-card"><div class="rc-label">LTV-adjusted max CPP</div><div class="rc-val" id="cr-ltvcpp">$0</div><div class="rc-note">Factoring full customer value</div></div>
+      </div>
+      <div class="verdict-box" id="cr-verdict"></div>
+      <div style="text-align:center"><button class="ghost-btn" onclick="calcReset()">Reset</button></div>
     </div>
-    <div class="result-grid-3">
-      <div class="res-card"><div class="rc-label">Monthly revenue est.</div><div class="rc-val" id="cr-rev">$0</div><div class="rc-note">Front-end × projected sales</div></div>
-      <div class="res-card"><div class="rc-label">Target ROAS CPP</div><div class="rc-val" id="cr-tcpp">$0</div><div class="rc-note">CPP needed to hit your ROAS</div></div>
-      <div class="res-card"><div class="rc-label">LTV-adjusted max CPP</div><div class="rc-val" id="cr-ltvcpp">$0</div><div class="rc-note">Factoring full customer value</div></div>
+  </div>
+
+  <!-- HT FORM -->
+  <div id="calc-ht-form" style="display:none">
+    <div class="form-box">
+      <span class="section-label">HT · Coaching / Consulting / Done-For-You</span>
+      <div class="input-grid" style="margin-bottom:14px">
+        <div class="input-group"><label>Offer price</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="ch-price" placeholder="3000"></div></div>
+        <div class="input-group"><label>Monthly revenue target</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="ch-target" placeholder="15000"></div></div>
+        <div class="input-group"><label>Close rate — 20–25% is typical</label><div class="input-wrap"><span class="pfx">%</span><input type="number" id="ch-close" placeholder="25"></div></div>
+        <div class="input-group"><label>Show rate — aim for 70%</label><div class="input-wrap"><span class="pfx">%</span><input type="number" id="ch-show" placeholder="70"></div></div>
+        <div class="input-group"><label>Monthly ad budget</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="ch-budget" placeholder="3000"></div></div>
+        <div class="input-group"><label>Client LTV — use offer price if unsure</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="ch-ltv" placeholder="3000"></div></div>
+      </div>
+      <button class="primary-btn" onclick="calcRunHT()">Calculate My Numbers</button>
     </div>
-    <div class="verdict-box" id="cr-verdict"></div>
-    <div style="text-align:center"><button class="ghost-btn" onclick="calcReset()">Reset</button></div>
+    <div class="results" id="calc-ht-results">
+      <div class="result-hero"><div class="rh-label">Max Customer Acquisition Cost (CAC)</div><div class="rh-val" id="ch-cac">$0</div><div class="rh-sub">The most you should spend in ads to acquire one client</div></div>
+      <div class="result-grid-3">
+        <div class="res-card"><div class="rc-label">Clients needed / month</div><div class="rc-val" id="ch-clients">0</div><div class="rc-note">To hit your revenue target</div></div>
+        <div class="res-card"><div class="rc-label">Calls needed / month</div><div class="rc-val" id="ch-calls">0</div><div class="rc-note">At your close + show rate</div></div>
+        <div class="res-card"><div class="rc-label">Max cost per call</div><div class="rc-val" id="ch-costcall">$0</div><div class="rc-note">Max spend to book one call</div></div>
+      </div>
+      <div class="result-grid-3">
+        <div class="res-card"><div class="rc-label">Budget covers</div><div class="rc-val" id="ch-budgetclients">0</div><div class="rc-note">Projected clients from budget</div></div>
+        <div class="res-card"><div class="rc-label">Projected revenue</div><div class="rc-val" id="ch-projrev">$0</div><div class="rc-note">From your ad budget</div></div>
+        <div class="res-card"><div class="rc-label">LTV-adjusted max CAC</div><div class="rc-val" id="ch-ltvcac">$0</div><div class="rc-note">Factoring full client value</div></div>
+      </div>
+      <div class="verdict-box" id="ch-verdict"></div>
+      <div style="text-align:center"><button class="ghost-btn" onclick="calcResetHT()">Reset</button></div>
+    </div>
   </div>
 </div>
 
@@ -687,7 +703,18 @@ function showPanel(id) {
 }
 
 // ── CALCULATOR ──
-function calcRun() {
+let calcMode = 'lt';
+function calcSetMode(m) {
+  calcMode = m;
+  document.getElementById('calc-lt-form').style.display = m === 'lt' ? 'block' : 'none';
+  document.getElementById('calc-ht-form').style.display = m === 'ht' ? 'block' : 'none';
+  document.getElementById('calc-lt-btn').style.background = m === 'lt' ? 'linear-gradient(135deg,var(--purple),var(--teal))' : 'transparent';
+  document.getElementById('calc-lt-btn').style.color = m === 'lt' ? '#fff' : 'var(--muted)';
+  document.getElementById('calc-ht-btn').style.background = m === 'ht' ? 'linear-gradient(135deg,var(--purple),var(--teal))' : 'transparent';
+  document.getElementById('calc-ht-btn').style.color = m === 'ht' ? '#fff' : 'var(--muted)';
+}
+function fmtC(n){ return '$' + Math.round(n).toLocaleString(); }
+function calcRunLT() {
   const price  = parseFloat(document.getElementById('c-price').value)  || 0;
   const aov    = parseFloat(document.getElementById('c-aov').value)    || price;
   const conv   = parseFloat(document.getElementById('c-conv').value)   || 0;
@@ -701,30 +728,70 @@ function calcRun() {
   const estSales = estLeads * (conv / 100);
   const estRev   = estSales * aov;
   const ltvCpp   = ltv / roas;
-  document.getElementById('cr-maxcpp').textContent  = '$' + maxCpp.toFixed(0);
-  document.getElementById('cr-beven').textContent   = '$' + aov.toFixed(0);
+  const projRoas = estRev / budget;
+  document.getElementById('cr-maxcpp').textContent  = fmtC(maxCpp);
+  document.getElementById('cr-beven').textContent   = fmtC(aov);
   document.getElementById('cr-maxcpl').textContent  = '$' + maxCpl.toFixed(2);
   document.getElementById('cr-sales').textContent   = Math.round(estSales);
-  document.getElementById('cr-rev').textContent     = '$' + estRev.toFixed(0);
-  document.getElementById('cr-tcpp').textContent    = '$' + maxCpp.toFixed(0);
-  document.getElementById('cr-ltvcpp').textContent  = '$' + ltvCpp.toFixed(0);
+  document.getElementById('cr-rev').textContent     = fmtC(estRev);
+  document.getElementById('cr-roas').textContent    = projRoas.toFixed(1) + '×';
+  document.getElementById('cr-ltvcpp').textContent  = fmtC(ltvCpp);
   const actualCpp = estSales > 0 ? budget / estSales : 999;
   const vEl = document.getElementById('cr-verdict');
   if (actualCpp <= maxCpp) {
     vEl.className = 'verdict-box green';
-    vEl.innerHTML = `<strong>✅ Your numbers work.</strong> Projected CPP of $${actualCpp.toFixed(0)} sits below your $${maxCpp.toFixed(0)} threshold. You're profitable at these numbers — focus on volume.`;
+    vEl.innerHTML = `<strong>✅ Your numbers work.</strong> Projected CPP of ${fmtC(actualCpp)} sits below your ${fmtC(maxCpp)} threshold. You're profitable — focus on volume.`;
   } else if (actualCpp <= aov) {
     vEl.className = 'verdict-box gold';
-    vEl.innerHTML = `<strong>⚠️ Marginal.</strong> CPP of $${actualCpp.toFixed(0)} is below break-even but above target ROAS. Improve conversion rate, lift AOV through upsells, or factor in your full LTV ($${ltv}) to justify the spend.`;
+    vEl.innerHTML = `<strong>⚠️ Marginal.</strong> CPP of ${fmtC(actualCpp)} is below break-even but above target ROAS. Lift AOV through upsells or factor your full LTV (${fmtC(ltv)}) to justify the spend.`;
   } else {
     vEl.className = 'verdict-box red';
-    vEl.innerHTML = `<strong>🚨 Doesn't work yet.</strong> Projected CPP of $${actualCpp.toFixed(0)} is over break-even of $${aov.toFixed(0)}. Fix conversion rate, raise front-end price, or build a stronger upsell stack before spending.`;
+    vEl.innerHTML = `<strong>🚨 Doesn't work yet.</strong> Projected CPP of ${fmtC(actualCpp)} is over break-even of ${fmtC(aov)}. Fix conv rate, raise price, or build upsells before scaling spend.`;
   }
-  document.getElementById('calc-results').classList.add('show');
+  document.getElementById('calc-lt-results').classList.add('show');
+}
+function calcRunHT() {
+  const price  = parseFloat(document.getElementById('ch-price').value)  || 0;
+  const target = parseFloat(document.getElementById('ch-target').value) || 0;
+  const close  = parseFloat(document.getElementById('ch-close').value)  || 0;
+  const show   = parseFloat(document.getElementById('ch-show').value)   || 70;
+  const budget = parseFloat(document.getElementById('ch-budget').value) || 0;
+  const ltv    = parseFloat(document.getElementById('ch-ltv').value)    || price;
+  if (!price || !target || !close || !budget) { alert('Fill in offer price, revenue target, close rate and budget.'); return; }
+  const clientsNeeded = target / price;
+  const callsNeeded   = clientsNeeded / (close / 100) / (show / 100);
+  const maxCac        = budget / clientsNeeded;
+  const costPerCall   = budget / callsNeeded;
+  const budgetClients = budget / maxCac;
+  const projRev       = budgetClients * price;
+  const ltvCac        = ltv / 3;
+  document.getElementById('ch-cac').textContent         = fmtC(maxCac);
+  document.getElementById('ch-clients').textContent     = Math.ceil(clientsNeeded);
+  document.getElementById('ch-calls').textContent       = Math.ceil(callsNeeded);
+  document.getElementById('ch-costcall').textContent    = fmtC(costPerCall);
+  document.getElementById('ch-budgetclients').textContent = Math.floor(budgetClients) + ' clients';
+  document.getElementById('ch-projrev').textContent     = fmtC(projRev);
+  document.getElementById('ch-ltvcac').textContent      = fmtC(ltvCac);
+  const vEl = document.getElementById('ch-verdict');
+  if (projRev >= target) {
+    vEl.className = 'verdict-box green';
+    vEl.innerHTML = `<strong>✅ Budget covers your target.</strong> At ${fmtC(budget)}/mo with ${close}% close and ${show}% show rate, you project ${fmtC(projRev)}. Max CAC is ${fmtC(maxCac)}, cost per booked call is ${fmtC(costPerCall)}. Watch these two numbers weekly.`;
+  } else if (projRev >= target * 0.7) {
+    vEl.className = 'verdict-box gold';
+    vEl.innerHTML = `<strong>⚠️ Close but short.</strong> Projecting ${fmtC(projRev)} vs ${fmtC(target)} target. Increase budget, improve close rate, or fix no-shows with better reminders. Your LTV (${fmtC(ltv)}) means you can justify up to ${fmtC(ltvCac)} per client.`;
+  } else {
+    vEl.className = 'verdict-box red';
+    vEl.innerHTML = `<strong>🚨 Gap is too large.</strong> Projecting ${fmtC(projRev)} — well short of ${fmtC(target)}. Increase budget to ~${fmtC(budget * (target / projRev))}, improve close rate above ${close}%, or raise your price point.`;
+  }
+  document.getElementById('calc-ht-results').classList.add('show');
 }
 function calcReset() {
   ['c-price','c-aov','c-conv','c-roas','c-budget','c-ltv'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('calc-results').classList.remove('show');
+  document.getElementById('calc-lt-results').classList.remove('show');
+}
+function calcResetHT() {
+  ['ch-price','ch-target','ch-close','ch-show','ch-budget','ch-ltv'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('calc-ht-results').classList.remove('show');
 }
 
 // ── HOOK BUILDER ──
