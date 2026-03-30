@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ad Spend Threshold Calculator — VIERAOS</title>
+<title>Ad Spend Calculator — VIERAOS</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #0A0A0A;
     --card: #111111;
-    --card2: #181818;
     --border: #2a2a2a;
     --gold: #D4A843;
     --purple: #c084fc;
@@ -19,217 +18,404 @@
     --muted: #888888;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--navy);color:var(--text);font-family: 'Inter', sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
-  .tool-tag{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center}
-  h1{font-family: 'Bebas Neue', sans-serif;font-size:28px;font-weight:800;text-align:center;color:#fff;margin-bottom:6px}
-  h1 span{background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;max-width:560px}
+  body{background:var(--navy);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+  .tool-tag{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center}
+  h1{font-family:'Bebas Neue',sans-serif;font-size:44px;font-weight:400;text-align:center;color:#fff;margin-bottom:6px;letter-spacing:.04em}
+  h1 span{background:linear-gradient(90deg,var(--gold),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{font-size:14px;color:var(--muted);text-align:center;margin-bottom:32px;max-width:560px}
   .tool{width:100%;max-width:700px}
 
+  /* MODE TOGGLE */
+  .mode-toggle{display:flex;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:28px;gap:4px}
+  .mode-btn{flex:1;padding:12px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.1em;border:none;border-radius:9px;cursor:pointer;transition:all .2s;color:var(--muted);background:transparent}
+  .mode-btn.active{background:linear-gradient(135deg,var(--purple),var(--teal));color:#fff}
+  .mode-label{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;padding:8px 14px;border-radius:8px;display:inline-block}
+  .mode-label.lt{color:var(--teal);background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.15)}
+  .mode-label.ht{color:var(--purple);background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.15)}
+
+  /* INPUTS */
   .input-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
   .input-group{display:flex;flex-direction:column;gap:6px}
   .input-group.full{grid-column:1/-1}
-  label{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+  .label-row{display:flex;align-items:center;gap:6px}
+  label{font-family:'Bebas Neue',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+  .tip{width:15px;height:15px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:9px;font-family:'Inter',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+  .tip:hover .tip-text{display:block}
+  .tip-text{display:none;position:absolute;left:20px;top:-4px;background:#1a1a1a;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:12px;color:#ccc;line-height:1.5;width:220px;z-index:10;font-family:'Inter',sans-serif;font-weight:400;text-transform:none;letter-spacing:0}
   .input-wrap{position:relative}
-  .prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family: 'Bebas Neue', sans-serif;font-size:14px;color:var(--muted);pointer-events:none}
-  input[type=number]{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px 12px 30px;color:#fff;font-family: 'Inter', sans-serif;font-size:16px;outline:none;transition:border-color .2s}
-  input[type=number]:focus{border-color:var(--purple)}
+  .prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--muted);pointer-events:none}
+  input[type=number]{width:100%;background:#0A0A0A;border:1px solid var(--border);border-radius:10px;padding:12px 14px 12px 28px;color:#fff;font-family:'Inter',sans-serif;font-size:16px;outline:none;transition:border-color .2s}
+  input[type=number]:focus{border-color:var(--gold)}
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+  input.no-prefix{padding-left:14px}
 
-  .calc-btn{width:100%;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:10px;padding:15px;font-family: 'Bebas Neue', sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:.05em;transition:opacity .2s;margin-bottom:20px}
+  .calc-btn{width:100%;background:#D4A843;border:none;border-radius:10px;padding:15px;font-family:'Bebas Neue',sans-serif;font-size:14px;font-weight:800;color:#000;cursor:pointer;letter-spacing:.05em;transition:opacity .2s;margin-bottom:20px}
   .calc-btn:hover{opacity:.9}
 
   /* RESULTS */
   .results{display:none;flex-direction:column;gap:14px}
   .results.show{display:flex}
-
-  .result-hero{background:linear-gradient(135deg,rgba(241,196,15,.12),rgba(168,85,247,.08));border:1px solid rgba(241,196,15,.35);border-radius:14px;padding:24px;text-align:center}
-  .result-hero-label{font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:8px}
-  .result-hero-val{font-family: 'Bebas Neue', sans-serif;font-size:42px;font-weight:800;color:var(--gold);margin-bottom:4px}
+  .result-hero{background:rgba(241,196,15,.08);border:1px solid rgba(241,196,15,.3);border-radius:14px;padding:24px;text-align:center}
+  .result-hero-label{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .result-hero-val{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--gold);margin-bottom:4px}
   .result-hero-sub{font-size:13px;color:var(--muted)}
-
-  .result-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .result-grid.two{grid-template-columns:repeat(2,1fr)}
   .result-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
-  .result-label{font-family: 'Bebas Neue', sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
-  .result-val{font-family: 'Bebas Neue', sans-serif;font-size:20px;font-weight:800;color:var(--teal);margin-bottom:3px}
-  .result-note{font-size:10px;color:var(--muted);line-height:1.3}
-
+  .result-label{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .result-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--teal);margin-bottom:3px}
+  .result-note{font-size:10px;color:var(--muted);line-height:1.4}
   .verdict{border-radius:12px;padding:16px 18px;font-size:13px;line-height:1.6}
   .verdict.green{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);color:#4ade80}
   .verdict.gold{background:rgba(241,196,15,.06);border:1px solid rgba(241,196,15,.2);color:var(--gold)}
   .verdict.red{background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.2);color:#FF6B6B}
   .verdict strong{font-weight:700}
-
-  .reset-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:10px 20px;color:var(--muted);font-family: 'Bebas Neue', sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .2s;align-self:center}
+  .reset-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:10px 20px;color:var(--muted);font-family:'Bebas Neue',sans-serif;font-size:12px;cursor:pointer;transition:border-color .2s;align-self:center}
   .reset-btn:hover{border-color:var(--purple);color:var(--text)}
 
-  .footer{margin-top:32px;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
+  .footer{margin-top:32px;font-family:'Bebas Neue',sans-serif;font-size:11px;color:var(--gold);letter-spacing:.15em;opacity:.6}
 
-  /* ── MANUS BRAND OVERRIDES ── */
-  body { background: #0A0A0A !important; }
-  h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 44px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
-  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
-  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
-  .footer, .page-footer { color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; opacity: 0.6; }
-  .form-box, .add-section, .input-panel { background: #111111 !important; border-color: #2a2a2a !important; }
-  input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
-  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
-  .primary-btn, .gen-btn, .calc-btn, .gen-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
-  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
-  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
-  .rule-note, .tip-box, .rule-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.18) !important; }
-  table th { background: #111111 !important; color: #888 !important; }
-  .kpi-card, .total-card, .tracker-wrap, .table-wrap, .script-box, .preview-box, .checklist-box, .preview-section, .score-card, .audit-section { background: #111111 !important; border-color: #2a2a2a !important; }
-  .tw-head, .tw-header, .weeks-header, .sb-header, .preview-head { background: #0A0A0A !important; border-color: #1f1f1f !important; }
-  .verdict-box.green { background: rgba(45,212,191,0.08) !important; }
-  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
-  .checkbox { border-color: #2a2a2a !important; }
-  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
-  .check-item.checked .checkbox::after { color: #000 !important; }
-  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
-  .hook-card { background: #111111 !important; border-color: #2a2a2a !important; }
-  .result-hero { background: rgba(241,196,15,0.08) !important; border-color: rgba(241,196,15,0.3) !important; }
-  .res-card { background: #111111 !important; border-color: #2a2a2a !important; }
-
+  @media(max-width:520px){
+    .input-grid{grid-template-columns:1fr}
+    .input-group.full{grid-column:1}
+    .result-grid{grid-template-columns:1fr 1fr}
+    .result-grid.two{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
-  <div class="tool-tag">Module 1 Tool · VIERAOS Free Course</div>
-  <h1>Ad Spend <span>Threshold Calculator</span></h1>
-  <p class="subtitle">Know exactly how much you can afford to spend to get a customer — before you run a single ad.</p>
 
-  <div class="tool">
-    <div class="input-grid">
-      <div class="input-group">
-        <label>Front-end offer price</label>
-        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="offerPrice" placeholder="97" min="1"></div>
-      </div>
-      <div class="input-group">
-        <label>Average order value (with upsells)</label>
-        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="aov" placeholder="147" min="1"></div>
-      </div>
-      <div class="input-group">
-        <label>Est. conversion rate</label>
-        <div class="input-wrap"><span class="prefix">%</span><input type="number" id="convRate" placeholder="2" min="0.1" max="100" style="padding-left:30px"></div>
-      </div>
-      <div class="input-group">
-        <label>Target ROAS</label>
-        <div class="input-wrap"><span class="prefix" style="left:12px;font-size:12px">×</span><input type="number" id="targetRoas" placeholder="2" min="1" step="0.1"></div>
-      </div>
-      <div class="input-group">
-        <label>Monthly ad budget available</label>
-        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="monthlyBudget" placeholder="1000" min="1"></div>
-      </div>
-      <div class="input-group">
-        <label>Customer lifetime value (LTV)</label>
-        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="ltv" placeholder="500" min="1"></div>
-      </div>
-    </div>
+<div class="tool-tag">Tool · VIERAOS Free Course</div>
+<h1>Ad Spend <span>Calculator</span></h1>
+<p class="subtitle">Know exactly what you can spend to get a customer — and whether your numbers actually work.</p>
 
-    <button class="calc-btn" onclick="calculate()">Calculate My Thresholds</button>
+<div class="tool">
 
-    <div class="results" id="results">
-      <div class="result-hero">
-        <div class="result-hero-label">Maximum cost per purchase (CPP)</div>
-        <div class="result-hero-val" id="maxCpp">$0</div>
-        <div class="result-hero-sub">Spend more than this per sale and you're losing money</div>
-      </div>
-
-      <div class="result-grid">
-        <div class="result-card">
-          <div class="result-label">Break-even CPP</div>
-          <div class="result-val" id="breakEvenCpp">$0</div>
-          <div class="result-note">At this point you're spending exactly what you earn</div>
-        </div>
-        <div class="result-card">
-          <div class="result-label">Max CPL (leads)</div>
-          <div class="result-val" id="maxCpl">$0</div>
-          <div class="result-note">Based on your conversion rate</div>
-        </div>
-        <div class="result-card">
-          <div class="result-label">Est. monthly sales</div>
-          <div class="result-val" id="estSales">0</div>
-          <div class="result-note">At your budget and conversion rate</div>
-        </div>
-      </div>
-
-      <div class="result-grid">
-        <div class="result-card">
-          <div class="result-label">Monthly revenue est.</div>
-          <div class="result-val" id="estRevenue">$0</div>
-          <div class="result-note">Front-end × projected sales</div>
-        </div>
-        <div class="result-card">
-          <div class="result-label">Target ROAS CPP</div>
-          <div class="result-val" id="targetCpp">$0</div>
-          <div class="result-note">CPP needed to hit your target ROAS</div>
-        </div>
-        <div class="result-card">
-          <div class="result-label">LTV-adjusted max CPP</div>
-          <div class="result-val" id="ltvCpp">$0</div>
-          <div class="result-note">What you can spend if factoring full LTV</div>
-        </div>
-      </div>
-
-      <div class="verdict" id="verdict"></div>
-      <button class="reset-btn" onclick="reset()">Reset</button>
-    </div>
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="setMode('lt')">Low-Ticket Funnel</button>
+    <button class="mode-btn" onclick="setMode('ht')">High-Ticket Funnel</button>
   </div>
 
-  <div class="footer">VIERAOS · AI Sales Machine</div>
+  <!-- LOW TICKET -->
+  <div id="lt-form">
+    <div class="mode-label lt">LT · Product / Course / Membership</div>
+    <div class="input-grid">
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Front-end offer price</label>
+          <div class="tip">?<span class="tip-text">The price of your main product — the first thing someone buys. E.g. $47 course, $97/mo membership.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="lt-price" placeholder="97" min="1"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Average Order Value (AOV)</label>
+          <div class="tip">?<span class="tip-text">Total revenue per customer including upsells and order bumps. If you have no upsells, AOV = your front-end price.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="lt-aov" placeholder="147" min="1"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Sales page conversion rate</label>
+          <div class="tip">?<span class="tip-text">% of people who visit your sales page and buy. Industry average is 1–3%. If you're not sure, start with 2%.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">%</span><input type="number" id="lt-conv" placeholder="2" min="0.1" max="100"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Target ROAS</label>
+          <div class="tip">?<span class="tip-text">Return on Ad Spend. 2× means for every $1 spent on ads you want $2 back. Start with 2× as a baseline.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix" style="font-size:12px">×</span><input type="number" id="lt-roas" placeholder="2" min="1" step="0.1"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Monthly ad budget</label>
+          <div class="tip">?<span class="tip-text">How much you plan to spend on ads per month. Be honest — this affects all projections.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="lt-budget" placeholder="1000" min="1"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Customer LTV</label>
+          <div class="tip">?<span class="tip-text">Lifetime Value — total revenue a customer generates over time (repeat purchases, renewals, upgrades). If you only sell once, LTV = AOV. If you have a subscription, estimate 3–6 months of payments.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="lt-ltv" placeholder="500" min="1"></div>
+      </div>
+
+    </div>
+    <button class="calc-btn" onclick="calcLT()">Calculate My Numbers</button>
+  </div>
+
+  <!-- HIGH TICKET -->
+  <div id="ht-form" style="display:none">
+    <div class="mode-label ht">HT · Coaching / Consulting / Done-For-You</div>
+    <div class="input-grid">
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Offer price</label>
+          <div class="tip">?<span class="tip-text">Your high-ticket price point. E.g. $3,000 program, $2,000/month retainer. Use the total value, not monthly if it's a lump sum.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="ht-price" placeholder="3000" min="1"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Monthly revenue target</label>
+          <div class="tip">?<span class="tip-text">How much you want to make from this offer per month. Be specific — this drives all the numbers below.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="ht-target" placeholder="15000" min="1"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Close rate</label>
+          <div class="tip">?<span class="tip-text">% of sales calls that result in a client. A good benchmark is 20–30%. If you're new, use 20%. Experienced closers average 30–40%.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">%</span><input type="number" id="ht-close" placeholder="25" min="1" max="100"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Show rate</label>
+          <div class="tip">?<span class="tip-text">% of booked calls that actually show up. Industry average is 60–80%. With good reminder sequences, aim for 70–75%.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">%</span><input type="number" id="ht-show" placeholder="70" min="1" max="100"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Monthly ad budget</label>
+          <div class="tip">?<span class="tip-text">How much you plan to spend on ads per month to generate leads and booked calls.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="ht-budget" placeholder="3000" min="1"></div>
+      </div>
+
+      <div class="input-group">
+        <div class="label-row">
+          <label>Client LTV</label>
+          <div class="tip">?<span class="tip-text">Total value of one client over time. If they pay $3k once, LTV = $3k. If they stay 4 months at $2k/mo, LTV = $8k. If you don't know yet, use your offer price.</span></div>
+        </div>
+        <div class="input-wrap"><span class="prefix">$</span><input type="number" id="ht-ltv" placeholder="3000" min="1"></div>
+      </div>
+
+    </div>
+    <button class="calc-btn" onclick="calcHT()">Calculate My Numbers</button>
+  </div>
+
+  <!-- LT RESULTS -->
+  <div class="results" id="lt-results">
+    <div class="result-hero">
+      <div class="result-hero-label">Maximum Cost Per Purchase (CPP)</div>
+      <div class="result-hero-val" id="lt-maxCpp">$0</div>
+      <div class="result-hero-sub">Spend more than this per sale and you're losing money at your target ROAS</div>
+    </div>
+    <div class="result-grid">
+      <div class="result-card">
+        <div class="result-label">Break-even CPP</div>
+        <div class="result-val" id="lt-beCpp">$0</div>
+        <div class="result-note">Spending this per sale = $0 profit</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Max Cost Per Lead</div>
+        <div class="result-val" id="lt-maxCpl">$0</div>
+        <div class="result-note">Based on your conversion rate</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Est. Monthly Sales</div>
+        <div class="result-val" id="lt-sales">0</div>
+        <div class="result-note">At your budget and conv rate</div>
+      </div>
+    </div>
+    <div class="result-grid">
+      <div class="result-card">
+        <div class="result-label">Est. Monthly Revenue</div>
+        <div class="result-val" id="lt-revenue">$0</div>
+        <div class="result-note">AOV × projected sales</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">LTV-Adjusted Max CPP</div>
+        <div class="result-val" id="lt-ltvCpp">$0</div>
+        <div class="result-note">What you can spend factoring full LTV</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Projected ROAS</div>
+        <div class="result-val" id="lt-projRoas">0×</div>
+        <div class="result-note">Estimated return on your budget</div>
+      </div>
+    </div>
+    <div class="verdict" id="lt-verdict"></div>
+    <button class="reset-btn" onclick="resetLT()">Reset</button>
+  </div>
+
+  <!-- HT RESULTS -->
+  <div class="results" id="ht-results">
+    <div class="result-hero">
+      <div class="result-hero-label">Max Customer Acquisition Cost (CAC)</div>
+      <div class="result-hero-val" id="ht-maxCac">$0</div>
+      <div class="result-hero-sub">The most you should spend in ads to acquire one client</div>
+    </div>
+    <div class="result-grid">
+      <div class="result-card">
+        <div class="result-label">Clients Needed / Month</div>
+        <div class="result-val" id="ht-clients">0</div>
+        <div class="result-note">To hit your revenue target</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Calls Needed / Month</div>
+        <div class="result-val" id="ht-calls">0</div>
+        <div class="result-note">At your close rate + show rate</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Max Cost Per Call</div>
+        <div class="result-val" id="ht-costPerCall">$0</div>
+        <div class="result-note">Max spend to book one call</div>
+      </div>
+    </div>
+    <div class="result-grid">
+      <div class="result-card">
+        <div class="result-label">Budget Covers</div>
+        <div class="result-val" id="ht-budgetClients">0 clients</div>
+        <div class="result-note">Projected clients at your ad budget</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Projected Revenue</div>
+        <div class="result-val" id="ht-projRevenue">$0</div>
+        <div class="result-note">From your ad budget spend</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">LTV-Adjusted Max CAC</div>
+        <div class="result-val" id="ht-ltvCac">$0</div>
+        <div class="result-note">If you factor full client LTV</div>
+      </div>
+    </div>
+    <div class="verdict" id="ht-verdict"></div>
+    <button class="reset-btn" onclick="resetHT()">Reset</button>
+  </div>
+
+</div>
+
+<div class="footer">VIERAOS · AI Sales Machine</div>
 
 <script>
-function calculate() {
-  const price = parseFloat(document.getElementById('offerPrice').value) || 0;
-  const aov = parseFloat(document.getElementById('aov').value) || price;
-  const convRate = parseFloat(document.getElementById('convRate').value) || 0;
-  const targetRoas = parseFloat(document.getElementById('targetRoas').value) || 2;
-  const budget = parseFloat(document.getElementById('monthlyBudget').value) || 0;
-  const ltv = parseFloat(document.getElementById('ltv').value) || price;
+let mode = 'lt';
 
-  if (!price || !convRate || !budget) {
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach((b,i) => b.classList.toggle('active', (m==='lt'&&i===0)||(m==='ht'&&i===1)));
+  document.getElementById('lt-form').style.display = m === 'lt' ? 'block' : 'none';
+  document.getElementById('ht-form').style.display = m === 'ht' ? 'block' : 'none';
+  document.getElementById('lt-results').classList.remove('show');
+  document.getElementById('ht-results').classList.remove('show');
+}
+
+function fmt(n){ return '$' + Math.round(n).toLocaleString(); }
+function fmtD(n){ return '$' + n.toFixed(2); }
+
+function calcLT() {
+  const price  = parseFloat(document.getElementById('lt-price').value) || 0;
+  const aov    = parseFloat(document.getElementById('lt-aov').value) || price;
+  const conv   = parseFloat(document.getElementById('lt-conv').value) || 0;
+  const roas   = parseFloat(document.getElementById('lt-roas').value) || 2;
+  const budget = parseFloat(document.getElementById('lt-budget').value) || 0;
+  const ltv    = parseFloat(document.getElementById('lt-ltv').value) || aov;
+
+  if (!price || !conv || !budget) {
     alert('Please fill in offer price, conversion rate and monthly budget at minimum.');
     return;
   }
 
-  const breakEvenCpp = aov;
-  const maxCpp = aov / targetRoas;
-  const maxCpl = maxCpp * (convRate / 100);
-  const estLeads = budget / maxCpl;
-  const estSales = estLeads * (convRate / 100);
+  const maxCpp     = aov / roas;
+  const beCpp      = aov;
+  const maxCpl     = maxCpp * (conv / 100);
+  const estLeads   = budget / maxCpl;
+  const estSales   = estLeads * (conv / 100);
   const estRevenue = estSales * aov;
-  const targetCpp = aov / targetRoas;
-  const ltvCpp = ltv / targetRoas;
+  const ltvCpp     = ltv / roas;
+  const projRoas   = estRevenue / budget;
 
-  document.getElementById('maxCpp').textContent = '$' + maxCpp.toFixed(0);
-  document.getElementById('breakEvenCpp').textContent = '$' + breakEvenCpp.toFixed(0);
-  document.getElementById('maxCpl').textContent = '$' + maxCpl.toFixed(2);
-  document.getElementById('estSales').textContent = Math.round(estSales);
-  document.getElementById('estRevenue').textContent = '$' + estRevenue.toFixed(0);
-  document.getElementById('targetCpp').textContent = '$' + targetCpp.toFixed(0);
-  document.getElementById('ltvCpp').textContent = '$' + ltvCpp.toFixed(0);
+  document.getElementById('lt-maxCpp').textContent  = fmt(maxCpp);
+  document.getElementById('lt-beCpp').textContent   = fmt(beCpp);
+  document.getElementById('lt-maxCpl').textContent  = fmtD(maxCpl);
+  document.getElementById('lt-sales').textContent   = Math.round(estSales);
+  document.getElementById('lt-revenue').textContent = fmt(estRevenue);
+  document.getElementById('lt-ltvCpp').textContent  = fmt(ltvCpp);
+  document.getElementById('lt-projRoas').textContent = projRoas.toFixed(1) + '×';
 
-  const verdict = document.getElementById('verdict');
-  const actualCpp = budget / estSales;
+  const actualCpp = budget / (estSales || 1);
+  const v = document.getElementById('lt-verdict');
   if (actualCpp <= maxCpp) {
-    verdict.className = 'verdict green';
-    verdict.innerHTML = `<strong>✅ Your numbers work.</strong> At $${budget}/mo spend with a ${convRate}% conv rate, your projected CPP is $${actualCpp.toFixed(0)} — below your $${maxCpp.toFixed(0)} threshold. You're profitable at these numbers. Focus on driving more volume.`;
-  } else if (actualCpp <= breakEvenCpp) {
-    verdict.className = 'verdict gold';
-    verdict.innerHTML = `<strong>⚠️ Marginal — watch closely.</strong> Your projected CPP of $${actualCpp.toFixed(0)} is below break-even but above your target ROAS. You need to either improve conversion rate, increase AOV through upsells, or reduce CPL. Factor in your LTV ($${ltv}) to get a fuller picture.`;
+    v.className = 'verdict green';
+    v.innerHTML = `<strong>✅ Your numbers work.</strong> At ${fmt(budget)}/mo with a ${conv}% conv rate, your projected CPP is ${fmt(actualCpp)} — below your ${fmt(maxCpp)} threshold. You're profitable at these numbers. Focus on volume.`;
+  } else if (actualCpp <= beCpp) {
+    v.className = 'verdict gold';
+    v.innerHTML = `<strong>⚠️ Marginal — watch closely.</strong> Projected CPP of ${fmt(actualCpp)} is below break-even but above target ROAS. Lift AOV with upsells or improve conversion rate. Your LTV (${fmt(ltv)}) gives you more room — factor that in.`;
   } else {
-    verdict.className = 'verdict red';
-    verdict.innerHTML = `<strong>🚨 These numbers don't work yet.</strong> Projected CPP of $${actualCpp.toFixed(0)} exceeds your break-even of $${breakEvenCpp.toFixed(0)}. Before spending, you need to improve conversion rate, increase your front-end price, or build a stronger upsell stack to lift AOV.`;
+    v.className = 'verdict red';
+    v.innerHTML = `<strong>🚨 These numbers don't work yet.</strong> Projected CPP of ${fmt(actualCpp)} exceeds your break-even of ${fmt(beCpp)}. Fix your conversion rate, increase AOV through upsells, or lower your ad budget until the numbers stack up.`;
   }
-
-  document.getElementById('results').classList.add('show');
+  document.getElementById('lt-results').classList.add('show');
 }
 
-function reset() {
-  ['offerPrice','aov','convRate','targetRoas','monthlyBudget','ltv'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('results').classList.remove('show');
+function calcHT() {
+  const price    = parseFloat(document.getElementById('ht-price').value) || 0;
+  const target   = parseFloat(document.getElementById('ht-target').value) || 0;
+  const close    = parseFloat(document.getElementById('ht-close').value) || 0;
+  const show     = parseFloat(document.getElementById('ht-show').value) || 70;
+  const budget   = parseFloat(document.getElementById('ht-budget').value) || 0;
+  const ltv      = parseFloat(document.getElementById('ht-ltv').value) || price;
+
+  if (!price || !target || !close || !budget) {
+    alert('Please fill in offer price, revenue target, close rate and ad budget at minimum.');
+    return;
+  }
+
+  const clientsNeeded   = target / price;
+  const callsNeeded     = clientsNeeded / (close / 100) / (show / 100);
+  const maxCac          = budget / clientsNeeded;
+  const costPerCall     = budget / callsNeeded;
+  const budgetClients   = budget / maxCac;
+  const projRevenue     = budgetClients * price;
+  const ltvCac          = ltv / 3; // sensible max: 1/3 of LTV
+
+  document.getElementById('ht-maxCac').textContent       = fmt(maxCac);
+  document.getElementById('ht-clients').textContent      = Math.ceil(clientsNeeded);
+  document.getElementById('ht-calls').textContent        = Math.ceil(callsNeeded);
+  document.getElementById('ht-costPerCall').textContent  = fmt(costPerCall);
+  document.getElementById('ht-budgetClients').textContent = Math.floor(budgetClients) + ' clients';
+  document.getElementById('ht-projRevenue').textContent  = fmt(projRevenue);
+  document.getElementById('ht-ltvCac').textContent       = fmt(ltvCac);
+
+  const v = document.getElementById('ht-verdict');
+  const budgetGap = target - projRevenue;
+  if (projRevenue >= target) {
+    v.className = 'verdict green';
+    v.innerHTML = `<strong>✅ Budget covers your target.</strong> At ${fmt(budget)}/mo ad spend with a ${close}% close rate and ${show}% show rate, you can hit ${fmt(projRevenue)}. Your max CAC is ${fmt(maxCac)} and cost per booked call is ${fmt(costPerCall)}. Watch these two numbers like a hawk.`;
+  } else if (projRevenue >= target * 0.7) {
+    v.className = 'verdict gold';
+    v.innerHTML = `<strong>⚠️ Close but not quite.</strong> Your budget projects ${fmt(projRevenue)} against a ${fmt(target)} target — a ${fmt(budgetGap)} gap. Increase your budget, improve your close rate, or reduce no-shows with better reminder sequences. Your LTV of ${fmt(ltv)} means you can justify spending up to ${fmt(ltvCac)} per client.`;
+  } else {
+    v.className = 'verdict red';
+    v.innerHTML = `<strong>🚨 Budget gap is too large.</strong> At ${fmt(budget)}/mo you're projected at ${fmt(projRevenue)} — ${fmt(budgetGap)} short of target. Either increase your ad budget to ${fmt(budget * (target / projRevenue))}, improve your close rate above ${close}%, or increase your price point. Something needs to move.`;
+  }
+  document.getElementById('ht-results').classList.add('show');
+}
+
+function resetLT() {
+  ['lt-price','lt-aov','lt-conv','lt-roas','lt-budget','lt-ltv'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('lt-results').classList.remove('show');
+}
+
+function resetHT() {
+  ['ht-price','ht-target','ht-close','ht-show','ht-budget','ht-ltv'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('ht-results').classList.remove('show');
 }
 </script>
 </body>
