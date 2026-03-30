@@ -317,22 +317,25 @@ option { background: var(--card); }
 /* ── AD TRACKER TABLE ── */
 .add-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 100px 100px 100px 80px;
+  grid-template-columns: 1fr 1fr 110px 110px 110px;
   gap: 10px;
   align-items: end;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 .add-btn {
-  background: linear-gradient(135deg, var(--purple), var(--teal));
+  width: 100%;
+  background: #D4A843;
   border: none;
   border-radius: 9px;
-  height: 40px;
+  padding: 13px 20px;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  color: #000;
   cursor: pointer;
+  letter-spacing: .05em;
   transition: opacity 0.18s;
+  margin-bottom: 16px;
 }
 .add-btn:hover { opacity: 0.88; }
 
@@ -640,8 +643,8 @@ tr:last-child td { border-bottom: none; }
       <div><label>Spend ($)</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="t-spend" placeholder="300"></div></div>
       <div><label>Revenue ($)</label><div class="input-wrap"><span class="pfx">$</span><input type="number" id="t-rev" placeholder="780"></div></div>
       <div><label>Sales</label><input type="number" id="t-sales" placeholder="8" style="padding-left:13px"></div>
-      <div><label>&nbsp;</label><button class="add-btn" onclick="trackerAdd()">+ Add</button></div>
     </div>
+    <button class="add-btn" onclick="trackerAdd()">+ Add Ad</button>
   </div>
 
   <div class="kpi-row">
@@ -667,7 +670,8 @@ tr:last-child td { border-bottom: none; }
   </div>
 
   <div class="rule-note">
-    <strong>7-day rule:</strong> Don't touch any ad before day 7. ROAS ≥ 2× = scale. ROAS 1–2× = iterate (change ONE thing). ROAS below 1× = kill immediately.
+    <strong>Low-Ticket (7-day rule):</strong> Don't touch any ad before day 7. ROAS ≥ 2× = scale. ROAS 1–2× = iterate (change ONE thing). ROAS below 1× = kill immediately.<br><br>
+    <strong>High-Ticket (14–21 day rule):</strong> HT has a longer sales cycle — leads need time to book, show, and close. Judge on booked call rate and cost per call in week 1. Don't kill based on ROAS until day 14 minimum. By day 21 if you have zero calls booked from an ad, kill it.
   </div>
 </div>
 
