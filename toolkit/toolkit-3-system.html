@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-    --navy: #0A0A0A;
+    --navy: #0B0919;
     --card: #111111;
     --card2: #181818;
     --border: #2a2a2a;
@@ -112,21 +112,21 @@ tr:last-child td{border-bottom:none}
 .page-footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;font-family: 'Bebas Neue', sans-serif;font-size:11px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.15em}
 
   /* ── MANUS BRAND OVERRIDES ── */
-  body { background: #0A0A0A !important; }
+  body { background: #0B0919 !important; }
   h1 { font-family: 'Bebas Neue', sans-serif !important; font-size: 48px !important; letter-spacing: 0.04em !important; font-weight: 400 !important; }
-  h1 span { background: linear-gradient(90deg, #D4A843, #fff) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
-  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #D4A843 !important; font-size: 11px !important; font-weight: 700 !important; }
+  h1 span { background: linear-gradient(90deg, #c084fc, #2dd4bf) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; background-clip: text !important; }
+  .lesson-tag, .tool-tag { font-family: 'Inter', sans-serif !important; letter-spacing: 0.25em !important; color: #2dd4bf !important; font-size: 11px !important; font-weight: 700 !important; }
   .footer, .page-footer { font-family: 'Inter', sans-serif !important; color: #D4A843 !important; background: none !important; -webkit-text-fill-color: #D4A843 !important; letter-spacing: 0.2em !important; opacity: 0.6; }
   .form-box, .audit-section, .weeks-wrap, .table-wrap, .script-box, .tracker-wrap, .variation-box, .spec-box { background: #111111 !important; border-color: #2a2a2a !important; }
   .bucket, .camp-type, .need-card, .lane, .flow-node, .formula-step, .room, .type-card, .review-section, .loop-node, .buyer-signal, .outcome-card, .ba-card, .hook-card, .res-card, .kpi, .kpi-card, .total-card, .result-card { background: #111111 !important; border-color: #2a2a2a !important; }
   input[type=text], input[type=number], textarea, select { background: #0A0A0A !important; border-color: #2a2a2a !important; color: #fff !important; }
-  input:focus, textarea:focus, select:focus { border-color: #D4A843 !important; }
-  .primary-btn, .gen-btn, .calc-btn { background: #D4A843 !important; color: #000 !important; font-weight: 800 !important; }
-  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { background: #d4a90d !important; opacity: 1 !important; }
+  input:focus, textarea:focus, select:focus { border-color: #c084fc !important; }
+  .primary-btn, .gen-btn, .calc-btn { background: linear-gradient(135deg, #c084fc, #2dd4bf) !important; color: #000 !important; font-weight: 800 !important; }
+  .primary-btn:hover, .gen-btn:hover, .calc-btn:hover { opacity: 0.88 !important; }
   table th { background: #111111 !important; color: #888 !important; }
   table td { border-color: #1f1f1f !important; }
   .verdict-box.green { background: rgba(45,212,191,0.08) !important; border-color: rgba(45,212,191,0.3) !important; }
-  .nav-tab.active { background: rgba(241,196,15,0.15) !important; color: #D4A843 !important; border-color: rgba(241,196,15,0.4) !important; }
+  .nav-tab.active { background: rgba(192,132,252,0.15) !important; color: #c084fc !important; border-color: rgba(192,132,252,0.4) !important; }
   .top-bar { background: rgba(10,10,10,0.97) !important; border-color: #1f1f1f !important; }
   .hero { background: linear-gradient(180deg, rgba(241,196,15,0.04) 0%, transparent 100%) !important; border-color: #1f1f1f !important; }
   .tw-head, .tw-header, .weeks-header, .script-header, .sb-header { background: #0A0A0A !important; border-color: #1f1f1f !important; }
@@ -140,13 +140,13 @@ tr:last-child td{border-bottom:none}
   .bottom-section { border-color: #1f1f1f !important; }
   .score-bar, .score-card, .preview-box { background: #111111 !important; border-color: #2a2a2a !important; }
   .rule-box, .rule-note, .rule_box, .golden-rule, .tag-box, .bridge-box, .filter-box, .mismatch-box, .concept-box, .insights, .insights-box { background: rgba(241,196,15,0.05) !important; border-color: rgba(241,196,15,0.2) !important; }
-  .check-item.checked { background: rgba(241,196,15,0.06) !important; }
+  .check-item.checked { background: rgba(192,132,252,0.06) !important; }
   .checkbox { border-color: #2a2a2a !important; }
-  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #D4A843 !important; }
+  .check-item.checked .checkbox { background: #D4A843 !important; border-color: #c084fc !important; }
   .check-item.checked .checkbox::after { color: #000 !important; }
-  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(241,196,15,0.1) !important; border-color: rgba(241,196,15,0.3) !important; color: #D4A843 !important; }
-  .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
-  .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
+  .copy-btn, .copy-all-btn, .copy-post-btn { background: rgba(192,132,252,0.1) !important; border-color: rgba(192,132,252,0.3) !important; color: #c084fc !important; }
+  .add-btn, .record-btn { background: linear-gradient(135deg, #c084fc, #2dd4bf) !important; color: #000 !important; font-weight: 700 !important; }
+  .sc-fill { background: linear-gradient(90deg, #c084fc, #2dd4bf) !important; }
   .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
   @media(max-width:600px){
     .top-bar{padding:0 16px;flex-wrap:wrap;height:auto;gap:8px;padding-top:10px;padding-bottom:10px}
