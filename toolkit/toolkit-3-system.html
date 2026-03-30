@@ -148,6 +148,15 @@ tr:last-child td{border-bottom:none}
   .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
   .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
   .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+  @media(max-width:600px){
+    .top-bar{padding:0 16px;flex-wrap:wrap;height:auto;gap:8px;padding-top:10px;padding-bottom:10px}
+    .nav-tabs{flex-wrap:wrap;gap:4px;width:100%}
+    .nav-tab{font-size:10px;padding:6px 10px;flex:1}
+    .panel{padding:20px 16px}
+    .input-grid{grid-template-columns:1fr !important}
+    .result-grid-3{grid-template-columns:1fr 1fr !important}
+    .brand{font-size:11px}
+  }
 
 </style>
 </head>
@@ -276,6 +285,8 @@ tr:last-child td{border-bottom:none}
 <div class="page-footer">VIERAOS · The AI Sales Toolkit — Part 3: System</div>
 
 <script>
+const API_URL = 'https://vieraos-ai-sales-system-tools-api.onrender.com';
+
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -284,66 +295,32 @@ function showPanel(id) {
 }
 
 // ── SCRIPT BUILDER ──
-function buildScript() {
-  const name  = document.getElementById('s-name').value.trim()  || 'Your AI Setter';
-  const biz   = document.getElementById('s-biz').value.trim()   || 'your business';
-  const voice = document.getElementById('s-voice').value.trim() || 'Direct, warm, and confident without being corporate.';
-  const ht    = document.getElementById('s-ht').value.trim()    || '[High-ticket offer]';
-  const lt    = document.getElementById('s-lt').value.trim()    || '[Low-ticket offer]';
-  const buyer = document.getElementById('s-buyer').value.trim() || 'Business owners who have an offer and want more qualified leads.';
-  const qual  = document.getElementById('s-qual').value.trim()  || '1. Has an existing offer\n2. Spending money on growth\n3. Already making revenue';
-  const book  = document.getElementById('s-book').value.trim()  || '[Booking link here]';
-  const pay   = document.getElementById('s-pay').value.trim()   || '[Payment link here]';
-  const obj   = document.getElementById('s-obj').value.trim()   || 'I need to think about it';
-
-  const script = `IDENTITY
-You are ${name}, an AI assistant representing ${biz}. You speak in first person as ${name}. You are NOT an AI — you are ${name}. Never break character. Never mention Claude, AI, or automation.
-
-VOICE & TONE
-${voice}
-
-Keep messages short (2–4 sentences max). One question per message only — never stack. Warm but direct. No corporate language. Sound like a smart friend, not a sales bot.
-
-YOUR GOAL
-You are having a genuine DM conversation with someone who just received a lead magnet. Your job is to:
-1. Make them feel welcomed and seen
-2. Qualify them through natural conversation
-3. Send the booking link (${book}) to qualified leads
-4. Send the payment link (${pay}) for the low-ticket offer when timing is right
-5. Tag unqualified leads as "nurture" — not lost, just not ready yet
-
-IDEAL BUYER
-${buyer}
-
-A qualified hot lead has ALL of these:
-${qual}
-
-CONVERSATION FLOW
-Message 1: Welcome, confirm lead magnet delivered, ask first qualifying question (natural, not salesy)
-Messages 2–3: Go deeper based on their answers. Understand their situation. Find the real pain.
-Message 4: Reflect their situation back. Position the offer as the solution to their specific problem.
-Message 5: Soft CTA — "Want me to send you a link?" — for booking or payment depending on qualification.
-
-HANDLING THE OBJECTION "${obj}"
-Respond with empathy first: "Totally get that." Then ask what specifically they'd want to understand before deciding. This surfaces the real objection which you can then address directly.
-
-HANDOFF TRIGGERS — flag these for human follow-up
-- Lead mentions budget over $10k
-- Lead is a warm referral
-- Lead expresses strong frustration or distress
-- Complex technical question outside your scope
-
-WHAT NOT TO DO
-- Never send the booking link in the first 2 messages
-- Never use "I understand your hesitation" or "Great question!" — robotic
-- Never send multiple links at once
-- Never respond with more than 4 sentences per message
-- Never mention you are AI, Claude, or automated`;
-
-  document.getElementById('script-content').textContent = script;
-  document.getElementById('script-box').classList.add('show');
-  document.getElementById('script-tip').style.display = 'block';
-  document.getElementById('script-reset-wrap').style.display = 'block';
+async function buildScript() {
+  const name       = document.getElementById('s-name').value.trim()  || 'Your AI Setter';
+  const bizName    = document.getElementById('s-biz').value.trim()   || 'your business';
+  const voice      = document.getElementById('s-voice').value.trim() || 'Direct, warm, and confident without being corporate.';
+  const htOffer    = document.getElementById('s-ht').value.trim()    || '[High-ticket offer]';
+  const ltOffer    = document.getElementById('s-lt').value.trim()    || '[Low-ticket offer]';
+  const buyer      = document.getElementById('s-buyer').value.trim() || 'Business owners who have an offer and want more qualified leads.';
+  const qualifiers = document.getElementById('s-qual').value.trim()  || '1. Has an existing offer\n2. Spending money on growth\n3. Already making revenue';
+  const bookingLink = document.getElementById('s-book').value.trim() || '[Booking link here]';
+  const paymentLink = document.getElementById('s-pay').value.trim()  || '[Payment link here]';
+  const objection  = document.getElementById('s-obj').value.trim()   || 'I need to think about it';
+  const btn = document.querySelector('#panel-script .primary-btn');
+  btn.textContent = 'Building your script...'; btn.disabled = true;
+  try {
+    const res = await fetch(`${API_URL}/api/generate`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool: 'setter', inputs: { name, bizName, voice, htOffer, ltOffer, buyer, qualifiers, bookingLink, paymentLink, objection } })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Generation failed');
+    document.getElementById('script-content').textContent = data.result;
+    document.getElementById('script-box').classList.add('show');
+    document.getElementById('script-tip').style.display = 'block';
+    document.getElementById('script-reset-wrap').style.display = 'block';
+  } catch(err) { alert(err.message || 'Something went wrong. Please try again.'); }
+  finally { btn.textContent = 'Build My Setter Script'; btn.disabled = false; }
 }
 
 function copyScript() {

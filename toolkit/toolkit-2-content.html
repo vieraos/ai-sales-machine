@@ -138,6 +138,15 @@ option{background:var(--card)}
   .add-btn, .record-btn { background: #D4A843 !important; color: #000 !important; font-weight: 700 !important; }
   .sc-fill { background: linear-gradient(90deg, #D4A843, #fff) !important; }
   .vieros-box { background: linear-gradient(135deg,rgba(241,196,15,0.08),rgba(0,0,0,0)) !important; border-color: rgba(241,196,15,0.3) !important; }
+  @media(max-width:600px){
+    .top-bar{padding:0 16px;flex-wrap:wrap;height:auto;gap:8px;padding-top:10px;padding-bottom:10px}
+    .nav-tabs{flex-wrap:wrap;gap:4px;width:100%}
+    .nav-tab{font-size:10px;padding:6px 10px;flex:1}
+    .panel{padding:20px 16px}
+    .input-grid{grid-template-columns:1fr !important}
+    .result-grid-3{grid-template-columns:1fr 1fr !important}
+    .brand{font-size:11px}
+  }
 
 </style>
 </head>
@@ -276,6 +285,8 @@ option{background:var(--card)}
 <div class="page-footer">VIERAOS · The AI Sales Toolkit — Part 2: Content</div>
 
 <script>
+const API_URL = 'https://vieraos-ai-sales-system-tools-api.onrender.com';
+
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -284,26 +295,27 @@ function showPanel(id) {
 }
 
 // ── POST BUILDER ──
-function buildPost() {
-  const name      = document.getElementById('pb-name').value.trim()        || 'my free guide';
-  const outcome   = document.getElementById('pb-outcome').value.trim()     || 'automate your lead generation';
+async function buildPost() {
+  const lmName    = document.getElementById('pb-name').value.trim()        || 'my free guide';
+  const lmOutcome = document.getElementById('pb-outcome').value.trim()     || 'automate your lead generation';
   const keyword   = (document.getElementById('pb-keyword').value.trim() || 'FREE').toUpperCase();
   const hookType  = document.getElementById('pb-hook').value;
   const audience  = document.getElementById('pb-audience').value.trim()    || 'business owners';
-  const frust     = document.getElementById('pb-frustration').value.trim() || 'not seeing results';
-
-  let hook = '';
-  if (hookType === 'pain')    hook = `If you're ${audience.toLowerCase()} and you're ${frust.toLowerCase()}...\n\nYou need to see this.`;
-  else if (hookType === 'outcome') hook = `How ${audience.toLowerCase()} are now able to ${outcome.toLowerCase()} — without being online 24/7.`;
-  else if (hookType === 'story')   hook = `6 months ago I was ${frust.toLowerCase().split(' ').slice(0,8).join(' ')}.\n\nNow my system handles it automatically while I sleep.\n\nHere's what changed:`;
-  else                             hook = `3 reasons why ${audience.toLowerCase()} keep ${frust.toLowerCase().split(' ').slice(0,5).join(' ')}:\n\n(and what to do instead)`;
-
-  const body = `The problem isn't your offer. It isn't your content. It's what happens — or doesn't happen — after someone shows interest.\n\nMost ${audience.toLowerCase()} have no system for that gap. And that's where all the leads fall through.\n\nI put together ${name} to show you exactly how to ${outcome.toLowerCase()}.\n\nIt's free. It takes under 10 minutes. And if you implement it, you'll never manually chase a lead again.`;
-  const cta  = `Comment "${keyword}" below and I'll send it straight to your DMs. 👇`;
-
-  const el = document.getElementById('post-preview');
-  el.textContent = `${hook}\n\n${body}\n\n${cta}`;
-  el.classList.remove('empty');
+  const frustration = document.getElementById('pb-frustration').value.trim() || 'not seeing results';
+  const btn = document.querySelector('#panel-post .primary-btn');
+  btn.textContent = 'Writing your post...'; btn.disabled = true;
+  try {
+    const res = await fetch(`${API_URL}/api/generate`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool: 'post', inputs: { lmName, lmOutcome, keyword, hookType, audience, frustration } })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Generation failed');
+    const el = document.getElementById('post-preview');
+    el.textContent = data.result;
+    el.classList.remove('empty');
+  } catch(err) { alert(err.message || 'Something went wrong. Please try again.'); }
+  finally { btn.textContent = 'Build My Post'; btn.disabled = false; }
 }
 
 function copyPost() {
